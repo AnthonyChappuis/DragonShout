@@ -25,13 +25,11 @@ class MainWindow(QWidget):
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon('dragonShout.png'))
 
-        language = "english"
-        text = Text()
+        text = Text('french')
         QToolTip.setFont(QFont('SansSerif', 10))
 
-        self.setToolTip('This is a <b>QWidget</b> widget')
 
-        button = QPushButton(text.localisation('buttons','test'), self)
-        button.setToolTip('This is a <b>QPushButton</b> widget')
+        button = QPushButton(text.localisation('buttons','test','caption'), self)
+        button.setToolTip(text.localisation('buttons','test','toolTip'))
         button.resize(button.sizeHint())
         button.move(50, 50)

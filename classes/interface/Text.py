@@ -13,15 +13,27 @@ class Text:
 
         #English
         if language == 'english':
+
             buttons = {
-                'test': "test",
-                'iteration': "iteration"
+                'test': {'caption':"test",'toolTip': 'This is a <b>QWidget</b> widget'},
             }
+
             menus = ''
+
+            textBoxes = ''
+
+        #French
+        if language == 'french':
+            buttons = {
+                'test': {'caption':"test",'toolTip': 'Ceci est un widget <b>QWidget</b>'},
+            }
+
+            menus = ''
+
             textBoxes = ''
 
 
         self._localisation = {'buttons': buttons, 'menus': menus, 'textBoxes': textBoxes}
 
-    def localisation(self,textType:str,textName:str):
-        return self._localisation[textType][textName]
+    def localisation(self,elementType:str,elementName:str,textType:str = 'caption'):
+        return self._localisation[elementType][elementName][textType]
