@@ -15,7 +15,7 @@ class Text:
         if language == 'english':
 
             buttons = {
-                'test': {'caption':"test",'toolTip': 'This is a <b>QWidget</b> widget'},
+                'Files': {'caption':"Files",'toolTip': 'This is a <b>QWidget</b> widget'},
             }
 
             menus = ''
@@ -25,7 +25,7 @@ class Text:
         #French
         if language == 'french':
             buttons = {
-                'test': {'caption':"test",'toolTip': 'Ceci est un widget <b>QWidget</b>'},
+                'Files': {'caption':"Fichiers",'toolTip': 'Ceci est un widget <b>QWidget</b>'},
             }
 
             menus = ''

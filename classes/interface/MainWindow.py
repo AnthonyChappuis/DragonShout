@@ -28,8 +28,15 @@ class MainWindow(QWidget):
         text = Text('french')
         QToolTip.setFont(QFont('SansSerif', 10))
 
+        #Creating a dictionnary to contain the various menus of MainWindow
+        buttons = {}
 
-        button = QPushButton(text.localisation('buttons','test','caption'), self)
-        button.setToolTip(text.localisation('buttons','test','toolTip'))
+        #Creating files menu
+        button = QPushButton(text.localisation('buttons','Files','caption'), self)
+        button.setToolTip(text.localisation('buttons','Files','toolTip'))
         button.resize(button.sizeHint())
-        button.move(50, 50)
+        button.move(300, 300)
+
+        dictionnary = {"Files" : button}
+
+        buttons.update(dictionnary)
