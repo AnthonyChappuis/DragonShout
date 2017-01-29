@@ -14,29 +14,22 @@ from PyQt5 import QtGui
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import QWidget, QApplication , QToolTip, QPushButton
 
-class MainWindow(QWidget):
+class MainWindow(QtGui.QWindow):
 
     def __init__(self,application:QApplication):
         super().__init__()
         screen = application.desktop().screenGeometry()
 
-        self.resize(screen.width(),screen.height())
-        self.move(0,0)
-        self.setWindowTitle(APP_NAME)
-        self.setWindowIcon(QIcon('dragonShout.png'))
+        self.setGeometry(50, 50, screen.width(), screen.height())
+        self.setTitle(APP_NAME)
+        self.setIcon(QIcon('dragonShout.png'))
 
-        text = Text('french')
+        text = Text('english')
         QToolTip.setFont(QFont('SansSerif', 10))
 
-        #Creating a dictionnary to contain the various menus of MainWindow
-        buttons = {}
+        #Creating status bar
+        self.statusBar().showMessage('Ready')
 
-        #Creating files menu
-        button = QPushButton(text.localisation('buttons','Files','caption'), self)
-        button.setToolTip(text.localisation('buttons','Files','toolTip'))
-        button.resize(button.sizeHint())
-        button.move(300, 300)
-
-        dictionnary = {"Files" : button}
-
-        buttons.update(dictionnary)
+        self.setGeometry(0, self.height()-self.height()/20, self.width(), self.height()/20)
+        self.setWindowTitle('Statusbar')
+        self.show()
