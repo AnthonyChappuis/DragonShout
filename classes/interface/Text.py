@@ -14,26 +14,34 @@ class Text:
         #English
         if language == 'english':
 
-            buttons = {
-                'Files': {'caption':"Files",'toolTip': 'This is a <b>QWidget</b> widget'},
+            buttons = ''
+
+            menus = {
+                'files': {'caption':"Files",'toolTip': 'This is a <b>QWidget</b> widget'},
             }
 
-            menus = ''
+            menuEntries = {
+                'exit': { 'caption':'Exit', 'toolTip': "Exit the application"},
+            }
 
             textBoxes = ''
 
         #French
         if language == 'french':
-            buttons = {
-                'Files': {'caption':"Fichiers",'toolTip': 'Ceci est un widget <b>QWidget</b>'},
+            buttons = ''
+
+            menus =  {
+                'files': {'caption':"Fichiers",'toolTip': 'Ceci est un widget <b>QWidget</b>'},
             }
 
-            menus = ''
+            menuEntries = {
+                'exit': { 'caption':'Quitter', 'toolTip':"Quitter l'application."},
+            }
 
             textBoxes = ''
 
 
-        self._localisation = {'buttons': buttons, 'menus': menus, 'textBoxes': textBoxes}
+        self._localisation = {'buttons': buttons, 'menus': menus, 'menuEntries': menuEntries, 'textBoxes': textBoxes}
 
     def localisation(self,elementType:str,elementName:str,textType:str = 'caption'):
         return self._localisation[elementType][elementName][textType]
