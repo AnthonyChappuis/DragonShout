@@ -12,24 +12,25 @@ from classes.interface.Text import Text
 
 from PyQt5 import QtGui
 from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtWidgets import QWidget, QApplication , QToolTip, QPushButton
+from PyQt5.QtWidgets import QMainWindow, QApplication
 
-class MainWindow(QtGui.QWindow):
+class MainWindow(QMainWindow):
 
     def __init__(self,application:QApplication):
         super().__init__()
         screen = application.desktop().screenGeometry()
 
         self.setGeometry(50, 50, screen.width(), screen.height())
-        self.setTitle(APP_NAME)
-        self.setIcon(QIcon('dragonShout.png'))
+        self.setWindowTitle(APP_NAME)
+        self.setWindowIcon(QIcon('dragonShout.png'))
 
         text = Text('english')
-        QToolTip.setFont(QFont('SansSerif', 10))
 
         #Creating status bar
         self.statusBar().showMessage('Ready')
+        self.statusBar().setGeometry(0, self.height()-self.height()/20, self.width(), self.height()/20)
 
-        self.setGeometry(0, self.height()-self.height()/20, self.width(), self.height()/20)
-        self.setWindowTitle('Statusbar')
+        #Creating menu bar
+
+
         self.show()
