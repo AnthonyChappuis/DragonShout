@@ -10,9 +10,10 @@
 from constants import *
 from classes.interface.Text import Text
 
-from PyQt5 import QtGui
+from PyQt5 import Qt, QtGui
 from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, qApp
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
+    QGridLayout, QPushButton, QWidget, QListWidget, QLabel)
 
 class MainWindow(QMainWindow):
 
@@ -40,13 +41,22 @@ class MainWindow(QMainWindow):
 
         #Creating file menu
         #Defining file menu actions
+        fileMenu = menuBar.addMenu(self.text.localisation('menus','files','caption'))
+
+        action = QAction(QIcon('save.png'), self.text.localisation('menuEntries','save','caption'), self)
+        action.setShortcut('Ctrl+s')
+        action.setStatusTip(self.text.localisation('menuEntries','save','toolTip'))
+#       action.triggered.connect(qApp.quit)
+
+        fileMenu.addAction(action)
+
         action = QAction(QIcon('exit.png'), self.text.localisation('menuEntries','exit','caption'), self)
         action.setShortcut('Alt+F4')
         action.setStatusTip(self.text.localisation('menuEntries','exit','toolTip'))
         action.triggered.connect(qApp.quit)
 
-        fileMenu = menuBar.addMenu(self.text.localisation('menus','files','caption'))
         fileMenu.addAction(action)
+
 
         #Creating Options menu and entries
 
@@ -54,12 +64,37 @@ class MainWindow(QMainWindow):
         languageMenu = optionsMenu.addMenu(self.text.localisation('menuEntries','language','caption'))
 
         #Creating language actions
-        action = QAction(QIcon('England.png'), 'English',self)
+        action = QAction(QIcon('ressources/interface/england.png'), 'English',self)
         action.triggered.connect(lambda *args: self.changeLanguage('english'))
         languageMenu.addAction(action)
-        action = QAction(QIcon('France.png'), 'Français',self)
+        action = QAction(QIcon('ressources/interface/France.png'), 'Français',self)
         action.triggered.connect(lambda *args: self.changeLanguage('french'))
         languageMenu.addAction(action)
+
+        #Grid layout containing all other elements of MainWindow
+        grid = QGridLayout()
+        windowWidth = self.geometry().width()
+
+        #Scene list
+        sceneList = QListWidget()
+        grid.addWidget(sceneList,0,0,0,1)
+
+        default = QWidget()
+        default.setMinimumWidth(windowWidth/2)
+        grid.addWidget(default,0,1,0,1)
+
+        #Label of the currant playlist
+        playlistLabel = QLabel('Playlist label')
+        playlistLabel.setAlignment(Qt.Qt.AlignCenter)
+        grid.addWidget(playlistLabel,0,2)
+
+        grid.addWidget(QListWidget(),1,2)
+        grid.addWidget(QListWidget(),2,2)
+
+        centralWidget = QWidget(self)
+        centralWidget.setLayout(grid)
+
+        self.setCentralWidget(centralWidget)
 
     def changeLanguage(self,language:str='english'):
             self.text = Text(language)

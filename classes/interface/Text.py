@@ -23,7 +23,8 @@ class Text:
 
             menuEntries = {
                 'exit': { 'caption':'Exit', 'toolTip': "Exit the application"},
-                'language': { 'caption':'Language', 'toolTip': "Select the language of the application"}
+                'language': { 'caption':'Language', 'toolTip': "Select the language of the application"},
+                'save' : { 'caption':'Save', 'toolTip': "Save your work"}
             }
 
             textBoxes = ''
@@ -39,7 +40,8 @@ class Text:
 
             menuEntries = {
                 'exit': { 'caption':'Quitter', 'toolTip':"Quitter l'application."},
-                'language': { 'caption':'Langue', 'toolTip': "Sélectionner la langue de l'application"}
+                'language': { 'caption':'Langue', 'toolTip': "Sélectionner la langue de l'application"},
+                'save' : { 'caption':'Sauvegarder', 'toolTip': "Sauvegarder votre travail"}
             }
 
             textBoxes = ''
