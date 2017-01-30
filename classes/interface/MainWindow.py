@@ -30,15 +30,25 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage('Ready')
         self.statusBar().setGeometry(0, self.height()-self.height()/20, self.width(), self.height()/20)
 
-        #Defining menus actions
-        exitAction = QAction(QIcon('exit.png'), text.localisation('menuEntries','exit','caption'), self)
-        exitAction.setShortcut('Alt+F4')
-        exitAction.setStatusTip(text.localisation('menuEntries','exit','toolTip'))
-        exitAction.triggered.connect(qApp.quit)
-
         #Creating menu bar
         menuBar = self. menuBar()
+
+        #Creating file menu
+        #Defining file menu actions
+        action = QAction(QIcon('exit.png'), text.localisation('menuEntries','exit','caption'), self)
+        action.setShortcut('Alt+F4')
+        action.setStatusTip(text.localisation('menuEntries','exit','toolTip'))
+        action.triggered.connect(qApp.quit)
+
         fileMenu = menuBar.addMenu(text.localisation('menus','files','caption'))
-        fileMenu.addAction(exitAction)
+        fileMenu.addAction(action)
+
+        #Creating Options menu
+        #Defining Options menu actions
+        action = QAction(QIcon('language.png'), text.localisation('menuEntries','language','caption'),self)
+        action.setStatusTip(text.localisation('menuEntries','language','toolTip'))
+
+        optionsMenu = menuBar.addMenu(text.localisation('menus','options','caption'))
+        optionsMenu.addAction(action)
 
         self.show()

@@ -18,10 +18,12 @@ class Text:
 
             menus = {
                 'files': {'caption':"Files",'toolTip': 'This is a <b>QWidget</b> widget'},
+                'options': {'caption':'Options','toolTip': 'Software options'}
             }
 
             menuEntries = {
                 'exit': { 'caption':'Exit', 'toolTip': "Exit the application"},
+                'language': { 'caption':'Language', 'toolTip': "Select the language of the application"}
             }
 
             textBoxes = ''
@@ -32,10 +34,12 @@ class Text:
 
             menus =  {
                 'files': {'caption':"Fichiers",'toolTip': 'Ceci est un widget <b>QWidget</b>'},
+                'options': {'caption':'Options','toolTip': 'Options du programme'}
             }
 
             menuEntries = {
                 'exit': { 'caption':'Quitter', 'toolTip':"Quitter l'application."},
+                'language': { 'caption':'Langue', 'toolTip': "Sélectionner la langue de l'application"}
             }
 
             textBoxes = ''

@@ -1,4 +1,4 @@
 
 #Application constants
 
-APP_NAME = "Dragon Shout Sampler"
+APP_NAME = "DragonShout"
