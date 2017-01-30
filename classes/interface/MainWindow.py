@@ -24,31 +24,43 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon('dragonShout.png'))
 
-        text = Text('english')
+        self.text = ''
+        self.menuBar()
+        self.changeLanguage()
 
+        self.show()
+
+    def setGUI(self):
         #Creating status bar
         self.statusBar().showMessage('Ready')
-        self.statusBar().setGeometry(0, self.height()-self.height()/20, self.width(), self.height()/20)
 
         #Creating menu bar
-        menuBar = self. menuBar()
+        self.menuBar().clear()
+        menuBar = self.menuBar()
 
         #Creating file menu
         #Defining file menu actions
-        action = QAction(QIcon('exit.png'), text.localisation('menuEntries','exit','caption'), self)
+        action = QAction(QIcon('exit.png'), self.text.localisation('menuEntries','exit','caption'), self)
         action.setShortcut('Alt+F4')
-        action.setStatusTip(text.localisation('menuEntries','exit','toolTip'))
+        action.setStatusTip(self.text.localisation('menuEntries','exit','toolTip'))
         action.triggered.connect(qApp.quit)
 
-        fileMenu = menuBar.addMenu(text.localisation('menus','files','caption'))
+        fileMenu = menuBar.addMenu(self.text.localisation('menus','files','caption'))
         fileMenu.addAction(action)
 
-        #Creating Options menu
-        #Defining Options menu actions
-        action = QAction(QIcon('language.png'), text.localisation('menuEntries','language','caption'),self)
-        action.setStatusTip(text.localisation('menuEntries','language','toolTip'))
+        #Creating Options menu and entries
 
-        optionsMenu = menuBar.addMenu(text.localisation('menus','options','caption'))
-        optionsMenu.addAction(action)
+        optionsMenu = menuBar.addMenu(self.text.localisation('menus','options','caption'))
+        languageMenu = optionsMenu.addMenu(self.text.localisation('menuEntries','language','caption'))
 
-        self.show()
+        #Creating language actions
+        action = QAction(QIcon('England.png'), 'English',self)
+        action.triggered.connect(lambda *args: self.changeLanguage('english'))
+        languageMenu.addAction(action)
+        action = QAction(QIcon('France.png'), 'Français',self)
+        action.triggered.connect(lambda *args: self.changeLanguage('french'))
+        languageMenu.addAction(action)
+
+    def changeLanguage(self,language:str='english'):
+            self.text = Text(language)
+            self.setGUI()
