@@ -13,7 +13,7 @@ from classes.interface.Text import Text
 from PyQt5 import Qt, QtGui
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
-    QGridLayout, QPushButton, QWidget, QListWidget, QLabel)
+    QVBoxLayout, QSplitter, QFileDialog, QWidget, QListWidget, QLabel)
 
 class MainWindow(QMainWindow):
 
@@ -51,7 +51,7 @@ class MainWindow(QMainWindow):
         fileMenu.addAction(action)
 
         action = QAction(QIcon('exit.png'), self.text.localisation('menuEntries','exit','caption'), self)
-        action.setShortcut('Alt+F4')
+        action.setShortcut('Ctrl+q')
         action.setStatusTip(self.text.localisation('menuEntries','exit','toolTip'))
         action.triggered.connect(qApp.quit)
 
@@ -72,27 +72,36 @@ class MainWindow(QMainWindow):
         languageMenu.addAction(action)
 
         #Grid layout containing all other elements of MainWindow
-        grid = QGridLayout()
+        horizontalSplitter = QSplitter()
         windowWidth = self.geometry().width()
 
         #Scene list
         sceneList = QListWidget()
-        grid.addWidget(sceneList,0,0,0,1)
+        horizontalSplitter.addWidget(sceneList)
 
+        #Theme selection and controls
         default = QWidget()
-        default.setMinimumWidth(windowWidth/2)
-        grid.addWidget(default,0,1,0,1)
+        horizontalSplitter.addWidget(default)
 
+        verticalSplitter = QSplitter(Qt.Qt.Vertical)
         #Label of the currant playlist
         playlistLabel = QLabel('Playlist label')
         playlistLabel.setAlignment(Qt.Qt.AlignCenter)
-        grid.addWidget(playlistLabel,0,2)
+        verticalSplitter.addWidget(playlistLabel)
 
-        grid.addWidget(QListWidget(),1,2)
-        grid.addWidget(QListWidget(),2,2)
+        #Playlist of the selected theme
+        verticalSplitter.addWidget(QListWidget())
 
+        #Files on the computer
+        fileBrowser = QFileDialog()
+        verticalSplitter.addWidget(fileBrowser)
+
+        horizontalSplitter.addWidget(verticalSplitter)
+
+        layout = QVBoxLayout()
+        layout.addWidget(horizontalSplitter)
         centralWidget = QWidget(self)
-        centralWidget.setLayout(grid)
+        centralWidget.setLayout(layout)
 
         self.setCentralWidget(centralWidget)
 
