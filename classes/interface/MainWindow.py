@@ -14,7 +14,7 @@ from PyQt5 import Qt, QtGui
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QHBoxLayout, QSplitter, QFileDialog, QWidget, QListWidget, QLabel,
-    QPushButton)
+    QPushButton, QVBoxLayout)
 
 class MainWindow(QMainWindow):
 
@@ -73,6 +73,7 @@ class MainWindow(QMainWindow):
         languageMenu.addAction(action)
 
         #Splitter containing all other elements of MainWindow
+        #----------------------------------------------------
         mainHorizontalSplitter = QSplitter()
         windowWidth = self.geometry().width()
 
@@ -81,16 +82,26 @@ class MainWindow(QMainWindow):
         sceneLabel = QLabel(self.text.localisation('labels','scenes','caption'))
         sceneLabel.setAlignment(Qt.Qt.AlignCenter)
         sceneVerticalSplitter.addWidget(sceneLabel)
-        sceneList = QListWidget()
-        sceneVerticalSplitter.addWidget(sceneList)
+
+        sceneVerticalLayout = QVBoxLayout()
+        count = 0
+        while count < 20 :
+            testButton = QPushButton('Scene '+str(count))
+            sceneVerticalLayout.addWidget(testButton)
+            count+=1
+
+        genericWidget = QWidget()
+        genericWidget.setLayout(sceneVerticalLayout)
+        sceneVerticalSplitter.addWidget(genericWidget)
         mainHorizontalSplitter.addWidget(sceneVerticalSplitter)
 
         #Theme selection and controls
         genericWidget = QWidget()
         mainHorizontalSplitter.addWidget(genericWidget)
 
-        playlistVerticalSplitter = QSplitter(Qt.Qt.Vertical)
         #Label of the currant playlist
+        playlistVerticalSplitter = QSplitter(Qt.Qt.Vertical)
+
         playlistLabel = QLabel('Playlist label')
         playlistLabel.setAlignment(Qt.Qt.AlignCenter)
         playlistVerticalSplitter.addWidget(playlistLabel)
