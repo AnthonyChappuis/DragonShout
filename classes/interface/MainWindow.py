@@ -94,6 +94,8 @@ class MainWindow(QMainWindow):
 
         #Files on the computer
         fileBrowser = QFileDialog()
+        musicPath = Qt.QDir.homePath()
+        fileBrowser.setDirectory(musicPath)
         verticalSplitter.addWidget(fileBrowser)
 
         horizontalSplitter.addWidget(verticalSplitter)
