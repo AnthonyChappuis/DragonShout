@@ -29,6 +29,10 @@ class Text:
 
             textBoxes = ''
 
+            labels = {
+                'scenes' : { 'caption': 'Scenes','toolTip':'List of musical scenes'}
+            }
+
         #French
         if language == 'french':
             buttons = ''
@@ -46,8 +50,13 @@ class Text:
 
             textBoxes = ''
 
+            labels = {
+                'scenes' : { 'caption': 'Scénes','toolTip':'Liste des scènes musicales'}
+            }
 
-        self._localisation = {'buttons': buttons, 'menus': menus, 'menuEntries': menuEntries, 'textBoxes': textBoxes}
+
+        self._localisation = {'buttons': buttons, 'menus': menus, 'menuEntries': menuEntries, 'textBoxes': textBoxes,
+                                'labels': labels}
 
     def localisation(self,elementType:str,elementName:str,textType:str = 'caption'):
         return self._localisation[elementType][elementName][textType]

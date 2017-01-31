@@ -13,7 +13,8 @@ from classes.interface.Text import Text
 from PyQt5 import Qt, QtGui
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
-    QVBoxLayout, QSplitter, QFileDialog, QWidget, QListWidget, QLabel)
+    QHBoxLayout, QSplitter, QFileDialog, QWidget, QListWidget, QLabel,
+    QPushButton)
 
 class MainWindow(QMainWindow):
 
@@ -71,39 +72,58 @@ class MainWindow(QMainWindow):
         action.triggered.connect(lambda *args: self.changeLanguage('french'))
         languageMenu.addAction(action)
 
-        #Grid layout containing all other elements of MainWindow
-        horizontalSplitter = QSplitter()
+        #Splitter containing all other elements of MainWindow
+        mainHorizontalSplitter = QSplitter()
         windowWidth = self.geometry().width()
 
         #Scene list
+        sceneVerticalSplitter = QSplitter(Qt.Qt.Vertical)
+        sceneLabel = QLabel(self.text.localisation('labels','scenes','caption'))
+        sceneLabel.setAlignment(Qt.Qt.AlignCenter)
+        sceneVerticalSplitter.addWidget(sceneLabel)
         sceneList = QListWidget()
-        horizontalSplitter.addWidget(sceneList)
+        sceneVerticalSplitter.addWidget(sceneList)
+        mainHorizontalSplitter.addWidget(sceneVerticalSplitter)
 
         #Theme selection and controls
-        default = QWidget()
-        horizontalSplitter.addWidget(default)
+        genericWidget = QWidget()
+        mainHorizontalSplitter.addWidget(genericWidget)
 
-        verticalSplitter = QSplitter(Qt.Qt.Vertical)
+        playlistVerticalSplitter = QSplitter(Qt.Qt.Vertical)
         #Label of the currant playlist
         playlistLabel = QLabel('Playlist label')
         playlistLabel.setAlignment(Qt.Qt.AlignCenter)
-        verticalSplitter.addWidget(playlistLabel)
+        playlistVerticalSplitter.addWidget(playlistLabel)
 
         #Playlist of the selected theme
-        verticalSplitter.addWidget(QListWidget())
+        playlistVerticalSplitter.addWidget(QListWidget())
+
+        #Controls of the playlist
+        controlsWidget = QWidget(self)
+        genericLayout = QHBoxLayout()
+        playButton = QPushButton()
+        stopButton = QPushButton()
+        playButton.setIcon(QIcon('ressources/interface/play.png'))
+        playButton.setMaximumWidth(40)
+        stopButton.setIcon(QIcon('ressources/interface/stop.png'))
+        stopButton.setMaximumWidth(40)
+        genericLayout.addWidget(playButton)
+        genericLayout.addWidget(stopButton)
+        controlsWidget.setLayout(genericLayout)
+        playlistVerticalSplitter.addWidget(controlsWidget)
 
         #Files on the computer
         fileBrowser = QFileDialog()
         musicPath = Qt.QDir.homePath()
         fileBrowser.setDirectory(musicPath)
-        verticalSplitter.addWidget(fileBrowser)
+        playlistVerticalSplitter.addWidget(fileBrowser)
 
-        horizontalSplitter.addWidget(verticalSplitter)
+        mainHorizontalSplitter.addWidget(playlistVerticalSplitter)
 
-        layout = QVBoxLayout()
-        layout.addWidget(horizontalSplitter)
+        genericLayout = QHBoxLayout()
+        genericLayout.addWidget(mainHorizontalSplitter)
         centralWidget = QWidget(self)
-        centralWidget.setLayout(layout)
+        centralWidget.setLayout(genericLayout)
 
         self.setCentralWidget(centralWidget)
 
