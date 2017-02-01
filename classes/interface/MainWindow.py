@@ -32,6 +32,8 @@ class MainWindow(QMainWindow):
         self.library = ''
         self.loadLibrary()
 
+        self.themesWidget = QWidget()
+
         self.text = ''
         self.menuBar()
         self.changeLanguage()
@@ -103,8 +105,8 @@ class MainWindow(QMainWindow):
         mainHorizontalSplitter.addWidget(sceneVerticalSplitter)
 
         #Theme selection and controls
-        genericWidget = QWidget()
-        mainHorizontalSplitter.addWidget(genericWidget)
+        self.showThemes()
+        mainHorizontalSplitter.addWidget(self.themesWidget)
 
         #Label of the currant playlist
         playlistVerticalSplitter = QSplitter(Qt.Qt.Vertical)
@@ -159,3 +161,10 @@ class MainWindow(QMainWindow):
         	self.library.add_category("Tavern")
         	self.library.add_category("Dungeon")
         	self.library.add_category("City")
+
+    def showThemes(self):
+        themesLayout = QHBoxLayout()
+        for theme in self.library.categories:
+            themesLayout.addWidget(QPushButton(theme.name))
+
+        self.themesWidget.setLayout(themesLayout)
