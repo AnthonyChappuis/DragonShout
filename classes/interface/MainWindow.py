@@ -56,7 +56,7 @@ class MainWindow(QMainWindow):
         action = QAction(QIcon('save.png'), self.text.localisation('menuEntries','save','caption'), self)
         action.setShortcut('Ctrl+s')
         action.setStatusTip(self.text.localisation('menuEntries','save','toolTip'))
-#       action.triggered.connect(qApp.quit)
+        action.triggered.connect(lambda *args: self.library.save())
 
         fileMenu.addAction(action)
 
