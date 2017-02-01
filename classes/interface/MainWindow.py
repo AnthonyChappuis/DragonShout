@@ -33,6 +33,7 @@ class MainWindow(QMainWindow):
         self.show()
 
     def setGUI(self):
+        """Generates the main window user interface"""
         #Creating status bar
         self.statusBar().showMessage('Ready')
 
@@ -139,5 +140,6 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(centralWidget)
 
     def changeLanguage(self,language:str='english'):
-            self.text = Text(language)
-            self.setGUI()
+        """Change the language of the application. Called by a signal emited when clicking on another language"""
+        self.text = Text(language)
+        self.setGUI()
