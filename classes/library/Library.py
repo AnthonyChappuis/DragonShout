@@ -19,7 +19,7 @@
 ###############################################################################
 import os
 import json
-from Category import Category
+from classes.library.Category import Category
 
 class Library:
 	"""Class Library:

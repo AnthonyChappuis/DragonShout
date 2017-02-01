@@ -17,7 +17,7 @@
 #Modifications:
 ###############################################################################
 
-from Track import Track
+from classes.library.Track import Track
 
 class Category:
 	"""Class Category:

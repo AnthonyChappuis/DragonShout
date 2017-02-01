@@ -10,6 +10,9 @@
 from constants import *
 from classes.interface.Text import Text
 
+import os
+from classes.library.Library import Library
+
 from PyQt5 import Qt, QtGui
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
@@ -25,6 +28,9 @@ class MainWindow(QMainWindow):
         self.setGeometry(50, 50, screen.width(), screen.height())
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon('dragonShout.png'))
+
+        self.library = ''
+        self.loadLibrary()
 
         self.text = ''
         self.menuBar()
@@ -143,3 +149,13 @@ class MainWindow(QMainWindow):
         """Change the language of the application. Called by a signal emited when clicking on another language"""
         self.text = Text(language)
         self.setGUI()
+
+    def loadLibrary(self,filepath:str=''):
+        """Loads an existing library or creates a new one"""
+        if os.path.isfile(filepath):
+        	self.library = Library.load(filepath)
+        else:
+        	self.library = Library("new_library","")
+        	self.library.add_category("Tavern")
+        	self.library.add_category("Dungeon")
+        	self.library.add_category("City")
