@@ -14,7 +14,9 @@ class Text:
         #English
         if language == 'english':
 
-            buttons = ''
+            buttons = {
+                'scene': {'caption':'Scene','toolTip':"Changes the scene and gives access to a new group of themes"}
+            }
 
             menus = {
                 'files': {'caption':"Files",'toolTip': 'This is a <b>QWidget</b> widget'},
@@ -35,7 +37,9 @@ class Text:
 
         #French
         if language == 'french':
-            buttons = ''
+            buttons = {
+                'scene': {'caption':'Scène','toolTip':"Change de scène et accède à un nouveau groupe de thèmes"}
+            }
 
             menus =  {
                 'files': {'caption':"Fichiers",'toolTip': 'Ceci est un widget <b>QWidget</b>'},
@@ -51,7 +55,7 @@ class Text:
             textBoxes = ''
 
             labels = {
-                'scenes' : { 'caption': 'Scénes','toolTip':'Liste des scènes musicales'}
+                'scenes' : { 'caption': 'Scènes','toolTip':'Liste des scènes musicales'}
             }
 
 

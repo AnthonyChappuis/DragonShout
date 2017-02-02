@@ -17,7 +17,7 @@ from PyQt5 import Qt, QtGui
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QHBoxLayout, QSplitter, QFileDialog, QWidget, QListWidget, QLabel,
-    QPushButton, QVBoxLayout)
+    QPushButton, QVBoxLayout, QGridLayout)
 
 class MainWindow(QMainWindow):
 
@@ -93,9 +93,10 @@ class MainWindow(QMainWindow):
         sceneVerticalSplitter.addWidget(sceneLabel)
 
         sceneVerticalLayout = QVBoxLayout()
-        count = 0
-        while count < 20 :
-            testButton = QPushButton('Scene '+str(count))
+        count = 1
+        while count <= 20 :
+            testButton = QPushButton(self.text.localisation('buttons','scene','caption')+' '+str(count))
+            testButton.setStatusTip(self.text.localisation('buttons','scene','toolTip'))
             sceneVerticalLayout.addWidget(testButton)
             count+=1
 
@@ -157,14 +158,21 @@ class MainWindow(QMainWindow):
         if os.path.isfile(filepath):
         	self.library = Library.load(filepath)
         else:
-        	self.library = Library("new_library","")
-        	self.library.add_category("Tavern")
-        	self.library.add_category("Dungeon")
-        	self.library.add_category("City")
+            self.library = Library("new_library","")
+            self.library.add_category("Tavern")
+            self.library.add_category("Dungeon")
+            self.library.add_category("City")
+            count = 0
+            while count < 10 :
+                self.library.add_category(str(count))
+                count += 1
 
     def showThemes(self):
-        themesLayout = QHBoxLayout()
+        """Gets the category objects in the library and arrange them as push buttons in the main window"""
+        themesLayout = QGridLayout()
         for theme in self.library.categories:
-            themesLayout.addWidget(QPushButton(theme.name))
+            themeButton = QPushButton(theme.name)
+            themeButton.clicked.connect(lambda *args: print(theme.name))
+            themesLayout.addWidget(themeButton)
 
         self.themesWidget.setLayout(themesLayout)
