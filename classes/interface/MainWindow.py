@@ -172,7 +172,7 @@ class MainWindow(QMainWindow):
         themesLayout = QGridLayout()
         for theme in self.library.categories:
             themeButton = QPushButton(theme.name)
-            themeButton.clicked.connect(lambda *args: print(theme.name))
+            themeButton.clicked.connect(lambda *args: print(self.sender().text()))
             themesLayout.addWidget(themeButton)
 
         self.themesWidget.setLayout(themesLayout)
