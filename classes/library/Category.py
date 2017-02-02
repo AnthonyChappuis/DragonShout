@@ -65,6 +65,8 @@ class Category:
 		self._tracks = []
 		#Bumping category number
 		Category._category_number += 1
+		self.add_track('Jigs','/home/ardias/Musique/Manran/The Test.mp3')
+		self.add_track('Maria','/home/ardias/Musique/Manran/Maria.mp3')
 
 	#accessors
 	def _get_name(self):

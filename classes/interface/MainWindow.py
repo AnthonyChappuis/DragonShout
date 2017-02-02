@@ -33,6 +33,7 @@ class MainWindow(QMainWindow):
         self.loadLibrary()
 
         self.themesWidget = QWidget()
+        self.playlist = ''
 
         self.text = ''
         self.menuBar()
@@ -117,7 +118,8 @@ class MainWindow(QMainWindow):
         playlistVerticalSplitter.addWidget(playlistLabel)
 
         #Playlist of the selected theme
-        playlistVerticalSplitter.addWidget(QListWidget())
+        self.playlist = QListWidget()
+        playlistVerticalSplitter.addWidget(self.playlist)
 
         #Controls of the playlist
         controlsWidget = QWidget(self)
@@ -172,7 +174,15 @@ class MainWindow(QMainWindow):
         themesLayout = QGridLayout()
         for theme in self.library.categories:
             themeButton = QPushButton(theme.name)
-            themeButton.clicked.connect(lambda *args: print(self.sender().text()))
+            themeButton.clicked.connect(lambda *args: self.selectTheme(self.sender().text()))
             themesLayout.addWidget(themeButton)
 
         self.themesWidget.setLayout(themesLayout)
+
+    def selectTheme(self,themeName:str):
+        """Update the playlist with the music list of the selected theme"""
+        self.playlist.clear()
+        theme  = self.library.get_category(themeName)
+
+        for track in theme.tracks :
+            self.playlist.addItem(track.name)

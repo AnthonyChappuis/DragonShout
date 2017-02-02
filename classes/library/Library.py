@@ -128,6 +128,15 @@ class Library:
 		"""
 		self._categories.append(Category(name))
 
+	def get_category(self,name: str):
+		"""Used to get a specific category from the library.
+		Takes one parameter:
+		- name as string
+		"""
+		for category in self.categories:
+			if category.name == name:
+				return category
+
 	def gather_library(self):
 		"""Used to gather the categories and tracks for this library.
 		Takes no parameter
