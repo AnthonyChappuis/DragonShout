@@ -202,3 +202,4 @@ class MainWindow(QMainWindow):
             - themeName as string
         """
         self.library.add_category(themeName)
+        self.setGUI()
