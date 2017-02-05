@@ -164,25 +164,39 @@ class MainWindow(QMainWindow):
             self.library.add_category("Tavern")
             self.library.add_category("Dungeon")
             self.library.add_category("City")
-            count = 0
-            while count < 10 :
-                self.library.add_category(str(count))
-                count += 1
 
     def showThemes(self):
-        """Gets the category objects in the library and arrange them as push buttons in the main window"""
+        """Gets the category objects in the library and arrange them as push buttons in the main window.
+           Takes no parameters.
+        """
         themesLayout = QGridLayout()
         for theme in self.library.categories:
             themeButton = QPushButton(theme.name)
+            themeButton.setMaximumWidth(50)
             themeButton.clicked.connect(lambda *args: self.selectTheme(self.sender().text()))
             themesLayout.addWidget(themeButton)
+
+        newThemeButton = QPushButton('+')
+        newThemeButton.clicked.connect(lambda *args: self.addTheme(self.text.localisation('buttons','new_theme','caption')))
+        themesLayout.addWidget(newThemeButton)
 
         self.themesWidget.setLayout(themesLayout)
 
     def selectTheme(self,themeName:str):
-        """Update the playlist with the music list of the selected theme"""
+        """Update the playlist with the music list of the selected theme
+            Takes one parameter:
+            - themeName as string
+        """
         self.playlist.clear()
-        theme  = self.library.get_category(themeName)
+        theme = self.library.get_category(themeName)
 
         for track in theme.tracks :
             self.playlist.addItem(track.name)
+
+    def addTheme(self,themeName:str='new'):
+        """Add a new theme to the application
+            Takes one parameter:
+            - themeName as string
+        """
+        self.library.add_category(themeName)
+        self.setGUI()
