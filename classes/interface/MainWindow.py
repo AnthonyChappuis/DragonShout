@@ -180,7 +180,10 @@ class MainWindow(QMainWindow):
         newThemeButton.clicked.connect(lambda *args: self.addTheme(self.text.localisation('buttons','new_theme','caption')))
         themesLayout.addWidget(newThemeButton)
 
-        self.themesWidget.setLayout(themesLayout)
+        themesWidget = QWidget()
+        themesWidget.setLayout(themesLayout)
+
+        self.themesWidget = themesWidget
 
     def selectTheme(self,themeName:str):
         """Update the playlist with the music list of the selected theme
@@ -199,4 +202,3 @@ class MainWindow(QMainWindow):
             - themeName as string
         """
         self.library.add_category(themeName)
-        self.setGUI()
