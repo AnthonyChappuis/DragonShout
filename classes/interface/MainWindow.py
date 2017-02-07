@@ -13,7 +13,7 @@ from classes.interface.Text import Text
 import os
 from classes.library.Library import Library
 
-from PyQt5 import Qt, QtGui
+from PyQt5 import Qt, QtGui, QtCore
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QHBoxLayout, QSplitter, QFileDialog, QWidget, QListWidget, QLabel,
@@ -173,7 +173,7 @@ class MainWindow(QMainWindow):
         for theme in self.library.categories:
             themeButton = QPushButton(theme.name)
             themeButton.setMaximumWidth(50)
-            themeButton.clicked.connect(lambda *args: self.selectTheme(self.sender().text()))
+            themeButton.clicked.connect(lambda *args: self.clickOnTheme(self.sender().text()))
             themesLayout.addWidget(themeButton)
 
         newThemeButton = QPushButton('+')
@@ -185,6 +185,17 @@ class MainWindow(QMainWindow):
 
         self.themesWidget = themesWidget
 
+    def clickOnTheme(self,themeName:str):
+        """Called when user click on a theme button. If it's a left click, it calls selectTheme() and if it's a right click, it
+            calls renameTheme().
+            Takes one parameter:
+            - themeName as string
+        """
+        if  QtGui.qApp.mouseButtons(QtCore.Qt.RightButton):
+            self.renameTheme(themeName)
+        else:
+            self.selectTheme(themeName)
+
     def selectTheme(self,themeName:str):
         """Update the playlist with the music list of the selected theme
             Takes one parameter:
@@ -192,6 +203,7 @@ class MainWindow(QMainWindow):
         """
         self.playlist.clear()
         theme = self.library.get_category(themeName)
+        print("select")
 
         for track in theme.tracks :
             self.playlist.addItem(track.name)
@@ -203,3 +215,11 @@ class MainWindow(QMainWindow):
         """
         self.library.add_category(themeName)
         self.setGUI()
+
+    def renameTheme(self,themeName:str):
+        """Modify the name of the theme.
+            Takes one parameter:
+            - themeName as string
+        """
+        theme = self.library.get_category(themeName)
+        print("rename")
