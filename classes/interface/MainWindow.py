@@ -17,7 +17,7 @@ from PyQt5 import Qt, QtGui, QtCore
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QHBoxLayout, QSplitter, QFileDialog, QWidget, QListWidget, QLabel,
-    QPushButton, QVBoxLayout, QGridLayout)
+    QPushButton, QVBoxLayout, QGridLayout, QInputDialog)
 
 class MainWindow(QMainWindow):
 
@@ -172,29 +172,18 @@ class MainWindow(QMainWindow):
         themesLayout = QGridLayout()
         for theme in self.library.categories:
             themeButton = QPushButton(theme.name)
-            themeButton.setMaximumWidth(50)
-            themeButton.clicked.connect(lambda *args: self.clickOnTheme(self.sender().text()))
+            themeButton.clicked.connect(lambda *args: self.renameTheme(self.sender().text()))
             themesLayout.addWidget(themeButton)
 
         newThemeButton = QPushButton('+')
-        newThemeButton.clicked.connect(lambda *args: self.addTheme(self.text.localisation('buttons','new_theme','caption')))
+        newThemeButton.clicked.connect(lambda *args: self.addTheme())
+        newThemeButton.setMaximumWidth(100)
         themesLayout.addWidget(newThemeButton)
 
         themesWidget = QWidget()
         themesWidget.setLayout(themesLayout)
 
         self.themesWidget = themesWidget
-
-    def clickOnTheme(self,themeName:str):
-        """Called when user click on a theme button. If it's a left click, it calls selectTheme() and if it's a right click, it
-            calls renameTheme().
-            Takes one parameter:
-            - themeName as string
-        """
-        if  QtGui.qApp.mouseButtons(QtCore.Qt.RightButton):
-            self.renameTheme(themeName)
-        else:
-            self.selectTheme(themeName)
 
     def selectTheme(self,themeName:str):
         """Update the playlist with the music list of the selected theme
@@ -203,18 +192,20 @@ class MainWindow(QMainWindow):
         """
         self.playlist.clear()
         theme = self.library.get_category(themeName)
-        print("select")
 
         for track in theme.tracks :
             self.playlist.addItem(track.name)
 
-    def addTheme(self,themeName:str='new'):
-        """Add a new theme to the application
-            Takes one parameter:
-            - themeName as string
+    def addTheme(self):
+        """Add a new theme to the application and open dialog box to set the theme name.
+            Takes no parameter.
         """
-        self.library.add_category(themeName)
-        self.setGUI()
+
+        themeName, ok = QInputDialog.getText(self,'New theme','Enter theme name :')
+
+        if ok :
+            self.library.add_category(themeName)
+            self.setGUI()
 
     def renameTheme(self,themeName:str):
         """Modify the name of the theme.
@@ -222,4 +213,3 @@ class MainWindow(QMainWindow):
             - themeName as string
         """
         theme = self.library.get_category(themeName)
-        print("rename")
