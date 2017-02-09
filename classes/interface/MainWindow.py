@@ -161,9 +161,6 @@ class MainWindow(QMainWindow):
         	self.library = Library.load(filepath)
         else:
             self.library = Library("new_library","")
-            self.library.add_category("Tavern")
-            self.library.add_category("Dungeon")
-            self.library.add_category("City")
 
     def showThemes(self):
         """Gets the category objects in the library and arrange them as push buttons in the main window.
@@ -201,7 +198,7 @@ class MainWindow(QMainWindow):
             Takes no parameter.
         """
 
-        themeName, ok = QInputDialog.getText(self,'New theme','Enter theme name :')
+        themeName, ok = QInputDialog.getText(self,self.text.localisation('dialogBoxes','newTheme','caption'),self.text.localisation('dialogBoxes','newTheme','question'))
 
         if ok :
             self.library.add_category(themeName)

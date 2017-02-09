@@ -32,6 +32,10 @@ class Text:
 
             textBoxes = ''
 
+            dialogBoxes = {
+                'newTheme': {'caption':'New theme','toolTip':'Name the new theme','question':'Enter the theme name :'}
+            }
+
             labels = {
                 'scenes' : { 'caption': 'Scenes','toolTip':'List of musical scenes'}
             }
@@ -56,13 +60,17 @@ class Text:
 
             textBoxes = ''
 
+            dialogBoxes = {
+                'newTheme': {'caption':'Nouveau thème','toolTip':'Nommer le nouveau thème','question':'Entrer le nom du thème :'}
+            }
+
             labels = {
                 'scenes' : { 'caption': 'Scènes','toolTip':'Liste des scènes musicales'}
             }
 
 
         self._localisation = {'buttons': buttons, 'menus': menus, 'menuEntries': menuEntries, 'textBoxes': textBoxes,
-                                'labels': labels}
+                                'labels': labels,'dialogBoxes': dialogBoxes}
 
     def localisation(self,elementType:str,elementName:str,textType:str = 'caption'):
         return self._localisation[elementType][elementName][textType]
