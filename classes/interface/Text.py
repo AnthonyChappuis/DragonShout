@@ -37,7 +37,8 @@ class Text:
             }
 
             labels = {
-                'scenes' : { 'caption': 'Scenes','toolTip':'List of musical scenes'}
+                'scenes' : { 'caption': 'Scenes','toolTip':'List of musical scenes'},
+                'playlistLabel' : {'caption': 'Select a theme to play','toolTip':'Shows the playlist of the selected theme'}
             }
 
         #French
@@ -65,7 +66,8 @@ class Text:
             }
 
             labels = {
-                'scenes' : { 'caption': 'Scènes','toolTip':'Liste des scènes musicales'}
+                'scenes' : { 'caption': 'Scènes','toolTip':'Liste des scènes musicales'},
+                'playlistLabel' : {'caption': 'Sélectionne un thème à jouer ','toolTip':'Montre la liste de lecture du thème sélectionné'}
             }
 
 

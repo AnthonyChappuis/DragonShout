@@ -17,7 +17,8 @@ from PyQt5 import Qt, QtGui, QtCore
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QHBoxLayout, QSplitter, QFileDialog, QWidget, QListWidget, QLabel,
-    QPushButton, QVBoxLayout, QGridLayout, QInputDialog)
+    QPushButton, QVBoxLayout, QGridLayout, QInputDialog, QFileSystemModel,
+    QListView)
 
 class MainWindow(QMainWindow):
 
@@ -35,6 +36,8 @@ class MainWindow(QMainWindow):
         self.themesWidget = QWidget()
         self.playlistLabel = ''
         self.playlist = ''
+        self.fileBrowser = QFileSystemModel()
+        self.fileBrowser.setNameFilters(['*.m4a *.mp3 *.wav *.ogg *.mkv'])
 
         self.text = ''
         self.menuBar()
@@ -114,12 +117,13 @@ class MainWindow(QMainWindow):
         #Label of the currant playlist
         playlistVerticalSplitter = QSplitter(Qt.Qt.Vertical)
 
-        self.playlistLabel = QLabel('Playlist label')
+        self.playlistLabel = QLabel(self.text.localisation('labels','playlistLabel','caption'))
         self.playlistLabel.setAlignment(Qt.Qt.AlignCenter)
         playlistVerticalSplitter.addWidget(self.playlistLabel)
 
         #Playlist of the selected theme
         self.playlist = QListWidget()
+        self.playlist.setDragEnabled(True)
         playlistVerticalSplitter.addWidget(self.playlist)
 
         #Controls of the playlist
@@ -137,13 +141,14 @@ class MainWindow(QMainWindow):
         playlistVerticalSplitter.addWidget(controlsWidget)
 
         #Files on the computer
-        fileBrowser = QFileDialog()
-        musicPath = Qt.QDir.homePath()
-        fileBrowser.setDirectory(musicPath)
-        playlistVerticalSplitter.addWidget(fileBrowser)
+        fileBrowserView = QListView()
+        fileBrowserView.setModel(self.fileBrowser)
+        fileBrowserView.setRootIndex(self.fileBrowser.setRootPath(Qt.QDir.homePath()))
+        playlistVerticalSplitter.addWidget(fileBrowserView)
 
         mainHorizontalSplitter.addWidget(playlistVerticalSplitter)
 
+        #adding the splitter containing the main elements to the window
         genericLayout = QHBoxLayout()
         genericLayout.addWidget(mainHorizontalSplitter)
         centralWidget = QWidget(self)
