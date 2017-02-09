@@ -33,6 +33,7 @@ class MainWindow(QMainWindow):
         self.loadLibrary()
 
         self.themesWidget = QWidget()
+        self.playlistLabel = ''
         self.playlist = ''
 
         self.text = ''
@@ -88,23 +89,23 @@ class MainWindow(QMainWindow):
         windowWidth = self.geometry().width()
 
         #Scene list
-        sceneVerticalSplitter = QSplitter(Qt.Qt.Vertical)
-        sceneLabel = QLabel(self.text.localisation('labels','scenes','caption'))
-        sceneLabel.setAlignment(Qt.Qt.AlignCenter)
-        sceneVerticalSplitter.addWidget(sceneLabel)
-
-        sceneVerticalLayout = QVBoxLayout()
-        count = 1
-        while count <= 20 :
-            testButton = QPushButton(self.text.localisation('buttons','scene','caption')+' '+str(count))
-            testButton.setStatusTip(self.text.localisation('buttons','scene','toolTip'))
-            sceneVerticalLayout.addWidget(testButton)
-            count+=1
-
-        genericWidget = QWidget()
-        genericWidget.setLayout(sceneVerticalLayout)
-        sceneVerticalSplitter.addWidget(genericWidget)
-        mainHorizontalSplitter.addWidget(sceneVerticalSplitter)
+        # sceneVerticalSplitter = QSplitter(Qt.Qt.Vertical)
+        # sceneLabel = QLabel(self.text.localisation('labels','scenes','caption'))
+        # sceneLabel.setAlignment(Qt.Qt.AlignCenter)
+        # sceneVerticalSplitter.addWidget(sceneLabel)
+        #
+        # sceneVerticalLayout = QVBoxLayout()
+        # count = 1
+        # while count <= 20 :
+        #     testButton = QPushButton(self.text.localisation('buttons','scene','caption')+' '+str(count))
+        #     testButton.setStatusTip(self.text.localisation('buttons','scene','toolTip'))
+        #     sceneVerticalLayout.addWidget(testButton)
+        #     count+=1
+        #
+        # genericWidget = QWidget()
+        # genericWidget.setLayout(sceneVerticalLayout)
+        # sceneVerticalSplitter.addWidget(genericWidget)
+        # mainHorizontalSplitter.addWidget(sceneVerticalSplitter)
 
         #Theme selection and controls
         self.showThemes()
@@ -113,9 +114,9 @@ class MainWindow(QMainWindow):
         #Label of the currant playlist
         playlistVerticalSplitter = QSplitter(Qt.Qt.Vertical)
 
-        playlistLabel = QLabel('Playlist label')
-        playlistLabel.setAlignment(Qt.Qt.AlignCenter)
-        playlistVerticalSplitter.addWidget(playlistLabel)
+        self.playlistLabel = QLabel('Playlist label')
+        self.playlistLabel.setAlignment(Qt.Qt.AlignCenter)
+        playlistVerticalSplitter.addWidget(self.playlistLabel)
 
         #Playlist of the selected theme
         self.playlist = QListWidget()
@@ -169,7 +170,7 @@ class MainWindow(QMainWindow):
         themesLayout = QGridLayout()
         for theme in self.library.categories:
             themeButton = QPushButton(theme.name)
-            themeButton.clicked.connect(lambda *args: self.renameTheme(self.sender().text()))
+            themeButton.clicked.connect(lambda *args: self.selectTheme(self.sender().text()))
             themesLayout.addWidget(themeButton)
 
         newThemeButton = QPushButton('+')
@@ -187,6 +188,7 @@ class MainWindow(QMainWindow):
             Takes one parameter:
             - themeName as string
         """
+        self.playlistLabel.setText(themeName)
         self.playlist.clear()
         theme = self.library.get_category(themeName)
 
