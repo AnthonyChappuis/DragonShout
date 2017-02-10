@@ -17,8 +17,7 @@ from PyQt5 import Qt, QtGui, QtCore
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QHBoxLayout, QSplitter, QFileDialog, QWidget, QListWidget, QLabel,
-    QPushButton, QVBoxLayout, QGridLayout, QInputDialog, QFileSystemModel,
-    QListView)
+    QPushButton, QVBoxLayout, QGridLayout, QInputDialog)
 
 class MainWindow(QMainWindow):
 
@@ -36,8 +35,6 @@ class MainWindow(QMainWindow):
         self.themesWidget = QWidget()
         self.playlistLabel = ''
         self.playlist = ''
-        self.fileBrowser = QFileSystemModel()
-        self.fileBrowser.setNameFilters(['*.m4a *.mp3 *.wav *.ogg *.mkv'])
 
         self.text = ''
         self.menuBar()
@@ -129,23 +126,27 @@ class MainWindow(QMainWindow):
         #Controls of the playlist
         controlsWidget = QWidget(self)
         genericLayout = QHBoxLayout()
+
+        #play button
         playButton = QPushButton()
-        stopButton = QPushButton()
         playButton.setIcon(QIcon('ressources/interface/play.png'))
         playButton.setMaximumWidth(40)
+        genericLayout.addWidget(playButton)
+
+        #add button
+        addButton = QPushButton("+")
+        addButton.setMaximumWidth(40)
+        addButton.clicked.connect(lambda *args: self.addMusic())
+        genericLayout.addWidget(addButton)
+
+        #stop button
+        stopButton = QPushButton()
         stopButton.setIcon(QIcon('ressources/interface/stop.png'))
         stopButton.setMaximumWidth(40)
-        genericLayout.addWidget(playButton)
         genericLayout.addWidget(stopButton)
+
         controlsWidget.setLayout(genericLayout)
         playlistVerticalSplitter.addWidget(controlsWidget)
-
-        #Files on the computer
-        fileBrowserView = QListView()
-        fileBrowserView.setModel(self.fileBrowser)
-        fileBrowserView.setRootIndex(self.fileBrowser.setRootPath(Qt.QDir.homePath()))
-        playlistVerticalSplitter.addWidget(fileBrowserView)
-
         mainHorizontalSplitter.addWidget(playlistVerticalSplitter)
 
         #adding the splitter containing the main elements to the window
@@ -217,3 +218,13 @@ class MainWindow(QMainWindow):
             - themeName as string
         """
         theme = self.library.get_category(themeName)
+
+    def addMusic(self):
+        """Call a file dialog to choose a music to add to the theme.
+            Takes no parameter.
+        """
+        music = QFileDialog().getOpenFileName()
+
+        theme = self.library.get_category(self.playlistLabel.text())
+
+        theme.add_track(music[0],'')
