@@ -33,12 +33,14 @@ class Text:
             textBoxes = ''
 
             dialogBoxes = {
-                'newTheme': {'caption':'New theme','toolTip':'Name the new theme','question':'Enter the theme name :'}
+                'newTheme': {'caption':'New theme','toolTip':'Name the new theme','question':'Enter the theme name :'},
+                'addMusic':{'caption':'Choose a track to add to this theme','toolTip':'Navigate the drive for a track to add to the theme'}
             }
 
             labels = {
                 'scenes' : { 'caption': 'Scenes','toolTip':'List of musical scenes'},
-                'playlistLabel' : {'caption': 'Select a theme to play','toolTip':'Shows the playlist of the selected theme'}
+                'playlistLabel' : {'caption': 'Select a theme to play','toolTip':'Shows the playlist of the selected theme'},
+                'chooseThemeFirst': {'caption': 'Choose or create a theme first'}
             }
 
         #French
@@ -62,12 +64,14 @@ class Text:
             textBoxes = ''
 
             dialogBoxes = {
-                'newTheme': {'caption':'Nouveau thème','toolTip':'Nommer le nouveau thème','question':'Entrer le nom du thème :'}
+                'newTheme': {'caption':'Nouveau thème','toolTip':'Nommer le nouveau thème','question':'Entrer le nom du thème :'},
+                'addMusic':{'caption':'Choisir un morceau à ajouter au thème','toolTip':"Parcours le disque à la recherche d'un morceau à ajouter au thème"}
             }
 
             labels = {
                 'scenes' : { 'caption': 'Scènes','toolTip':'Liste des scènes musicales'},
-                'playlistLabel' : {'caption': 'Sélectionne un thème à jouer ','toolTip':'Montre la liste de lecture du thème sélectionné'}
+                'playlistLabel' : {'caption': 'Sélectionne un thème à jouer ','toolTip':'Montre la liste de lecture du thème sélectionné'},
+                'chooseThemeFirst': {'caption': "Il faut d'abord choisir ou créer un thème"}
             }
 
 

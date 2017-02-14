@@ -136,7 +136,7 @@ class MainWindow(QMainWindow):
         #add button
         addButton = QPushButton("+")
         addButton.setMaximumWidth(40)
-        addButton.clicked.connect(lambda *args: self.addMusic())
+        addButton.clicked.connect(lambda *args: self.addMusicToTheme())
         genericLayout.addWidget(addButton)
 
         #stop button
@@ -219,12 +219,15 @@ class MainWindow(QMainWindow):
         """
         theme = self.library.get_category(themeName)
 
-    def addMusic(self):
+    def addMusicToTheme(self):
         """Call a file dialog to choose a music to add to the theme.
             Takes no parameter.
         """
-        music = QFileDialog().getOpenFileName()
-
         theme = self.library.get_category(self.playlistLabel.text())
-
-        theme.add_track(music[0],'')
+        if theme :
+            music, ok = QFileDialog().getOpenFileName(self,self.text.localisation('dialogBoxes','addMusic','caption'),os.path.expanduser('~'),"*.mp3 *.wav *.ogg *.flac *.wma *.aiff *.m4a")
+            if ok :
+                name = QtCore.QFileInfo(music).fileName()
+                theme.add_track(name,music)
+        else:
+            self.playlistLabel.setText(self.text.localisation('labels','chooseThemeFirst','caption'))

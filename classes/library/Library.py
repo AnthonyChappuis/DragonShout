@@ -136,6 +136,8 @@ class Library:
 		for category in self.categories:
 			if category.name == name:
 				return category
+			else:
+				return False
 
 	def gather_library(self):
 		"""Used to gather the categories and tracks for this library.
