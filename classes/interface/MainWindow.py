@@ -12,6 +12,7 @@ from classes.interface.Text import Text
 
 import os
 from classes.library.Library import Library
+from classes.interface.Playlist import Playlist
 
 from PyQt5 import Qt, QtGui, QtCore
 from PyQt5.QtGui import QIcon, QFont
@@ -29,14 +30,14 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon('dragonShout.png'))
 
+        self.text = ''
+
         self.library = ''
         self.loadLibrary()
 
         self.themesWidget = QWidget()
-        self.playlistLabel = ''
         self.playlist = ''
 
-        self.text = ''
         self.menuBar()
         self.changeLanguage()
 
@@ -111,43 +112,9 @@ class MainWindow(QMainWindow):
         self.showThemes()
         mainHorizontalSplitter.addWidget(self.themesWidget)
 
-        #Label of the currant playlist
-        playlistVerticalSplitter = QSplitter(Qt.Qt.Vertical)
-
-        self.playlistLabel = QLabel(self.text.localisation('labels','playlistLabel','caption'))
-        self.playlistLabel.setAlignment(Qt.Qt.AlignCenter)
-        playlistVerticalSplitter.addWidget(self.playlistLabel)
-
-        #Playlist of the selected theme
-        self.playlist = QListWidget()
-        self.playlist.setDragEnabled(True)
-        playlistVerticalSplitter.addWidget(self.playlist)
-
-        #Controls of the playlist
-        controlsWidget = QWidget(self)
-        genericLayout = QHBoxLayout()
-
-        #play button
-        playButton = QPushButton()
-        playButton.setIcon(QIcon('ressources/interface/play.png'))
-        playButton.setMaximumWidth(40)
-        genericLayout.addWidget(playButton)
-
-        #add button
-        addButton = QPushButton("+")
-        addButton.setMaximumWidth(40)
-        addButton.clicked.connect(lambda *args: self.addMusicToTheme())
-        genericLayout.addWidget(addButton)
-
-        #stop button
-        stopButton = QPushButton()
-        stopButton.setIcon(QIcon('ressources/interface/stop.png'))
-        stopButton.setMaximumWidth(40)
-        genericLayout.addWidget(stopButton)
-
-        controlsWidget.setLayout(genericLayout)
-        playlistVerticalSplitter.addWidget(controlsWidget)
-        mainHorizontalSplitter.addWidget(playlistVerticalSplitter)
+        #Playlist
+        self.playlist = Playlist(self.text)
+        mainHorizontalSplitter.addWidget(self.playlist)
 
         #adding the splitter containing the main elements to the window
         genericLayout = QHBoxLayout()
@@ -194,12 +161,10 @@ class MainWindow(QMainWindow):
             Takes one parameter:
             - themeName as string
         """
-        self.playlistLabel.setText(themeName)
-        self.playlist.clear()
         theme = self.library.get_category(themeName)
+        self.playlist.setTheme(themeName,theme.tracks)
 
-        for track in theme.tracks :
-            self.playlist.addItem(track.name)
+
 
     def addTheme(self):
         """Add a new theme to the application and open dialog box to set the theme name.
