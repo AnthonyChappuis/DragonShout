@@ -4,7 +4,7 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: September 13th 2016
+#Last Edited: February 16th 2017
 #---------------------------------
 
 from constants import *
@@ -17,7 +17,7 @@ from classes.interface.Playlist import Playlist
 from PyQt5 import Qt, QtGui, QtCore
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
-    QHBoxLayout, QSplitter, QFileDialog, QWidget, QListWidget, QLabel,
+    QHBoxLayout, QSplitter, QWidget, QListWidget, QLabel,
     QPushButton, QVBoxLayout, QGridLayout, QInputDialog)
 
 class MainWindow(QMainWindow):
@@ -162,9 +162,7 @@ class MainWindow(QMainWindow):
             - themeName as string
         """
         theme = self.library.get_category(themeName)
-        self.playlist.setTheme(themeName,theme.tracks)
-
-
+        self.playlist.setList(themeName,theme.tracks)
 
     def addTheme(self):
         """Add a new theme to the application and open dialog box to set the theme name.
@@ -183,16 +181,3 @@ class MainWindow(QMainWindow):
             - themeName as string
         """
         theme = self.library.get_category(themeName)
-
-    def addMusicToTheme(self):
-        """Call a file dialog to choose a music to add to the theme.
-            Takes no parameter.
-        """
-        theme = self.library.get_category(self.playlistLabel.text())
-        if theme :
-            music, ok = QFileDialog().getOpenFileName(self,self.text.localisation('dialogBoxes','addMusic','caption'),os.path.expanduser('~'),"*.mp3 *.wav *.ogg *.flac *.wma *.aiff *.m4a")
-            if ok :
-                name = QtCore.QFileInfo(music).fileName()
-                theme.add_track(name,music)
-        else:
-            self.playlistLabel.setText(self.text.localisation('labels','chooseThemeFirst','caption'))

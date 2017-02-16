@@ -4,32 +4,39 @@
 #Class responsible for the playlist's collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: September 13th 2016
+#Last Edited: February 16th 2017
 #---------------------------------
+
+import os
 
 from classes.interface.Text import Text
 from classes.library.Library import Library
+from classes.library.Track import Track
 
 from PyQt5 import Qt
+from PyQt5.QtCore import QFileInfo
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton, QFileDialog
 
 class Playlist(QWidget):
 
     def __init__(self,text:Text):
         super().__init__()
 
-        #Label of the currant playlist
+        self.text = text
+        self.tracks = []
+
+        #Label of the tracklist
         playlistVerticalLayout = QVBoxLayout()
         self.label = QLabel(text.localisation('labels','playlistLabel','caption'))
         self.label.setAlignment(Qt.Qt.AlignCenter)
         playlistVerticalLayout.addWidget(self.label)
 
-        #Playlist of the selected theme
+        #tracklist
         self.trackList = QListWidget()
         playlistVerticalLayout.addWidget(self.trackList)
 
-        #Controls of the playlist
+        #Controls of the tracklist
         controlsWidget = QWidget(self)
         genericLayout = QHBoxLayout()
 
@@ -42,7 +49,7 @@ class Playlist(QWidget):
         #add button
         addButton = QPushButton("+")
         addButton.setMaximumWidth(40)
-        addButton.clicked.connect(lambda *args: self.addMusicToTheme())
+        addButton.clicked.connect(lambda *args: self.addMusicToList())
         genericLayout.addWidget(addButton)
 
         #stop button
@@ -56,13 +63,26 @@ class Playlist(QWidget):
 
         self.setLayout(playlistVerticalLayout)
 
-    def setTheme(self,themeName:str, tracks:dict=None):
-        """Update the playlist with the music list of the selected theme
-            Takes one parameter:
-            - themeName as string
+    def setList(self,text:str='', tracks:dict=None):
+        """Update the tracklist with the provided list of tracks and
+            sets the track list label to specified text
+            Takes two parameters:
+            - text as string
+            - list of tracks as a dictionnary of track objects
         """
-        self.label.setText(themeName)
+        self.label.setText(text)
         self.trackList.clear()
+        self.tracks = tracks
 
         for track in tracks:
             self.trackList.addItem(track.name)
+
+    def addMusicToList(self):
+        """Calls a file dialog to choose a music to add to the tracklist.
+            Takes no parameter.
+        """
+        filePath, ok = QFileDialog().getOpenFileName(self,self.text.localisation('dialogBoxes','addMusic','caption'),os.path.expanduser('~'),"*.mp3 *.wav *.ogg *.flac *.wma *.aiff *.m4a")
+        if ok :
+            name = QFileInfo(filePath).fileName()
+            self.tracks.append(Track(name,filePath))
+            self.trackList.addItem(name)
