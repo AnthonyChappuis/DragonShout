@@ -35,11 +35,16 @@ class MainWindow(QMainWindow):
         self.library = ''
         self.loadLibrary()
 
+        self.themesLayout = QVBoxLayout()
         self.themesWidget = QWidget()
+        self.themesWidget.setLayout(self.themesLayout)
+
         self.playlist = ''
 
         self.menuBar()
         self.changeLanguage()
+
+        self.setGUI()
 
         self.show()
 
@@ -109,7 +114,7 @@ class MainWindow(QMainWindow):
         # mainHorizontalSplitter.addWidget(sceneVerticalSplitter)
 
         #Theme selection and controls
-        self.showThemes()
+        self.setThemes()
         mainHorizontalSplitter.addWidget(self.themesWidget)
 
         #Playlist
@@ -127,7 +132,6 @@ class MainWindow(QMainWindow):
     def changeLanguage(self,language:str='english'):
         """Change the language of the application. Called by a signal emited when clicking on another language"""
         self.text = Text(language)
-        self.setGUI()
 
     def loadLibrary(self,filepath:str=''):
         """Loads an existing library or creates a new one"""
@@ -136,25 +140,18 @@ class MainWindow(QMainWindow):
         else:
             self.library = Library("new_library","")
 
-    def showThemes(self):
+    def setThemes(self):
         """Gets the category objects in the library and arrange them as push buttons in the main window.
            Takes no parameters.
         """
-        themesLayout = QGridLayout()
-        for theme in self.library.categories:
-            themeButton = QPushButton(theme.name)
-            themeButton.clicked.connect(lambda *args: self.selectTheme(self.sender().text()))
-            themesLayout.addWidget(themeButton)
-
         newThemeButton = QPushButton('+')
         newThemeButton.clicked.connect(lambda *args: self.addTheme())
         newThemeButton.setMaximumWidth(100)
-        themesLayout.addWidget(newThemeButton)
+        self.themesLayout.addWidget(newThemeButton)
 
-        themesWidget = QWidget()
-        themesWidget.setLayout(themesLayout)
+        for theme in self.library.categories:
+            self.addThemeButtonToThemeLayout(theme.name)
 
-        self.themesWidget = themesWidget
 
     def selectTheme(self,themeName:str):
         """Update the playlist with the music list of the selected theme
@@ -168,12 +165,24 @@ class MainWindow(QMainWindow):
         """Add a new theme to the application and open dialog box to set the theme name.
             Takes no parameter.
         """
-
         themeName, ok = QInputDialog.getText(self,self.text.localisation('dialogBoxes','newTheme','caption'),self.text.localisation('dialogBoxes','newTheme','question'))
 
         if ok :
             self.library.add_category(themeName)
-            self.setGUI()
+            self.addThemeButtonToThemeLayout(themeName)
+
+    def addThemeButtonToThemeLayout(self,buttonText:str=''):
+        """Adds a new theme button to the theme layout.
+            Takes one parameter:
+            - button text as string.
+        """
+        if buttonText == '' :
+            buttonText = self.text.localisation('buttons','newTheme','caption')
+
+        themeButton = QPushButton(buttonText)
+        themeButton.setMaximumWidth(100)
+        themeButton.clicked.connect(lambda *args: self.selectTheme(self.sender().text()))
+        self.themesLayout.addWidget(themeButton)
 
     def renameTheme(self,themeName:str):
         """Modify the name of the theme.
