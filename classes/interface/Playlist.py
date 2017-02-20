@@ -50,7 +50,9 @@ class Playlist(QWidget):
         addButton = QPushButton("+")
         addButton.setMaximumWidth(40)
         addButton.clicked.connect(lambda *args: self.addMusicToList())
+        addButton.setEnabled(False)
         genericLayout.addWidget(addButton)
+        self.addMusicButton = addButton
 
         #stop button
         stopButton = QPushButton()

@@ -52,3 +52,4 @@ class Themes(QWidget):
         theme = self.mainWindow.library.get_category(themeName)
         if theme :
             self.mainWindow.playlist.setList(themeName,theme.tracks)
+            self.mainWindow.playlist.addMusicButton.setEnabled(True)
