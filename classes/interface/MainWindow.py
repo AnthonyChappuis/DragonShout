@@ -36,6 +36,7 @@ class MainWindow(QMainWindow):
         self.loadLibrary()
 
         self.themesLayout = QVBoxLayout()
+        self.themesLayout.setAlignment(Qt.Qt.AlignHCenter)
         self.themesWidget = QWidget()
         self.themesWidget.setLayout(self.themesLayout)
 
@@ -159,7 +160,8 @@ class MainWindow(QMainWindow):
             - themeName as string
         """
         theme = self.library.get_category(themeName)
-        self.playlist.setList(themeName,theme.tracks)
+        if theme :
+            self.playlist.setList(themeName,theme.tracks)
 
     def addTheme(self):
         """Add a new theme to the application and open dialog box to set the theme name.
