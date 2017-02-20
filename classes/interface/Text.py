@@ -16,7 +16,7 @@ class Text:
 
             buttons = {
                 'scene': {'caption':'Scene','toolTip':"Changes the scene and gives access to a new group of themes"},
-                'new_theme': {'caption':'New theme','toolTip':"Change the musical theme"}
+                'newTheme': {'caption':'New theme','toolTip':"Change the musical theme"}
             }
 
             menus = {
@@ -47,7 +47,7 @@ class Text:
         if language == 'french':
             buttons = {
                 'scene': {'caption':'Scène','toolTip':"Change de scène et accède à un nouveau groupe de thèmes"},
-                'new_theme': {'caption':'Nouveau thème','toolTip':"Change le thème musical"}
+                'newTheme': {'caption':'Nouveau thème','toolTip':"Change le thème musical"}
             }
 
             menus =  {
