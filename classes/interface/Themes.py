@@ -37,6 +37,8 @@ class Themes(QWidget):
         themeName, ok = QInputDialog.getText(self,self.mainWindow.text.localisation('dialogBoxes','newTheme','caption'),self.mainWindow.text.localisation('dialogBoxes','newTheme','question'))
 
         if ok :
+            if themeName == '':
+                themeName = self.mainWindow.text.localisation('buttons','newTheme','caption')
             self.mainWindow.library.add_category(themeName)
 
             themeButton = QPushButton(themeName)
