@@ -8,6 +8,7 @@
 #---------------------------------
 
 from classes.interface import MainWindow
+from classes.interface.ThemeButtons import ThemeButtons
 
 from PyQt5 import Qt
 from PyQt5.QtWidgets import (QWidget, QPushButton, QVBoxLayout, QInputDialog,
@@ -42,35 +43,5 @@ class Themes(QWidget):
                 themeName = self.mainWindow.text.localisation('buttons','newTheme','caption')
             self.mainWindow.library.add_category(themeName)
 
-            #Theme main widget
-            mainWidget = QWidget()
-            mainWidgetLayout = QHBoxLayout()
-
-            #Theme button
-            themeButton = QPushButton(themeName)
-            themeButton.setMaximumWidth(100)
-            themeButton.clicked.connect(lambda *args: self.selectTheme(self.sender().text()))
-            mainWidgetLayout.addWidget(themeButton)
-
-            #Edit button
-            editButton = QPushButton('Edit')
-            editButton.setMaximumWidth(50)
-            mainWidgetLayout.addWidget(editButton)
-
-            #Remove button
-            removeButton = QPushButton('X')
-            removeButton.setMaximumWidth(20)
-            mainWidgetLayout.addWidget(removeButton)
-
-            mainWidget.setLayout(mainWidgetLayout)
-            self.layout.addWidget(mainWidget)
-
-    def selectTheme(self,themeName:str):
-        """Update the playlist with the music list of the selected theme
-            Takes one parameter:
-            - themeName as string
-        """
-        theme = self.mainWindow.library.get_category(themeName)
-        if theme :
-            self.mainWindow.playlist.setList(themeName,theme.tracks)
-            self.mainWindow.playlist.addMusicButton.setEnabled(True)
+            #Theme widget
+            self.layout.addWidget(ThemeButtons(themeName, self.mainWindow))
