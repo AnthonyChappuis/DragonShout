@@ -94,25 +94,6 @@ class MainWindow(QMainWindow):
         mainHorizontalSplitter = QSplitter()
         windowWidth = self.geometry().width()
 
-        #Scene list
-        # sceneVerticalSplitter = QSplitter(Qt.Qt.Vertical)
-        # sceneLabel = QLabel(self.text.localisation('labels','scenes','caption'))
-        # sceneLabel.setAlignment(Qt.Qt.AlignCenter)
-        # sceneVerticalSplitter.addWidget(sceneLabel)
-        #
-        # sceneVerticalLayout = QVBoxLayout()
-        # count = 1
-        # while count <= 20 :
-        #     testButton = QPushButton(self.text.localisation('buttons','scene','caption')+' '+str(count))
-        #     testButton.setStatusTip(self.text.localisation('buttons','scene','toolTip'))
-        #     sceneVerticalLayout.addWidget(testButton)
-        #     count+=1
-        #
-        # genericWidget = QWidget()
-        # genericWidget.setLayout(sceneVerticalLayout)
-        # sceneVerticalSplitter.addWidget(genericWidget)
-        # mainHorizontalSplitter.addWidget(sceneVerticalSplitter)
-
         #Theme selection and controls
         mainHorizontalSplitter.addWidget(self.themes)
 

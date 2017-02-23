@@ -7,7 +7,7 @@
 #Last Edited: February 21th 2017
 #---------------------------------
 
-from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget
+from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget, QInputDialog
 
 class ThemeButtons(QWidget):
 
@@ -27,7 +27,7 @@ class ThemeButtons(QWidget):
         #Edit button
         editButton = QPushButton('Edit')
         editButton.setMaximumWidth(50)
-        editButton.clicked.connect(lambda *args: self.editTheme(self.sender().text()))
+        editButton.clicked.connect(lambda *args: self.editThemeName(self.themeButton.text()))
         self.editButton = editButton
         layout.addWidget(editButton)
 
@@ -49,8 +49,10 @@ class ThemeButtons(QWidget):
             self.mainWindow.playlist.setList(themeName,theme.tracks)
             self.mainWindow.playlist.addMusicButton.setEnabled(True)
 
-    def editTheme(self, themeName:str):
-        themeName, ok = QInputDialog.getText(self,self.mainWindow.text.localisation('dialogBoxes','newTheme','caption'),self.mainWindow.text.localisation('dialogBoxes','newTheme','question'))
+    def editThemeName(self, themeName:str):
+        newThemeName, ok = QInputDialog.getText(self,themeName,self.mainWindow.text.localisation('dialogBoxes','newTheme','question'))
+        category = self.mainWindow.library.get_category(themeName)
 
-        if ok :
-            print('OK')
+        if ok and category:
+            self.themeButton.setText(newThemeName)
+            category.name = newThemeName
