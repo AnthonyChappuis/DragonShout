@@ -34,13 +34,14 @@ class ThemeButtons(QWidget):
         #Remove button
         removeButton = QPushButton('X')
         removeButton.setMaximumWidth(20)
+        removeButton.clicked.connect(lambda *args: self.mainWindow.themes.deleteTheme(self.themeButton.text(),self))
         self.removeButton = removeButton
         layout.addWidget(removeButton)
 
         self.setLayout(layout)
 
     def selectTheme(self,themeName:str):
-        """Update the playlist with the music list of the selected theme
+        """Update the playlist with the music list of the selected theme.
             Takes one parameter:
             - themeName as string
         """
@@ -50,6 +51,10 @@ class ThemeButtons(QWidget):
             self.mainWindow.playlist.addMusicButton.setEnabled(True)
 
     def editThemeName(self, themeName:str):
+        """Change the name of a theme both in the UI and in the library.
+            Takes one parameter:
+            - themeName as string
+        """
         newThemeName, ok = QInputDialog.getText(self,themeName,self.mainWindow.text.localisation('dialogBoxes','newTheme','question'))
         category = self.mainWindow.library.get_category(themeName)
 

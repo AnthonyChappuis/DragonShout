@@ -45,3 +45,17 @@ class Themes(QWidget):
 
             #Theme widget
             self.layout.addWidget(ThemeButtons(themeName, self.mainWindow))
+
+
+    def deleteTheme(self, themeName:str, themeButtons:ThemeButtons):
+        """Delete the theme both in the UI and in the library.
+            Takes two parameter:
+            - themeName as string
+            - themeButtons object
+        """
+
+        category = self.mainWindow.library.get_category(themeName)
+
+        if category :
+            del category
+            themeButtons.deleteLater()
