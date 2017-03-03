@@ -12,7 +12,7 @@ from classes.interface.ThemeButtons import ThemeButtons
 
 from PyQt5 import Qt
 from PyQt5.QtWidgets import (QWidget, QPushButton, QVBoxLayout, QInputDialog,
-    QHBoxLayout)
+    QHBoxLayout, QMessageBox)
 
 class Themes(QWidget):
 
@@ -53,9 +53,11 @@ class Themes(QWidget):
             - themeName as string
             - themeButtons object
         """
+        choice = QMessageBox().question(self,self.mainWindow.text.localisation('messageBoxes','deleteTheme','title')+themeName+' ?',self.mainWindow.text.localisation('messageBoxes','deleteTheme','caption'))
 
-        category = self.mainWindow.library.get_category(themeName)
+        if choice == QMessageBox.Yes :
+            category = self.mainWindow.library.get_category(themeName)
 
-        if category :
-            del category
-            themeButtons.deleteLater()
+            if category :
+                del category
+                themeButtons.deleteLater()

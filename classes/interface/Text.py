@@ -30,7 +30,9 @@ class Text:
                 'save' : { 'caption':'Save', 'toolTip': "Save your work"}
             }
 
-            textBoxes = ''
+            messageBoxes = {
+                'deleteTheme': {'caption':'Do you really want to delete this theme ?', 'title':'Delete '}
+            }
 
             dialogBoxes = {
                 'newTheme': {'caption':'New theme','toolTip':'Name the new theme','question':'Enter the theme name :'},
@@ -61,7 +63,9 @@ class Text:
                 'save' : { 'caption':'Sauvegarder', 'toolTip': "Sauvegarder votre travail"}
             }
 
-            textBoxes = ''
+            messageBoxes = {
+                'deleteTheme': {'caption':'Voulez vous vraiment supprimer le thème ?', 'title':'Supprimer '}
+            }
 
             dialogBoxes = {
                 'newTheme': {'caption':'Nouveau thème','toolTip':'Nommer le nouveau thème','question':'Entrer le nom du thème :'},
@@ -75,7 +79,7 @@ class Text:
             }
 
 
-        self._localisation = {'buttons': buttons, 'menus': menus, 'menuEntries': menuEntries, 'textBoxes': textBoxes,
+        self._localisation = {'buttons': buttons, 'menus': menus, 'menuEntries': menuEntries, 'messageBoxes': messageBoxes,
                                 'labels': labels,'dialogBoxes': dialogBoxes}
 
     def localisation(self,elementType:str,elementName:str,textType:str = 'caption'):
