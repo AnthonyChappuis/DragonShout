@@ -17,11 +17,12 @@ from classes.interface.Themes import Themes
 
 from classes.library.Library import Library
 
-from PyQt5 import Qt, QtGui, QtCore
+from PyQt5 import Qt, QtGui
+from PyQt5.QtCore import QFileInfo
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QHBoxLayout, QSplitter, QWidget, QListWidget, QLabel,
-    QPushButton, QVBoxLayout, QGridLayout)
+    QPushButton, QVBoxLayout, QGridLayout, QFileDialog)
 
 class MainWindow(QMainWindow):
 
@@ -64,7 +65,7 @@ class MainWindow(QMainWindow):
         action = QAction(QIcon('save.png'), self.text.localisation('menuEntries','save','caption'), self)
         action.setShortcut('Ctrl+s')
         action.setStatusTip(self.text.localisation('menuEntries','save','toolTip'))
-        action.triggered.connect(lambda *args: self.library.save())
+        action.triggered.connect(lambda *args: self.save())
 
         fileMenu.addAction(action)
 
@@ -125,3 +126,16 @@ class MainWindow(QMainWindow):
             - themeName as string
         """
         theme = self.library.get_category(themeName)
+
+    def save(self):
+        """Save the current library.
+            Takes no parameter.
+        """
+        saveDialog = QFileDialog()
+        saveDialog.setAcceptMode(QFileDialog.AcceptSave)
+
+        filepath , ok = saveDialog.getSaveFileName(self,self.text.localisation('dialogBoxes','saveLibrary','title'),os.path.expanduser('~'))
+        filepath += '.json'
+
+        if ok :
+            self.library.save(filepath)

@@ -138,7 +138,7 @@ class Library:
 				return category
 
 		return False
-		
+
 	def gather_library(self):
 		"""Used to gather the categories and tracks for this library.
 		Takes no parameter
@@ -156,17 +156,12 @@ class Library:
 		return library
 
 	#file handling
-	def save(self):
+	def save(self,filepath:str='./new_library.json'):
 		"""Used to save the library on the hard drive (JSON).
-		Takes no parameter but use one attribute from the Library object
+		Takes one parameters:
 		- filepath as string
 		"""
-		#if filepath is empty, the program use de library name
-		#and save at default location (installation folder)
-		if self.filepath == "":
-			filepath = "./"+self.name+".json"
-		else:
-			filepath = self.filepath
+		self.filepath = filepath
 
 		#if the file doesn't exist, create it
 		if not(os.path.isfile(filepath)):

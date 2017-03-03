@@ -36,7 +36,8 @@ class Text:
 
             dialogBoxes = {
                 'newTheme': {'caption':'New theme','toolTip':'Name the new theme','question':'Enter the theme name :'},
-                'addMusic':{'caption':'Choose a track to add to this theme','toolTip':'Navigate the drive for a track to add to the theme'}
+                'addMusic': {'caption':'Choose a track to add to this theme','toolTip':'Navigate the drive for a track to add to the theme'},
+                'saveLibrary': {'title':'Save your work'}
             }
 
             labels = {
@@ -69,7 +70,8 @@ class Text:
 
             dialogBoxes = {
                 'newTheme': {'caption':'Nouveau thème','toolTip':'Nommer le nouveau thème','question':'Entrer le nom du thème :'},
-                'addMusic':{'caption':'Choisir un morceau à ajouter au thème','toolTip':"Parcours le disque à la recherche d'un morceau à ajouter au thème"}
+                'addMusic': {'caption':'Choisir un morceau à ajouter au thème','toolTip':"Parcours le disque à la recherche d'un morceau à ajouter au thème"},
+                'saveLibrary': {'title':'Sauver votre travail'}
             }
 
             labels = {
