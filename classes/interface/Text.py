@@ -5,7 +5,7 @@
 #It also manage which language is used when showing textes.
 #
 #Application: DragonShout music sampler
-#Last Edited: September 13th 2016
+#Last Edited: March 03rd 2017
 #---------------------------------
 
 class Text:
