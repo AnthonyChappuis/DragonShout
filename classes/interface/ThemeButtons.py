@@ -48,7 +48,6 @@ class ThemeButtons(QWidget):
         theme = self.mainWindow.library.get_category(themeName)
         if theme :
             self.mainWindow.playlist.setList(themeName,theme.tracks)
-            self.mainWindow.playlist.addMusicButton.setEnabled(True)
 
     def editThemeName(self, themeName:str):
         """Change the name of a theme both in the UI and in the library.

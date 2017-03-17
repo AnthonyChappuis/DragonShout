@@ -79,6 +79,8 @@ class Playlist(QWidget):
         for track in tracks:
             self.trackList.addItem(track.name)
 
+        self.addMusicButton.setEnabled(True)
+
     def addMusicToList(self):
         """Calls a file dialog to choose a music to add to the tracklist.
             Takes no parameter.
@@ -89,3 +91,11 @@ class Playlist(QWidget):
                 name = QFileInfo(filePath).fileName()
                 self.tracks.append(Track(name,filePath))
                 self.trackList.addItem(name)
+
+    def reset(self):
+        """Empty the playlist widget and reset the title label.
+            Takes no parameter
+        """
+        self.label.setText(self.text.localisation('labels','playlistLabel','caption'))
+        self.trackList.clear()
+        self.addMusicButton.setEnabled(False)

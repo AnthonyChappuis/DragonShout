@@ -58,6 +58,9 @@ class Themes(QWidget):
         if choice == QMessageBox.Yes :
             category = self.mainWindow.library.get_category(themeName)
 
+            if themeName == self.mainWindow.playlist.label.text():
+                self.mainWindow.playlist.reset()
+
             if category :
                 del category
                 themeButtons.deleteLater()
