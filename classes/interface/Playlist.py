@@ -83,8 +83,9 @@ class Playlist(QWidget):
         """Calls a file dialog to choose a music to add to the tracklist.
             Takes no parameter.
         """
-        filePath, ok = QFileDialog().getOpenFileName(self,self.text.localisation('dialogBoxes','addMusic','caption'),os.path.expanduser('~'),"*.mp3 *.wav *.ogg *.flac *.wma *.aiff *.m4a")
+        filesList, ok = QFileDialog().getOpenFileNames(self,self.text.localisation('dialogBoxes','addMusic','caption'),os.path.expanduser('~'),"*.mp3 *.wav *.ogg *.flac *.wma *.aiff *.m4a")
         if ok :
-            name = QFileInfo(filePath).fileName()
-            self.tracks.append(Track(name,filePath))
-            self.trackList.addItem(name)
+            for filePath in filesList :
+                name = QFileInfo(filePath).fileName()
+                self.tracks.append(Track(name,filePath))
+                self.trackList.addItem(name)
