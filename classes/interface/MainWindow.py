@@ -157,3 +157,4 @@ class MainWindow(QMainWindow):
         if ok :
             self.loadLibrary(filepath)
             self.themes.setThemes()
+            self.playlist.reset()

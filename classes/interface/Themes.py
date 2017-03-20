@@ -32,10 +32,15 @@ class Themes(QWidget):
         for theme in self.mainWindow.library.categories:
             self.addTheme(theme.name)
 
+    def reset(self):
+        for i in reversed(range(self.layout.count())):
+            self.layout.itemAt(i).widget().setParent(None)
+
     def setThemes(self):
         """Used to create the GUI elements for all existing themes.
             Takes no parameter.
         """
+        self.reset()
         for theme in self.mainWindow.library.categories:
             self.layout.addWidget(ThemeButtons(theme.name,self.mainWindow))
 
