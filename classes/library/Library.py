@@ -86,7 +86,7 @@ class Library:
 
 	#mutators
 	def _set_name(self, new_name: str):
-		self._name 			= name
+		self._name 			= new_name
 
 	def _set_filepath(self, new_filepath: str):
 		self._filepath 		= new_filepath

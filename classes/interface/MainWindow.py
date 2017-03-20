@@ -145,6 +145,8 @@ class MainWindow(QMainWindow):
         filepath += '.json'
 
         if ok :
+            libraryName = QFileInfo(filepath).fileName()
+            self.library.name = libraryName
             self.library.save(filepath)
 
     def load(self):
