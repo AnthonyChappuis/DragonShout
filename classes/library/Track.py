@@ -46,6 +46,7 @@ class Track:
 		"""
 		if "__class__" in data :
 			if data["__class__"] == "Track":
+				#Creating track instance
 				track_object = Track(data["name"],data["location"])
 				return track_object
 		return data

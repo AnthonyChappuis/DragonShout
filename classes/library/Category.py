@@ -65,7 +65,7 @@ class Category:
 		self._tracks = []
 		#Bumping category number
 		Category._category_number += 1
-		
+
 	#accessors
 	def _get_name(self):
 		return self._name
@@ -77,8 +77,8 @@ class Category:
 	def _set_name(self,new_name: str):
 		self._name = new_name
 
-	def _set_tracks(self,new_track: Track):
-		self._tracks = [new_track]
+	def _set_tracks(self,tracks: list):
+		self._tracks = tracks
 
 	#destructors
 	def _del_name(self):

@@ -27,7 +27,8 @@ class Text:
             menuEntries = {
                 'exit': { 'caption':'Exit', 'toolTip': "Exit the application"},
                 'language': { 'caption':'Language', 'toolTip': "Select the language of the application"},
-                'save' : { 'caption':'Save', 'toolTip': "Save your work"}
+                'save' : { 'caption':'Save', 'toolTip': "Save your work"},
+                'load' : {'caption':'Load', 'toolTip': "Load an existing library"}
             }
 
             messageBoxes = {
@@ -61,7 +62,8 @@ class Text:
             menuEntries = {
                 'exit': { 'caption':'Quitter', 'toolTip':"Quitter l'application."},
                 'language': { 'caption':'Langue', 'toolTip': "Sélectionner la langue de l'application"},
-                'save' : { 'caption':'Sauvegarder', 'toolTip': "Sauvegarder votre travail"}
+                'save' : { 'caption':'Sauvegarder', 'toolTip': "Sauvegarder votre travail"},
+                'load' : {'caption':'Charger', 'toolTip': "Charger une librairie existante"}
             }
 
             messageBoxes = {

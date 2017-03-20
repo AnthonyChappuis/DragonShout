@@ -62,6 +62,13 @@ class MainWindow(QMainWindow):
         #Defining file menu actions
         fileMenu = menuBar.addMenu(self.text.localisation('menus','files','caption'))
 
+        action = QAction(QIcon('load.png'), self.text.localisation('menuEntries','load','caption'), self)
+        action.setShortcut('Ctrl+l')
+        action.setStatusTip(self.text.localisation('menuEntries','load','toolTip'))
+        action.triggered.connect(lambda *args: self.load())
+
+        fileMenu.addAction(action)
+
         action = QAction(QIcon('save.png'), self.text.localisation('menuEntries','save','caption'), self)
         action.setShortcut('Ctrl+s')
         action.setStatusTip(self.text.localisation('menuEntries','save','toolTip'))
@@ -139,3 +146,12 @@ class MainWindow(QMainWindow):
 
         if ok :
             self.library.save(filepath)
+
+    def load(self):
+        loadDialog = QFileDialog()
+
+        filepath, ok = loadDialog.getOpenFileName(self,'test',os.path.expanduser('~'))
+
+        if ok :
+            self.loadLibrary(filepath)
+            self.themes.setThemes()
