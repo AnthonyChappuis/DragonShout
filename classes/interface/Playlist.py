@@ -25,6 +25,7 @@ class Playlist(QWidget):
 
         self.text = text
         self.tracks = []
+        self.label = ''
 
         #Label of the tracklist
         playlistVerticalLayout = QVBoxLayout()

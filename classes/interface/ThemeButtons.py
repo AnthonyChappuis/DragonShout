@@ -60,3 +60,6 @@ class ThemeButtons(QWidget):
         if ok and category:
             self.themeButton.setText(newThemeName)
             category.name = newThemeName
+
+            if self.mainWindow.playlist.label.text() == themeName:
+                self.mainWindow.playlist.label.setText(newThemeName)
