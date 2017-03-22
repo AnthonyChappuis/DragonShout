@@ -17,7 +17,7 @@ from PyQt5 import Qt
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtCore import QFileInfo, QUrl
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton, QFileDialog
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton, QFileDialog, QAbstractItemView
 
 class Playlist(QWidget):
 
@@ -37,6 +37,7 @@ class Playlist(QWidget):
 
         #tracklist
         self.trackList = QListWidget()
+        self.trackList.setSelectionMode(QAbstractItemView.SingleSelection)
         playlistVerticalLayout.addWidget(self.trackList)
 
         #Controls of the tracklist
@@ -108,7 +109,19 @@ class Playlist(QWidget):
         """Play the selected file.
             Takes no parameter.
         """
-        self.soundPlayer.setVolume(100)
-        self.soundPlayer.setMedia(QMediaContent(QUrl.fromLocalFile('/home/ardias/Musique/wolvenStorm.m4a')))
-        self.soundPlayer.play()
-        self.mainWindow.statusBar().showMessage(str(self.soundPlayer.currentMedia().canonicalUrl().fileName()))
+        found = False
+        selectedItem = self.trackList.selectedItems()[0].text()
+
+        for track in self.tracks :
+            if track.name == selectedItem :
+                filepath = track.location
+                found = True
+
+        if found:
+            fileUrl = QUrl.fromLocalFile(filepath)
+            media = QMediaContent(fileUrl)
+            self.soundPlayer.setMedia(media)
+
+            self.soundPlayer.setVolume(100)
+            self.soundPlayer.play()
+            self.mainWindow.statusBar().showMessage(str(self.soundPlayer.currentMedia().canonicalUrl().fileName()))
