@@ -9,27 +9,29 @@
 
 import os
 
-from classes.interface.Text import Text
+from classes.interface import MainWindow
 from classes.library.Library import Library
 from classes.library.Track import Track
 
 from PyQt5 import Qt
-from PyQt5.QtCore import QFileInfo
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+from PyQt5.QtCore import QFileInfo, QUrl
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton, QFileDialog
 
 class Playlist(QWidget):
 
-    def __init__(self,text:Text):
+    def __init__(self,mainWindow:MainWindow):
         super().__init__()
 
-        self.text = text
+        self.mainWindow = mainWindow
         self.tracks = []
         self.label = ''
+        self.soundPlayer = QMediaPlayer()
 
         #Label of the tracklist
         playlistVerticalLayout = QVBoxLayout()
-        self.label = QLabel(text.localisation('labels','playlistLabel','caption'))
+        self.label = QLabel(self.mainWindow.text.localisation('labels','playlistLabel','caption'))
         self.label.setAlignment(Qt.Qt.AlignCenter)
         playlistVerticalLayout.addWidget(self.label)
 
@@ -45,6 +47,7 @@ class Playlist(QWidget):
         playButton = QPushButton()
         playButton.setIcon(QIcon('ressources/interface/play.png'))
         playButton.setMaximumWidth(40)
+        playButton.clicked.connect(lambda *args: self.playMusic())
         genericLayout.addWidget(playButton)
 
         #add button
@@ -86,7 +89,7 @@ class Playlist(QWidget):
         """Calls a file dialog to choose a music to add to the tracklist.
             Takes no parameter.
         """
-        filesList, ok = QFileDialog().getOpenFileNames(self,self.text.localisation('dialogBoxes','addMusic','caption'),os.path.expanduser('~'),"*.mp3 *.wav *.ogg *.flac *.wma *.aiff *.m4a")
+        filesList, ok = QFileDialog().getOpenFileNames(self,self.mainWindow.text.localisation('dialogBoxes','addMusic','caption'),os.path.expanduser('~'),"*.mp3 *.wav *.ogg *.flac *.wma *.aiff *.m4a")
         if ok :
             for filePath in filesList :
                 name = QFileInfo(filePath).fileName()
@@ -97,6 +100,15 @@ class Playlist(QWidget):
         """Empty the playlist widget and reset the title label.
             Takes no parameter
         """
-        self.label.setText(self.text.localisation('labels','playlistLabel','caption'))
+        self.label.setText(self.mainWindow.text.localisation('labels','playlistLabel','caption'))
         self.trackList.clear()
         self.addMusicButton.setEnabled(False)
+
+    def playMusic(self):
+        """Play the selected file.
+            Takes no parameter.
+        """
+        self.soundPlayer.setVolume(100)
+        self.soundPlayer.setMedia(QMediaContent(QUrl.fromLocalFile('/home/ardias/Musique/wolvenStorm.m4a')))
+        self.soundPlayer.play()
+        self.mainWindow.statusBar().showMessage(str(self.soundPlayer.currentMedia().canonicalUrl().fileName()))

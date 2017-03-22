@@ -41,7 +41,7 @@ class MainWindow(QMainWindow):
         self.loadLibrary()
 
         self.themes = Themes(self)
-        self.playlist = Playlist(self.text)
+        self.playlist = Playlist(self)
 
         self.menuBar()
 
