@@ -24,17 +24,27 @@ class Themes(QWidget):
         self.layout.setAlignment(Qt.Qt.AlignHCenter)
         self.setLayout(self.layout)
 
+        self.addNewThemeButton(self.layout)
+
+        for theme in self.mainWindow.library.categories:
+            self.addTheme(theme.name)
+
+    def addNewThemeButton(self, layout:QVBoxLayout):
+        """Add a button to add a new theme to the given layout.
+            Takes one parameter:
+            - layout as QVBoxLayout object.
+        """
         newThemeButton = QPushButton('+')
         newThemeButton.clicked.connect(lambda *args: self.addTheme())
         newThemeButton.setMaximumWidth(100)
         self.layout.addWidget(newThemeButton)
 
-        for theme in self.mainWindow.library.categories:
-            self.addTheme(theme.name)
 
     def reset(self):
         for i in reversed(range(self.layout.count())):
             self.layout.itemAt(i).widget().setParent(None)
+
+        self.addNewThemeButton(self.layout)
 
     def setThemes(self):
         """Used to create the GUI elements for all existing themes.
