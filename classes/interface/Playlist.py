@@ -4,7 +4,7 @@
 #Class responsible for the playlist's collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: March 03rd 2017
+#Last Edited: March 23rd 2017
 #---------------------------------
 
 import os
@@ -12,11 +12,12 @@ import os
 from classes.interface import MainWindow
 from classes.library.Library import Library
 from classes.library.Track import Track
+from classes.multimedia.MusicPlayer import MusicPlayer
 
 from PyQt5 import Qt
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtCore import QFileInfo, QUrl
 from PyQt5.QtGui import QIcon
+from PyQt5.QtMultimedia import QMediaContent
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton, QFileDialog, QAbstractItemView
 
 class Playlist(QWidget):
@@ -27,7 +28,7 @@ class Playlist(QWidget):
         self.mainWindow = mainWindow
         self.tracks = []
         self.label = ''
-        self.soundPlayer = QMediaPlayer()
+        self.musicPlayer = MusicPlayer()
 
         #Label of the tracklist
         playlistVerticalLayout = QVBoxLayout()
@@ -63,6 +64,7 @@ class Playlist(QWidget):
         stopButton = QPushButton()
         stopButton.setIcon(QIcon('ressources/interface/stop.png'))
         stopButton.setMaximumWidth(40)
+        stopButton.clicked.connect(lambda *args: self.stopMusic())
         genericLayout.addWidget(stopButton)
 
         controlsWidget.setLayout(genericLayout)
@@ -106,7 +108,7 @@ class Playlist(QWidget):
         self.addMusicButton.setEnabled(False)
 
     def playMusic(self):
-        """Play the selected file.
+        """Send the selected file to the music player.
             Takes no parameter.
         """
         found = False
@@ -120,8 +122,10 @@ class Playlist(QWidget):
         if found:
             fileUrl = QUrl.fromLocalFile(filepath)
             media = QMediaContent(fileUrl)
-            self.soundPlayer.setMedia(media)
+            self.musicPlayer.changeMusic(media)
 
-            self.soundPlayer.setVolume(100)
-            self.soundPlayer.play()
-            self.mainWindow.statusBar().showMessage(str(self.soundPlayer.currentMedia().canonicalUrl().fileName()))
+    def stopMusic(self):
+        """Stop the music player.
+            Takes no parameter
+        """
+        self.musicPlayer.stop()
