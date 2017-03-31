@@ -111,3 +111,15 @@ class MusicPlayer():
             return self.player2.currentMedia()
         else :
             return False
+
+    def isPlaying(self):
+        """Returns true if one of the MediaPlayer is active and false in the contrary.
+            Takes no Parameter.
+        """
+        player1State = self.player1.state()
+        player2State = self.player2.state()
+
+        if (player1State or player2State) == QMediaPlayer.PlayingState :
+            return True
+        else:
+            return False

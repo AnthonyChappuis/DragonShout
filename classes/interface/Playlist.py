@@ -8,6 +8,7 @@
 #---------------------------------
 
 import os
+import random
 
 from classes.interface import MainWindow
 from classes.library.Library import Library
@@ -74,7 +75,8 @@ class Playlist(QWidget):
 
     def setList(self,text:str='', tracks:dict=None):
         """Update the tracklist with the provided list of tracks and
-            sets the track list label to specified text
+            sets the track list label to specified text. Also plays a track of the theme at random if
+            theme selection occurs while the music player is active.
             Takes two parameters:
             - text as string
             - list of tracks as a dictionnary of track objects
@@ -87,6 +89,10 @@ class Playlist(QWidget):
             self.trackList.addItem(track.name)
 
         self.addMusicButton.setEnabled(True)
+
+        #Launch a random track if the music player is active.
+        if self.musicPlayer.isPlaying():
+            self.playMusicAtRandom()
 
     def addMusicToList(self):
         """Calls a file dialog to choose a music to add to the tracklist.
@@ -123,6 +129,16 @@ class Playlist(QWidget):
             fileUrl = QUrl.fromLocalFile(filepath)
             media = QMediaContent(fileUrl)
             self.musicPlayer.changeMusic(media)
+
+    def playMusicAtRandom(self):
+        """Choose randomly a track to play.
+            Takes no parameter
+        """
+        numberOfTracks = len(self.tracks)
+        randomTrackNumber = random.randrange(0,numberOfTracks-1)
+
+        self.trackList.setCurrentRow(randomTrackNumber)
+        self.playMusic()
 
     def stopMusic(self):
         """Stop the music player.
