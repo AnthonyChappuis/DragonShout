@@ -4,7 +4,7 @@
 #This class handle the music for the application. Uses two separate QMediaPlayers
 #
 #Application: DragonShout music sampler
-#Last Edited: March 23th 2017
+#Last Edited: April 7th 2017
 #---------------------------------
 
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudio
@@ -16,20 +16,18 @@ class MusicPlayer():
     FadeIn = 1
     FadeOut = -1
 
-    def __init__(self, volume:int=50):
+    def __init__(self, volume:int=100):
         #Constants
-        self.Pause = 100
+        self.Pause = 50
 
         self.NoVolume = 0
         self.VolumeStep = 1
-
 
         self.InFadingTimer = QTimer()
         self.OutFadingTimer = QTimer()
 
         #variables
         self.volume = volume
-
 
         self.player1 = QMediaPlayer()
         self.player1.setAudioRole(QAudio.MusicRole)
