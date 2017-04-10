@@ -117,18 +117,19 @@ class Playlist(QWidget):
         """Send the selected file to the music player.
             Takes no parameter.
         """
-        found = False
-        selectedItem = self.trackList.selectedItems()[0].text()
+        if self.trackList.currentItem():
+            found = False
+            selectedItem = self.trackList.currentItem().text()
 
-        for track in self.tracks :
-            if track.name == selectedItem :
-                filepath = track.location
-                found = True
+            for track in self.tracks :
+                if track.name == selectedItem :
+                    filepath = track.location
+                    found = True
 
-        if found:
-            fileUrl = QUrl.fromLocalFile(filepath)
-            media = QMediaContent(fileUrl)
-            self.musicPlayer.changeMusic(media)
+            if found:
+                fileUrl = QUrl.fromLocalFile(filepath)
+                media = QMediaContent(fileUrl)
+                self.musicPlayer.changeMusic(media)
 
     def playMusicAtRandom(self):
         """Choose randomly a track to play.

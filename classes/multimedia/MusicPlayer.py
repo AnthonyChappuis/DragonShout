@@ -9,7 +9,6 @@
 
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudio
 from PyQt5.QtCore import QTimer
-from threading import Thread
 
 class MusicPlayer():
 
@@ -63,12 +62,12 @@ class MusicPlayer():
             #Player 1 is running
             if self.player1.state() == QMediaPlayer.PlayingState :
                 self.player2.setMedia(media)
-                Thread(target = self.fadeSound(self.player1,MusicPlayer.FadeOut)).start()
+                self.fadeSound(self.player1,MusicPlayer.FadeOut)
 
             #Player 2 is running
             elif self.player2.state() == QMediaPlayer.PlayingState :
                 self.player1.setMedia(media)
-                Thread(target = self.fadeSound(self.player2,MusicPlayer.FadeOut)).start()
+                self.fadeSound(self.player2,MusicPlayer.FadeOut)
 
     def fadeSound(self, player:QMediaPlayer, fadingType:int):
         """Defines if the fading action is a fade-In or a fade-out and call the corresponding timer and incrementOrDecrementVolume() function.
@@ -94,7 +93,6 @@ class MusicPlayer():
         volume = player.volume()
         volume += self.VolumeStep*fadingType
         player.setVolume(volume)
-        print(str(player)+" volume + "+str(self.VolumeStep*fadingType)+" = "+str(player.volume()))
 
         if (player.volume() >= self.volume) and (fadingType == MusicPlayer.FadeIn) :
             self.InFadingTimer.stop()
@@ -110,8 +108,12 @@ class MusicPlayer():
         """Stop all media players.
             Takes no parameter.
         """
-        Thread(target = self.fadeSound(self.player1,MusicPlayer.FadeOut)).start()
-        Thread(target = self.fadeSound(self.player2,MusicPlayer.FadeOut)).start()
+        print("stop")
+        if self.player1.state() == QMediaPlayer.PlayingState :
+            self.fadeSound(self.player1,MusicPlayer.FadeOut)
+
+        if self.player2.state() == QMediaPlayer.PlayingState :
+            self.fadeSound(self.player2,MusicPlayer.FadeOut)
 
     def getCurrentMedia(self):
         """Returns the name of the track being played
