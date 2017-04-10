@@ -4,7 +4,7 @@
 #This class handle the music for the application. Uses two separate QMediaPlayers
 #
 #Application: DragonShout music sampler
-#Last Edited: April 7th 2017
+#Last Edited: April 10th 2017
 #---------------------------------
 
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudio
