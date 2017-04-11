@@ -5,14 +5,73 @@
 #It also manage which language is used when showing textes.
 #
 #Application: DragonShout music sampler
-#Last Edited: March 03rd 2017
+#Last Edited: April 11th 2017
 #---------------------------------
 
+import os
+
 class Text:
-    def __init__(self,language:str='english'):
+    LanguageFilePath = 'lang.txt'
+    SupportedLanguages = {'French' : 'fr', 'English' : 'en'}
+
+    def isSupportedLanguage(self, language:str):
+        """Check if the given language is supported by the application
+            Takes one parameter:
+            - language as string.
+            Returns:
+            - supported as boolean.
+        """
+        supported = False
+
+        for supportedLanguage in Text.SupportedLanguages :
+            if language == supportedLanguage :
+                supported = True
+
+        return supported
+
+
+    def loadLanguage(self):
+        """Used to define the language of the application by retrieving the info stored in
+            lang.txt which is located in the application root directory.
+            Takes no parameter.
+            Returns nothing.
+        """
+        #Check if the language file exist and create it uf necessary
+        if os.path.isfile(Text.LanguageFilePath) :
+            languageFile = open(Text.LanguageFilePath,'r')
+            language = languageFile.readline()
+        else:
+            language = Text.SupportedLanguages['English']
+            self.saveLanguage(language)
+
+
+        #Defaults to english is the language is not recognized as a supported language
+        if self.isSupportedLanguage(language) :
+            self.language = language
+        else:
+            self.language = Text.SupportedLanguages['English']
+
+    def saveLanguage(self, language:str):
+        """Save the chosen language in lang.txt at the Text.LanguageFilePath location.
+            Takes one parameter:
+            - language as str (Use Text.SupportedLanguages['...'] to ensure compatibility).
+        """
+        if not(os.path.isfile(Text.LanguageFilePath)) :
+            open(Text.LanguageFilePath,'x', encoding='utf-8')
+
+        languageFile = open(Text.LanguageFilePath, 'w', encoding='utf-8')
+        languageFile.write(language)
+
+
+    def localisation(self,elementType:str,elementName:str,textType:str = 'caption'):
+        return self._localisation[elementType][elementName][textType]
+
+    def __init__(self,language:str):
+
+        self.language = language#self.loadLanguage()
 
         #English
-        if language == 'english':
+        if self.language == Text.SupportedLanguages['English']:
 
             buttons = {
                 'scene': {'caption':'Scene','toolTip':"Changes the scene and gives access to a new group of themes"},
@@ -48,7 +107,7 @@ class Text:
             }
 
         #French
-        if language == 'french':
+        if language == Text.SupportedLanguages['French']:
             buttons = {
                 'scene': {'caption':'Scène','toolTip':"Change de scène et accède à un nouveau groupe de thèmes"},
                 'newTheme': {'caption':'Nouveau thème','toolTip':"Change le thème musical"}
@@ -85,6 +144,3 @@ class Text:
 
         self._localisation = {'buttons': buttons, 'menus': menus, 'menuEntries': menuEntries, 'messageBoxes': messageBoxes,
                                 'labels': labels,'dialogBoxes': dialogBoxes}
-
-    def localisation(self,elementType:str,elementName:str,textType:str = 'caption'):
-        return self._localisation[elementType][elementName][textType]

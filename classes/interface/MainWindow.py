@@ -91,10 +91,10 @@ class MainWindow(QMainWindow):
 
         #Creating language actions
         action = QAction(QIcon('ressources/interface/england.png'), 'English',self)
-        action.triggered.connect(lambda *args: self.changeLanguage('english'))
+        action.triggered.connect(lambda *args: self.changeLanguage(Text.SupportedLanguages['English']))
         languageMenu.addAction(action)
         action = QAction(QIcon('ressources/interface/France.png'), 'Français',self)
-        action.triggered.connect(lambda *args: self.changeLanguage('french'))
+        action.triggered.connect(lambda *args: self.changeLanguage(Text.SupportedLanguages['French']))
         languageMenu.addAction(action)
 
         #Splitter containing all other elements of MainWindow
@@ -116,7 +116,7 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(centralWidget)
 
-    def changeLanguage(self,language:str='english'):
+    def changeLanguage(self,language:str=Text.SupportedLanguages['English']):
         """Change the language of the application. Called by a signal emited when clicking on another language"""
         self.text = Text(language)
 

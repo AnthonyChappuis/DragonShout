@@ -108,7 +108,6 @@ class MusicPlayer():
         """Stop all media players.
             Takes no parameter.
         """
-        print("stop")
         if self.player1.state() == QMediaPlayer.PlayingState :
             self.fadeSound(self.player1,MusicPlayer.FadeOut)
 
