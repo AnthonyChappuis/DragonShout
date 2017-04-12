@@ -39,7 +39,7 @@ class Text:
         #Check if the language file exist and create it uf necessary
         if os.path.isfile(Text.LanguageFilePath) :
             languageFile = open(Text.LanguageFilePath,'r')
-            language = languageFile.readline()
+            language = languageFile.read()
         else:
             language = Text.SupportedLanguages['English']
             self.saveLanguage(language)
@@ -68,7 +68,7 @@ class Text:
 
     def __init__(self,language:str):
 
-        self.language = language#self.loadLanguage()
+        self.loadLanguage()
 
         #English
         if self.language == Text.SupportedLanguages['English']:
