@@ -23,9 +23,10 @@ class Text:
         """
         supported = False
 
-        for supportedLanguage in Text.SupportedLanguages :
-            if language == supportedLanguage :
+        for supportedLanguageKey, supportedLanguageValue in Text.SupportedLanguages.items() :
+            if language == supportedLanguageValue :
                 supported = True
+            print(str(language)+' == '+str(supportedLanguageValue)+' => '+str(supported))
 
         return supported
 
@@ -39,7 +40,7 @@ class Text:
         #Check if the language file exist and create it uf necessary
         if os.path.isfile(Text.LanguageFilePath) :
             languageFile = open(Text.LanguageFilePath,'r')
-            language = languageFile.read()
+            language = str.rstrip(languageFile.read())
         else:
             language = Text.SupportedLanguages['English']
             self.saveLanguage(language)
@@ -69,7 +70,7 @@ class Text:
     def __init__(self,language:str):
 
         self.loadLanguage()
-
+        print(str(self.language))
         #English
         if self.language == Text.SupportedLanguages['English']:
 
@@ -107,7 +108,7 @@ class Text:
             }
 
         #French
-        if language == Text.SupportedLanguages['French']:
+        if self.language == Text.SupportedLanguages['French']:
             buttons = {
                 'scene': {'caption':'Scène','toolTip':"Change de scène et accède à un nouveau groupe de thèmes"},
                 'newTheme': {'caption':'Nouveau thème','toolTip':"Change le thème musical"}
