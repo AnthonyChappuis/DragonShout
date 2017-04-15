@@ -19,7 +19,7 @@ from PyQt5 import Qt
 from PyQt5.QtCore import QFileInfo, QUrl
 from PyQt5.QtGui import QIcon
 from PyQt5.QtMultimedia import QMediaContent
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton, QFileDialog, QAbstractItemView
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton, QFileDialog, QAbstractItemView, QShortcut
 
 class Playlist(QWidget):
 
@@ -49,6 +49,8 @@ class Playlist(QWidget):
         #play button
         playButton = QPushButton()
         playButton.setIcon(QIcon('ressources/interface/play.png'))
+        playButtonShortcut = QShortcut(Qt.Qt.Key_Space,self.mainWindow)
+        playButtonShortcut.activated.connect(lambda *args: playButton.animateClick())
         playButton.setMaximumWidth(40)
         playButton.clicked.connect(lambda *args: self.playMusic())
         genericLayout.addWidget(playButton)
