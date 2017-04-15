@@ -20,16 +20,24 @@ class Themes(QWidget):
         super().__init__()
 
         self.mainWindow = mainWindow
-        self.layout = QVBoxLayout()
-        self.layout.setAlignment(Qt.Qt.AlignHCenter)
-        self.setLayout(self.layout)
+        self.mainLayout = QVBoxLayout()
+        self.mainLayout.addStretch(1)
+        self.mainLayout.setAlignment(Qt.Qt.AlignHCenter)
+        self.setLayout(self.mainLayout)
 
-        self.addNewThemeButton(self.layout)
+        self.addNewThemeButton(self.mainLayout)
+
+        self.themeButtonsLayout = QVBoxLayout()
+        self.themeButtonsLayout.setAlignment(Qt.Qt.AlignHCenter)
+        themeButtonsWidget = QWidget()
+        themeButtonsWidget.setLayout(self.themeButtonsLayout)
+        self.mainLayout.addWidget(themeButtonsWidget)
+
 
         for theme in self.mainWindow.library.categories:
             self.addTheme(theme.name)
 
-    def addNewThemeButton(self, layout:QVBoxLayout):
+    def addNewThemeButton(self, mainLayout:QVBoxLayout):
         """Add a button to add a new theme to the given layout.
             Takes one parameter:
             - layout as QVBoxLayout object.
@@ -37,14 +45,12 @@ class Themes(QWidget):
         newThemeButton = QPushButton('+')
         newThemeButton.clicked.connect(lambda *args: self.addTheme())
         newThemeButton.setMaximumWidth(100)
-        self.layout.addWidget(newThemeButton)
+        self.mainLayout.addWidget(newThemeButton)
 
 
     def reset(self):
-        for i in reversed(range(self.layout.count())):
-            self.layout.itemAt(i).widget().setParent(None)
-
-        self.addNewThemeButton(self.layout)
+        for i in reversed(range(self.themeButtonsLayout.count())):
+            self.themeButtonsLayout.itemAt(i).widget().setParent(None)
 
     def setThemes(self):
         """Used to create the GUI elements for all existing themes.
@@ -52,10 +58,10 @@ class Themes(QWidget):
         """
         self.reset()
         for theme in self.mainWindow.library.categories:
-            self.layout.addWidget(ThemeButtons(theme.name,self.mainWindow))
+            self.themeButtonsLayout.addWidget(ThemeButtons(theme.name,self.mainWindow))
 
     def addTheme(self):
-        """Adds a new theme button to the theme layout.
+        """Adds a new theme button to the theme main layout.
             Takes no parameter.
         """
         themeName, ok = QInputDialog.getText(self,self.mainWindow.text.localisation('dialogBoxes','newTheme','caption'),self.mainWindow.text.localisation('dialogBoxes','newTheme','question'))
@@ -66,7 +72,7 @@ class Themes(QWidget):
             self.mainWindow.library.add_category(themeName)
 
             #Theme widget
-            self.layout.addWidget(ThemeButtons(themeName, self.mainWindow))
+            self.themeButtonsLayout.addWidget(ThemeButtons(themeName, self.mainWindow))
 
 
     def deleteTheme(self, themeName:str, themeButtons:ThemeButtons):
