@@ -25,6 +25,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QPushButton, QVBoxLayout, QGridLayout, QFileDialog)
 
 class MainWindow(QMainWindow):
+    SupportedLibraryFiles = '*.json'
 
     def __init__(self,application:QApplication):
         super().__init__()
@@ -121,7 +122,7 @@ class MainWindow(QMainWindow):
 
     def loadLibrary(self,filepath:str=''):
         """Loads an existing library or creates a new one"""
-        if os.path.isfile(filepath):
+        if os.path.isfile(filepath) and Library.load(filepath):
         	self.library = Library.load(filepath)
         else:
             self.library = Library("new_library","")
@@ -151,7 +152,7 @@ class MainWindow(QMainWindow):
     def load(self):
         loadDialog = QFileDialog()
 
-        filepath, ok = loadDialog.getOpenFileName(self,'test',os.path.expanduser('~'))
+        filepath, ok = loadDialog.getOpenFileName(self,'test',os.path.expanduser('~'),MainWindow.SupportedLibraryFiles)
 
         if ok :
             self.loadLibrary(filepath)

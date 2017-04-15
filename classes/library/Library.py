@@ -37,11 +37,14 @@ class Library:
 		Takes one parameter:
 		- filepath as string
 		"""
-		with open(filepath, "r", encoding="utf-8") as json_file:
-			library_object = json.load(json_file, object_hook=cls.unserialize)
+		try :
+			with open(filepath, "r", encoding="utf-8") as json_file:
+				library_object = json.load(json_file, object_hook=cls.unserialize)
 
-		library_object.filepath = filepath
-		return library_object
+			library_object.filepath = filepath
+			return library_object
+		except :
+			return False
 	load = classmethod(load)
 
 	#class method
