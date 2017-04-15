@@ -26,7 +26,6 @@ class Text:
         for supportedLanguageKey, supportedLanguageValue in Text.SupportedLanguages.items() :
             if language == supportedLanguageValue :
                 supported = True
-            print(str(language)+' == '+str(supportedLanguageValue)+' => '+str(supported))
 
         return supported
 
@@ -67,10 +66,10 @@ class Text:
     def localisation(self,elementType:str,elementName:str,textType:str = 'caption'):
         return self._localisation[elementType][elementName][textType]
 
-    def __init__(self,language:str):
+    def __init__(self):
 
         self.loadLanguage()
-        print(str(self.language))
+
         #English
         if self.language == Text.SupportedLanguages['English']:
 

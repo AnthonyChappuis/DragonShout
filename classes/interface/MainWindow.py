@@ -34,8 +34,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon('dragonShout.png'))
 
-        self.text = ''
-        self.changeLanguage()
+        self.text = Text()
 
         self.library = ''
         self.loadLibrary()
@@ -118,7 +117,7 @@ class MainWindow(QMainWindow):
 
     def changeLanguage(self,language:str=Text.SupportedLanguages['English']):
         """Change the language of the application. Called by a signal emited when clicking on another language"""
-        self.text = Text(language)
+        self.text.saveLanguage(language)
 
     def loadLibrary(self,filepath:str=''):
         """Loads an existing library or creates a new one"""
