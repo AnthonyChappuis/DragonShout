@@ -4,7 +4,7 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: March 23th 2017
+#Last Edited: April 16th 2017
 #---------------------------------
 
 from constants import *
@@ -22,7 +22,7 @@ from PyQt5.QtCore import QFileInfo
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QHBoxLayout, QSplitter, QWidget, QListWidget, QLabel,
-    QPushButton, QVBoxLayout, QGridLayout, QFileDialog)
+    QPushButton, QVBoxLayout, QGridLayout, QFileDialog, QMessageBox)
 
 class MainWindow(QMainWindow):
     SupportedLibraryFiles = '*.json'
@@ -124,6 +124,8 @@ class MainWindow(QMainWindow):
         """Loads an existing library or creates a new one"""
         if os.path.isfile(filepath) and Library.load(filepath):
         	self.library = Library.load(filepath)
+        elif os.path.isfile(filepath) and not Library.load(filepath):
+            QMessageBox(QMessageBox.Warning,self.text.localisation('messageBoxes','loadLibrary','title'),self.text.localisation('messageBoxes','loadLibrary','caption')).exec()
         else:
             self.library = Library("new_library","")
 
@@ -142,7 +144,9 @@ class MainWindow(QMainWindow):
         saveDialog.setAcceptMode(QFileDialog.AcceptSave)
 
         filepath , ok = saveDialog.getSaveFileName(self,self.text.localisation('dialogBoxes','saveLibrary','title'),os.path.expanduser('~'))
-        filepath += '.json'
+
+        if not filepath.endswith('.json') :
+            filepath += '.json'
 
         if ok :
             libraryName = QFileInfo(filepath).fileName()

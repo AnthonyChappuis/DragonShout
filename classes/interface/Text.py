@@ -5,7 +5,7 @@
 #It also manage which language is used when showing textes.
 #
 #Application: DragonShout music sampler
-#Last Edited: April 11th 2017
+#Last Edited: April 16th 2017
 #---------------------------------
 
 import os
@@ -91,7 +91,8 @@ class Text:
             }
 
             messageBoxes = {
-                'deleteTheme': {'caption':'Do you really want to delete this theme ?', 'title':'Delete '}
+                'deleteTheme': {'caption':'Do you really want to delete this theme ?', 'title':'Delete '},
+                'loadLibrary': {'caption':'Please load a valid DragonShout library !', 'title':'Invalid file'}
             }
 
             dialogBoxes = {
@@ -126,7 +127,8 @@ class Text:
             }
 
             messageBoxes = {
-                'deleteTheme': {'caption':'Voulez vous vraiment supprimer le thème ?', 'title':'Supprimer '}
+                'deleteTheme': {'caption':'Voulez vous vraiment supprimer le thème ?', 'title':'Supprimer '},
+                'loadLibrary': {'caption':'Veillez charger une librairie DragonShout valide !', 'title':'Fichier invalide'}
             }
 
             dialogBoxes = {

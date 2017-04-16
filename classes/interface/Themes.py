@@ -81,7 +81,9 @@ class Themes(QWidget):
             - themeName as string
             - themeButtons object
         """
-        choice = QMessageBox().question(self,self.mainWindow.text.localisation('messageBoxes','deleteTheme','title')+themeName+' ?',self.mainWindow.text.localisation('messageBoxes','deleteTheme','caption'))
+        choice = QMessageBox(QMessageBox.Question,self.mainWindow.text.localisation('messageBoxes','deleteTheme','title')+themeName+' ?',
+                                                    self.mainWindow.text.localisation('messageBoxes','deleteTheme','caption'),
+                                                    QMessageBox.Yes | QMessageBox.No).exec()
 
         if choice == QMessageBox.Yes :
             category = self.mainWindow.library.get_category(themeName)
