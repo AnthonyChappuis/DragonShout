@@ -118,6 +118,7 @@ class MainWindow(QMainWindow):
 
     def changeLanguage(self,language:str=Text.SupportedLanguages['English']):
         """Change the language of the application. Called by a signal emited when clicking on another language"""
+        QMessageBox(QMessageBox.Information,self.text.localisation('messageBoxes','saveLanguage','title'),self.text.localisation('messageBoxes','saveLanguage','caption')).exec()
         self.text.saveLanguage(language)
 
     def loadLibrary(self,filepath:str=''):

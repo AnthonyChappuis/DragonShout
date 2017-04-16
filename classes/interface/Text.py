@@ -92,7 +92,8 @@ class Text:
 
             messageBoxes = {
                 'deleteTheme': {'caption':'Do you really want to delete this theme ?', 'title':'Delete '},
-                'loadLibrary': {'caption':'Please load a valid DragonShout library !', 'title':'Invalid file'}
+                'loadLibrary': {'caption':'Please load a valid DragonShout library !', 'title':'Invalid file'},
+                'saveLanguage': {'caption':'Restart the application to apply changes','title':'Language changed'}
             }
 
             dialogBoxes = {
@@ -128,7 +129,8 @@ class Text:
 
             messageBoxes = {
                 'deleteTheme': {'caption':'Voulez vous vraiment supprimer le thème ?', 'title':'Supprimer '},
-                'loadLibrary': {'caption':'Veillez charger une librairie DragonShout valide !', 'title':'Fichier invalide'}
+                'loadLibrary': {'caption':'Veillez charger une librairie DragonShout valide !', 'title':'Fichier invalide'},
+                'saveLanguage': {'caption':"Redémarrer l'application pour appliquer le changement.",'title':'Langue changée'}
             }
 
             dialogBoxes = {
