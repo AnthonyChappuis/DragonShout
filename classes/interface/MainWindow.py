@@ -4,7 +4,7 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: April 16th 2017
+#Last Edited: April 20th 2017
 #---------------------------------
 
 from constants import *

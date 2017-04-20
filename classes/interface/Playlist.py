@@ -4,7 +4,7 @@
 #Class responsible for the playlist's collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: April 10th 2017
+#Last Edited: April 20th 2017
 #---------------------------------
 
 import os
@@ -29,7 +29,7 @@ class Playlist(QWidget):
         self.mainWindow = mainWindow
         self.tracks = []
         self.label = ''
-        self.musicPlayer = MusicPlayer()
+        self.musicPlayer = MusicPlayer(mainWindow)
 
         #Label of the tracklist
         playlistVerticalLayout = QVBoxLayout()

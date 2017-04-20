@@ -13,7 +13,7 @@ class ThemeButtons(QWidget):
 
     def __init__(self, themeName:str, mainWindow):
         super().__init__()
-        
+
         self.mainWindow = mainWindow
         layout = QHBoxLayout()
 

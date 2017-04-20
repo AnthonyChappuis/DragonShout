@@ -4,7 +4,7 @@
 #Class responsible for the themes' collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: April 15th 2017
+#Last Edited: April 20th 2017
 #---------------------------------
 
 from classes.interface import MainWindow
@@ -20,6 +20,7 @@ class Themes(QWidget):
         super().__init__()
 
         self.mainWindow = mainWindow
+        self.themeButtons = []
         self.mainLayout = QVBoxLayout()
         self.mainLayout.addStretch(1)
         self.mainLayout.setAlignment(Qt.Qt.AlignHCenter)
@@ -32,7 +33,6 @@ class Themes(QWidget):
         themeButtonsWidget = QWidget()
         themeButtonsWidget.setLayout(self.themeButtonsLayout)
         self.mainLayout.addWidget(themeButtonsWidget)
-
 
         for theme in self.mainWindow.library.categories:
             self.addTheme(theme.name)
@@ -51,6 +51,7 @@ class Themes(QWidget):
     def reset(self):
         for i in reversed(range(self.themeButtonsLayout.count())):
             self.themeButtonsLayout.itemAt(i).widget().setParent(None)
+            self.themeButtons = []
 
     def setThemes(self):
         """Used to create the GUI elements for all existing themes.
@@ -58,7 +59,9 @@ class Themes(QWidget):
         """
         self.reset()
         for theme in self.mainWindow.library.categories:
-            self.themeButtonsLayout.addWidget(ThemeButtons(theme.name,self.mainWindow))
+            themeButton = ThemeButtons(theme.name,self.mainWindow)
+            self.themeButtonsLayout.addWidget(themeButton)
+            self.themeButtons.append(themeButton)
 
     def addTheme(self):
         """Adds a new theme button to the theme main layout.
@@ -72,7 +75,9 @@ class Themes(QWidget):
             self.mainWindow.library.add_category(themeName)
 
             #Theme widget
-            self.themeButtonsLayout.addWidget(ThemeButtons(themeName, self.mainWindow))
+            themeButton = ThemeButtons(themeName, self.mainWindow)
+            self.themeButtons.append(themeButton)
+            self.themeButtonsLayout.addWidget(themeButton)
 
 
     def deleteTheme(self, themeName:str, themeButtons:ThemeButtons):
@@ -91,6 +96,23 @@ class Themes(QWidget):
             if themeName == self.mainWindow.playlist.label.text():
                 self.mainWindow.playlist.reset()
 
+            if themeButtons in self.themeButtons :
+                self.themeButtons.remove(themeButtons)
+
             if category :
                 del category
                 themeButtons.deleteLater()
+
+    def toggleThemes(self, toggleType:bool):
+        """Used to disable or enable the themeButtons.
+            Takes one parameter:
+            - toggleType as boolean.
+            Returns nothing.
+        """
+        for theme in self.themeButtons :
+            themeButton = theme.themeButton
+
+            if toggleType == True :
+                themeButton.setEnabled(True)
+            elif toggleType == False :
+                themeButton.setEnabled(False)

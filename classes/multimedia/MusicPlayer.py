@@ -4,8 +4,9 @@
 #This class handle the music for the application. Uses two separate QMediaPlayers
 #
 #Application: DragonShout music sampler
-#Last Edited: April 10th 2017
+#Last Edited: April 20th 2017
 #---------------------------------
+from classes.interface import MainWindow
 
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudio
 from PyQt5.QtCore import QTimer
@@ -15,7 +16,7 @@ class MusicPlayer():
     FadeIn = 1
     FadeOut = -1
 
-    def __init__(self, volume:int=100):
+    def __init__(self, mainWindow:MainWindow, volume:int=100):
         #Constants
         self.Pause = 50
 
@@ -27,6 +28,7 @@ class MusicPlayer():
 
         #variables
         self.volume = volume
+        self.mainWindow = mainWindow
 
         self.player1 = QMediaPlayer()
         self.player1.setAudioRole(QAudio.MusicRole)
@@ -77,9 +79,11 @@ class MusicPlayer():
         """
         if fadingType == MusicPlayer.FadeIn :
             self.InFadingTimer.timeout.connect(lambda *args: self.incrementOrDecrementVolume(player,MusicPlayer.FadeIn))
+            self.mainWindow.themes.toggleThemes(False)
             self.InFadingTimer.start(self.Pause)
         else:
             self.OutFadingTimer.timeout.connect(lambda *args: self.incrementOrDecrementVolume(player,MusicPlayer.FadeOut))
+            self.mainWindow.themes.toggleThemes(False)
             self.OutFadingTimer.start(self.Pause)
 
 
@@ -97,12 +101,14 @@ class MusicPlayer():
         if (player.volume() >= self.volume) and (fadingType == MusicPlayer.FadeIn) :
             self.InFadingTimer.stop()
             self.InFadingTimer.timeout.disconnect()
+            self.mainWindow.themes.toggleThemes(True)
 
         if (player.volume() <= self.NoVolume) and (fadingType == MusicPlayer.FadeOut) :
             self.OutFadingTimer.stop()
             player.setMedia(QMediaContent())
             player.stop()
             self.OutFadingTimer.timeout.disconnect()
+            self.mainWindow.themes.toggleThemes(True)
 
     def stop(self):
         """Stop all media players.
