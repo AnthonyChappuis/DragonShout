@@ -56,8 +56,8 @@ class Playlist(QWidget):
         genericLayout.addWidget(playButton)
 
         #add button
-        addButton = QPushButton("+")
-        addButton.setMaximumWidth(40)
+        addButton = QPushButton(self.mainWindow.text.localisation('buttons','addMusic','caption'))
+        addButton.setMaximumWidth(150)
         addButton.clicked.connect(lambda *args: self.addMusicToList())
         addButton.setEnabled(False)
         genericLayout.addWidget(addButton)

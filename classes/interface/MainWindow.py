@@ -29,9 +29,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self,application:QApplication):
         super().__init__()
-        screen = application.desktop().screenGeometry()
 
-        self.setGeometry(50, 50, screen.width(), screen.height())
         self.setWindowTitle(APP_NAME)
         self.setWindowIcon(QIcon('dragonShout.png'))
 
