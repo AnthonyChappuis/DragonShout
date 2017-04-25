@@ -4,7 +4,7 @@
 #Class responsible for the playlist's collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: April 20th 2017
+#Last Edited: April 25th 2017
 #---------------------------------
 
 import os
@@ -39,6 +39,7 @@ class Playlist(QWidget):
 
         #tracklist
         self.trackList = QListWidget()
+        self.trackList.itemSelectionChanged.connect(lambda *args: self.toggleSuppressButton())
         self.trackList.setSelectionMode(QAbstractItemView.SingleSelection)
         playlistVerticalLayout.addWidget(self.trackList)
 
@@ -62,6 +63,14 @@ class Playlist(QWidget):
         addButton.setEnabled(False)
         genericLayout.addWidget(addButton)
         self.addMusicButton = addButton
+
+        #remove button
+        removeButton = QPushButton(self.mainWindow.text.localisation('buttons','removeMusic','caption'))
+        removeButton.setMaximumWidth(150)
+        removeButton.clicked.connect(lambda *args: self.removeMusicFromList())
+        removeButton.setEnabled(False)
+        genericLayout.addWidget(removeButton)
+        self.removeMusicButton = removeButton
 
         #stop button
         stopButton = QPushButton()
@@ -106,6 +115,21 @@ class Playlist(QWidget):
                 name = QFileInfo(filePath).fileName()
                 self.tracks.append(Track(name,filePath))
                 self.trackList.addItem(name)
+
+    def removeMusicFromList(self):
+        """Remove the selected music from the tracklist.
+            Takes no parameter.
+        """
+        print('delete')
+
+    def toggleSuppressButton(self):
+        """(De)activate the suppress button.
+            Takes no parameter.
+        """
+        if self.trackList.currentItem():
+            self.removeMusicButton.setEnabled(True)
+        else :
+            self.removeMusicButton.setEnabled(False)
 
     def reset(self):
         """Empty the playlist widget and reset the title label.

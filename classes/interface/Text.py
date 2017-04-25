@@ -5,7 +5,7 @@
 #It also manage which language is used when showing textes.
 #
 #Application: DragonShout music sampler
-#Last Edited: April 16th 2017
+#Last Edited: April 25th 2017
 #---------------------------------
 
 import os
@@ -76,7 +76,8 @@ class Text:
             buttons = {
                 'scene': {'caption':'Scene','toolTip':"Changes the scene and gives access to a new group of themes"},
                 'newTheme': {'caption':'New theme','toolTip':"Add a new theme"},
-                'addMusic': {'caption':'Add a music','toolTip':'Add a music to the selected theme'}
+                'addMusic': {'caption':'Add a music','toolTip':'Add a music to the selected theme'},
+                'removeMusic': {'caption':'Remove a music','toolTip': 'Remove selected music from the selected theme'}
             }
 
             menus = {
@@ -114,7 +115,8 @@ class Text:
             buttons = {
                 'scene': {'caption':'Scène','toolTip':"Change de scène et accède à un nouveau groupe de thèmes"},
                 'newTheme': {'caption':'Nouveau thème','toolTip':"Ajoute un nouveau thème"},
-                'addMusic': {'caption':'Ajouter une musique','toolTip':'Ajouter une piste musicale au thème sélectioné'}
+                'addMusic': {'caption':'Ajouter une musique','toolTip':'Ajouter une piste musicale au thème sélectioné'},
+                'removeMusic': {'caption':'Supprimer la musique','toolTip': 'Supprimer la musique choisie du thème sélectionné'}
             }
 
             menus =  {

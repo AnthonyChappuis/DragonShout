@@ -4,7 +4,7 @@
 #Class responsible for the theme and its collection of buttons used in the themes widget
 #
 #Application: DragonShout music sampler
-#Last Edited: February 21th 2017
+#Last Edited: April 25th 2017
 #---------------------------------
 
 from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget, QInputDialog
@@ -48,6 +48,7 @@ class ThemeButtons(QWidget):
         theme = self.mainWindow.library.get_category(themeName)
         if theme :
             self.mainWindow.playlist.setList(themeName,theme.tracks)
+            self.mainWindow.playlist.toggleSuppressButton()
 
     def editThemeName(self, themeName:str):
         """Change the name of a theme both in the UI and in the library.
