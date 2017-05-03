@@ -22,7 +22,6 @@ class Themes(QWidget):
         self.mainWindow = mainWindow
         self.themeButtons = []
         self.mainLayout = QVBoxLayout()
-        self.mainLayout.addStretch(1)
         self.mainLayout.setAlignment(Qt.Qt.AlignHCenter)
         self.setLayout(self.mainLayout)
 
@@ -36,6 +35,8 @@ class Themes(QWidget):
 
         for theme in self.mainWindow.library.categories:
             self.addTheme(theme.name)
+
+        self.mainLayout.addStretch(1)
 
     def addNewThemeButton(self, mainLayout:QVBoxLayout):
         """Add a button to add a new theme to the given layout.
