@@ -4,7 +4,7 @@
 #This class handle the music for the application. Uses two separate QMediaPlayers
 #
 #Application: DragonShout music sampler
-#Last Edited: April 20th 2017
+#Last Edited: May 05th 2017
 #---------------------------------
 from classes.interface import MainWindow
 
@@ -33,22 +33,25 @@ class MusicPlayer():
         self.player1 = QMediaPlayer()
         self.player1.setAudioRole(QAudio.MusicRole)
         self.player1.setVolume(self.NoVolume)
-        self.player1.mediaStatusChanged.connect(lambda *args: self.playWhenLoaded(self.player1))
+        self.player1.mediaStatusChanged.connect(lambda *args: self.handlePlayerSignals(self.player1))
 
         self.player2 = QMediaPlayer()
         self.player2.setAudioRole(QAudio.MusicRole)
         self.player2.setVolume(self.NoVolume)
-        self.player2.mediaStatusChanged.connect(lambda *args: self.playWhenLoaded(self.player2))
+        self.player2.mediaStatusChanged.connect(lambda *args: self.handlePlayerSignals(self.player2))
 
 
-    def playWhenLoaded(self, player:QMediaPlayer):
-        """Verify if the media is loaded and launch the player.
+    def handlePlayerSignals(self, player:QMediaPlayer):
+        """Check which signal is emmited by the player.
             Takes one parameter :
             - player as QMediaPlayer object.
         """
         if player.mediaStatus() == QMediaPlayer.LoadedMedia:
             player.play()
             self.fadeSound(player,MusicPlayer.FadeIn)
+
+        if player.mediaStatus() == QMediaPlayer.EndOfMedia:
+            self.mainWindow.playlist.playNextMedia()
 
     def changeMusic(self,media:QMediaContent):
         """Handle the change between two tracks using a fade-in/fade-out mechanism.

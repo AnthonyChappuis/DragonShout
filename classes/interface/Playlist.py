@@ -4,7 +4,7 @@
 #Class responsible for the playlist's collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: April 25th 2017
+#Last Edited: May 05th 2017
 #---------------------------------
 
 import os
@@ -115,6 +115,20 @@ class Playlist(QWidget):
                 name = QFileInfo(filePath).fileName()
                 self.tracks.append(Track(name,filePath))
                 self.trackList.addItem(name)
+
+    def playNextMedia(self):
+        """Select the next media of the list and gives it to the player.
+            Takes no parameter.
+        """
+        nextRow = self.trackList.currentRow()+1
+        maxRow = self.trackList.count()
+
+        #Restart at top of the list if the end is reached
+        if nextRow >= maxRow :
+            nextRow = 0
+
+        self.trackList.setCurrentRow(nextRow)
+        self.playMusic()
 
     def removeMusicFromList(self):
         """Remove the selected music from the tracklist.
