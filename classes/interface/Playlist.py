@@ -16,10 +16,10 @@ from classes.library.Track import Track
 from classes.multimedia.MusicPlayer import MusicPlayer
 
 from PyQt5 import Qt
-from PyQt5.QtCore import QFileInfo, QUrl
+from PyQt5.QtCore import QFileInfo, QUrl, QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtMultimedia import QMediaContent
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton, QFileDialog, QAbstractItemView, QShortcut
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton, QFileDialog, QAbstractItemView, QShortcut, QProgressBar
 
 class Playlist(QWidget):
 
@@ -42,6 +42,16 @@ class Playlist(QWidget):
         self.trackList.itemSelectionChanged.connect(lambda *args: self.toggleSuppressButton())
         self.trackList.setSelectionMode(QAbstractItemView.SingleSelection)
         playlistVerticalLayout.addWidget(self.trackList)
+
+        #Duration bar
+        self.durationBar = QProgressBar()
+        self.durationBar.setTextVisible(False)
+        self.durationBar.setMinimum(0)
+        playlistVerticalLayout.addWidget(self.durationBar)
+
+        self.durationTimer = QTimer()
+        self.durationTimer.setInterval(1000)
+        self.durationTimer.timeout.connect(lambda *args: self.updateDurationBar())
 
         #Controls of the tracklist
         controlsWidget = QWidget(self)
@@ -104,6 +114,25 @@ class Playlist(QWidget):
         #Launch a random track if the music player is active.
         if self.musicPlayer.isPlaying():
             self.playMusicAtRandom()
+
+    def initiateDurationBar(self, duration:int):
+        """Set the duration bar and start/restart a timer to display progression.
+            Takes one parameter:
+            - duration as integer.
+        """
+        self.durationBar.setMaximum(duration)
+        self.durationBar.setValue(0)
+        self.durationTimer.start()
+
+    def updateDurationBar(self):
+        """Updates the duration bar value.
+            Takes no parameter.
+        """
+        self.durationBar.setValue(self.durationBar.value()+1000)
+
+        if self.durationBar.value() >= self.durationBar.maximum():
+            self.durationTimer.stop()
+            self.durationTimer.timeout.disconnect()
 
     def addMusicToList(self):
         """Calls a file dialog to choose a music to add to the tracklist.

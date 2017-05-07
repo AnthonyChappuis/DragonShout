@@ -49,6 +49,7 @@ class MusicPlayer():
         if player.mediaStatus() == QMediaPlayer.LoadedMedia:
             player.play()
             self.fadeSound(player,MusicPlayer.FadeIn)
+            self.mainWindow.playlist.initiateDurationBar(player.duration())
 
         if player.mediaStatus() == QMediaPlayer.EndOfMedia:
             self.mainWindow.playlist.playNextMedia()
@@ -97,6 +98,7 @@ class MusicPlayer():
             - fadingType as MusicPlayer.FadeIn or MusicPlayer.FadeOut constant.
 
         """
+        self.mainWindow.playlist.durationBar.setValue(player.volume())
         volume = player.volume()
         volume += self.VolumeStep*fadingType
         player.setVolume(volume)
