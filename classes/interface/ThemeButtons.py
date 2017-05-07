@@ -4,22 +4,29 @@
 #Class responsible for the theme and its collection of buttons used in the themes widget
 #
 #Application: DragonShout music sampler
-#Last Edited: April 25th 2017
+#Last Edited: Mai 07th 2017
 #---------------------------------
+
+from classes.interface import MainWindow
 
 from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget, QInputDialog, QLabel
 from PyQt5.QtGui import QPixmap
 
 class ThemeButtons(QWidget):
 
-    def __init__(self, themeName:str, mainWindow):
+    DefaultThemeIcon = 'ressources/interface/defaultThemeIcon.jpg'
+
+    def __init__(self, themeName:str, mainWindow:MainWindow, iconPath:str=''):
         super().__init__()
 
         self.mainWindow = mainWindow
         layout = QHBoxLayout()
 
         #Theme icon
-        self.icon = QPixmap('ressources/interface/defaultThemeIcon.jpg')
+        if iconPath == '':
+            iconPath = ThemeButtons.DefaultThemeIcon
+
+        self.icon = QPixmap(iconPath)
         iconSurface = QLabel()
         iconSurface.setPixmap(self.icon)
         layout.addWidget(iconSurface)

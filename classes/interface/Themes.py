@@ -4,11 +4,12 @@
 #Class responsible for the themes' collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: April 20th 2017
+#Last Edited: May 07th 2017
 #---------------------------------
 
 from classes.interface import MainWindow
 from classes.interface.ThemeButtons import ThemeButtons
+from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
 
 from PyQt5 import Qt
 from PyQt5.QtWidgets import (QWidget, QPushButton, QVBoxLayout, QInputDialog,
