@@ -7,7 +7,8 @@
 #Last Edited: April 25th 2017
 #---------------------------------
 
-from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget, QInputDialog
+from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget, QInputDialog, QLabel
+from PyQt5.QtGui import QPixmap
 
 class ThemeButtons(QWidget):
 
@@ -16,6 +17,12 @@ class ThemeButtons(QWidget):
 
         self.mainWindow = mainWindow
         layout = QHBoxLayout()
+
+        #Theme icon
+        self.icon = QPixmap('ressources/interface/defaultThemeIcon.jpg')
+        iconSurface = QLabel()
+        iconSurface.setPixmap(self.icon)
+        layout.addWidget(iconSurface)
 
         #Theme button
         themeButton = QPushButton(themeName)

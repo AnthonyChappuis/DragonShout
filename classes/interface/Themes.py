@@ -45,7 +45,6 @@ class Themes(QWidget):
         """
         newThemeButton = QPushButton(self.mainWindow.text.localisation('buttons','newTheme','caption'))
         newThemeButton.clicked.connect(lambda *args: self.addTheme())
-        newThemeButton.setMaximumWidth(100)
         self.mainLayout.addWidget(newThemeButton)
 
 
