@@ -4,7 +4,7 @@
 #This class handle the music for the application. Uses two separate QMediaPlayers
 #
 #Application: DragonShout music sampler
-#Last Edited: May 05th 2017
+#Last Edited: May 09th 2017
 #---------------------------------
 from classes.interface import MainWindow
 
@@ -15,6 +15,8 @@ class MusicPlayer():
 
     FadeIn = 1
     FadeOut = -1
+    MaxVolume = 100
+    MinVolume = 0
 
     def __init__(self, mainWindow:MainWindow, volume:int=100):
         #Constants
@@ -53,6 +55,21 @@ class MusicPlayer():
 
         if player.mediaStatus() == QMediaPlayer.EndOfMedia:
             self.mainWindow.playlist.playNextMedia()
+
+    def changeVolume(self, volume:int):
+        """Change the volume of the MusicPlayer.
+            Takes one parameter:
+            - volume as int.
+        """
+        if volume > MusicPlayer.MaxVolume :
+            volume = MusicPlayer.MaxVolume
+        if volume < MusicPlayer.MinVolume :
+            volume = MusicPlayer.MinVolume
+
+        self.volume = volume
+        self.player1.setVolume(self.volume)
+        self.player2.setVolume(self.volume)
+
 
     def changeMusic(self,media:QMediaContent):
         """Handle the change between two tracks using a fade-in/fade-out mechanism.

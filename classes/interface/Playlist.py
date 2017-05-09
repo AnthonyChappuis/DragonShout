@@ -19,7 +19,7 @@ from PyQt5 import Qt
 from PyQt5.QtCore import QFileInfo, QUrl, QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtMultimedia import QMediaContent
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton, QFileDialog, QAbstractItemView, QShortcut, QProgressBar
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton, QFileDialog, QAbstractItemView, QShortcut, QProgressBar, QSlider
 
 class Playlist(QWidget):
 
@@ -56,7 +56,7 @@ class Playlist(QWidget):
 
         #Controls of the tracklist
         controlsWidget = QWidget(self)
-        genericLayout = QHBoxLayout()
+        tracklistControlLayout = QHBoxLayout()
 
         #play button
         playButton = QPushButton()
@@ -65,14 +65,14 @@ class Playlist(QWidget):
         playButtonShortcut.activated.connect(lambda *args: playButton.animateClick())
         playButton.setMaximumWidth(40)
         playButton.clicked.connect(lambda *args: self.playMusic())
-        genericLayout.addWidget(playButton)
+        tracklistControlLayout.addWidget(playButton)
 
         #add button
         addButton = QPushButton(self.mainWindow.text.localisation('buttons','addMusic','caption'))
         addButton.setMaximumWidth(150)
         addButton.clicked.connect(lambda *args: self.addMusicToList())
         addButton.setEnabled(False)
-        genericLayout.addWidget(addButton)
+        tracklistControlLayout.addWidget(addButton)
         self.addMusicButton = addButton
 
         #remove button
@@ -80,7 +80,7 @@ class Playlist(QWidget):
         removeButton.setMaximumWidth(150)
         removeButton.clicked.connect(lambda *args: self.removeMusicFromList())
         removeButton.setEnabled(False)
-        genericLayout.addWidget(removeButton)
+        tracklistControlLayout.addWidget(removeButton)
         self.removeMusicButton = removeButton
 
         #stop button
@@ -88,11 +88,27 @@ class Playlist(QWidget):
         stopButton.setIcon(QIcon('ressources/interface/stop.png'))
         stopButton.setMaximumWidth(40)
         stopButton.clicked.connect(lambda *args: self.stopMusic())
-        genericLayout.addWidget(stopButton)
+        tracklistControlLayout.addWidget(stopButton)
 
-        controlsWidget.setLayout(genericLayout)
+        #Volume control
+        volumeControlLayout = QHBoxLayout()
+        volumeControlWidget = QWidget()
+        self.volumeSlider = QSlider(Qt.Qt.Vertical)
+        self.volumeSlider.setMinimum(MusicPlayer.MinVolume)
+        self.volumeSlider.setMaximum(MusicPlayer.MaxVolume)
+        self.volumeSlider.setTickPosition(QSlider.TicksBelow)
+        self.volumeSlider.valueChanged.connect(lambda *args: self.musicPlayer.changeVolume(self.sender().value()))
+        self.volumeSlider.setValue(int(MusicPlayer.MaxVolume/2))
+        volumeControlLayout.addWidget(self.volumeSlider)
+
+        volumeControlWidget.setLayout(volumeControlLayout)
+        tracklistControlLayout.addWidget(volumeControlWidget)
+
+        controlsWidget.setLayout(tracklistControlLayout)
         playlistVerticalLayout.addWidget(controlsWidget)
 
+
+        #set playlist layout
         self.setLayout(playlistVerticalLayout)
 
     def setList(self,text:str='', tracks:dict=None):
