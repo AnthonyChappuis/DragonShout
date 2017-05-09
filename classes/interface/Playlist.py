@@ -4,7 +4,7 @@
 #Class responsible for the playlist's collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: May 05th 2017
+#Last Edited: May 09th 2017
 #---------------------------------
 
 import os
@@ -134,6 +134,14 @@ class Playlist(QWidget):
             self.durationTimer.stop()
             self.durationTimer.timeout.disconnect()
 
+    def resetDurationBar(self):
+        """Set duration bar to 0 and stop the duration timer.
+            Takes no parameter.
+        """
+        self.durationBar.setValue(0)
+        self.durationTimer.stop()
+        self.durationTimer.timeout.disconnect()
+
     def addMusicToList(self):
         """Calls a file dialog to choose a music to add to the tracklist.
             Takes no parameter.
@@ -215,3 +223,4 @@ class Playlist(QWidget):
             Takes no parameter
         """
         self.musicPlayer.stop()
+        self.resetDurationBar()
