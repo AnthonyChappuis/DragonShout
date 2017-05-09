@@ -44,13 +44,14 @@ class Playlist(QWidget):
         playlistVerticalLayout.addWidget(self.trackList)
 
         #Duration bar
+        self.ProgressStep = 1000
         self.durationBar = QProgressBar()
         self.durationBar.setTextVisible(False)
-        self.durationBar.setMinimum(0)
+        self.durationBar.setMinimum(self.ProgressStep)
         playlistVerticalLayout.addWidget(self.durationBar)
 
         self.durationTimer = QTimer()
-        self.durationTimer.setInterval(1000)
+        self.durationTimer.setInterval(self.ProgressStep)
         self.durationTimer.timeout.connect(lambda *args: self.updateDurationBar())
 
         #Controls of the tracklist
@@ -118,29 +119,27 @@ class Playlist(QWidget):
     def initiateDurationBar(self, duration:int):
         """Set the duration bar and start/restart a timer to display progression.
             Takes one parameter:
-            - duration as integer.
+            - duration as integer (in msec).
         """
         self.durationBar.setMaximum(duration)
-        self.durationBar.setValue(0)
+        self.durationBar.setValue(self.ProgressStep)
         self.durationTimer.start()
 
     def updateDurationBar(self):
         """Updates the duration bar value.
             Takes no parameter.
         """
-        self.durationBar.setValue(self.durationBar.value()+1000)
+        self.durationBar.setValue(self.durationBar.value()+self.ProgressStep)
 
-        if self.durationBar.value() >= self.durationBar.maximum():
-            self.durationTimer.stop()
-            self.durationTimer.timeout.disconnect()
+        if self.durationBar.value() > self.durationBar.maximum():
+            self.resetDurationBar()
 
     def resetDurationBar(self):
         """Set duration bar to 0 and stop the duration timer.
             Takes no parameter.
         """
-        self.durationBar.setValue(0)
+        self.durationBar.setValue(self.ProgressStep)
         self.durationTimer.stop()
-        self.durationTimer.timeout.disconnect()
 
     def addMusicToList(self):
         """Calls a file dialog to choose a music to add to the tracklist.
