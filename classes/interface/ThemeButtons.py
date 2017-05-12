@@ -26,7 +26,7 @@ class ThemeButtons(QWidget):
         if iconPath == '':
             iconPath = ThemeButtons.DefaultThemeIcon
 
-        self.icon = QPixmap(iconPath)
+        self.icon = QPixmap(iconPath).scaledToWidth(100)
         iconSurface = QLabel()
         iconSurface.setPixmap(self.icon)
         layout.addWidget(iconSurface)
