@@ -14,7 +14,7 @@ from PyQt5.QtGui import QPixmap
 
 class ThemeButtons(QWidget):
 
-    DefaultThemeIcon = 'ressources/interface/defaultThemeIcon.jpg'
+    DefaultThemeIcon = 'ressources/interface/defaultThemeIcon.png'
 
     def __init__(self, themeName:str, mainWindow:MainWindow, iconPath:str=''):
         super().__init__()
