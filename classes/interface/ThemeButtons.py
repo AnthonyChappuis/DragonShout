@@ -12,6 +12,7 @@ from classes.interface import MainWindow
 from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget, QInputDialog
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize
+from PyQt5.Qt import Qt
 
 class ThemeButtons(QWidget):
 
@@ -23,37 +24,28 @@ class ThemeButtons(QWidget):
         self.mainWindow = mainWindow
         layout = QHBoxLayout()
 
-        #Theme icon
         if iconPath == '':
             iconPath = ThemeButtons.DefaultThemeIcon
 
-        self.iconButton = QPushButton()
-        self.iconButton.setIcon(QIcon(iconPath))
-        self.iconButton.setIconSize(QSize(100,100))
-        self.iconButton.setFlat(True)
-        #self.iconButton.clicked.connect(lambda *args: print("test"))
-        layout.addWidget(self.iconButton)
-
         #Theme button
-        themeButton = QPushButton(themeName)
-        themeButton.setMaximumWidth(100)
-        themeButton.clicked.connect(lambda *args: self.selectTheme(self.sender().text()))
-        self.themeButton = themeButton
-        layout.addWidget(themeButton)
+        self.themeButton = QPushButton(themeName)
+        self.themeButton.setIcon(QIcon(iconPath))
+        self.themeButton.setIconSize(QSize(100,100))
+        self.themeButton.setFlat(True)
+        self.themeButton.clicked.connect(lambda *args: self.selectTheme(self.sender().text()))
+        layout.addWidget(self.themeButton)
 
         #Edit button
-        editButton = QPushButton('Edit')
-        editButton.setMaximumWidth(50)
-        editButton.clicked.connect(lambda *args: self.editThemeName(self.themeButton.text()))
-        self.editButton = editButton
-        layout.addWidget(editButton)
+        self.editButton = QPushButton('Edit')
+        self.editButton.setMaximumWidth(50)
+        self.editButton.clicked.connect(lambda *args: self.editThemeName(self.themeButton.text()))
+        layout.addWidget(self.editButton)
 
         #Remove button
-        removeButton = QPushButton('X')
-        removeButton.setMaximumWidth(20)
-        removeButton.clicked.connect(lambda *args: self.mainWindow.themes.deleteTheme(self.themeButton.text(),self))
-        self.removeButton = removeButton
-        layout.addWidget(removeButton)
+        self.removeButton = QPushButton('X')
+        self.removeButton.setMaximumWidth(20)
+        self.removeButton.clicked.connect(lambda *args: self.mainWindow.themes.deleteTheme(self.themeButton.text(),self))
+        layout.addWidget(self.removeButton)
 
         self.setLayout(layout)
 
