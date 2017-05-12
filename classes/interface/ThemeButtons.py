@@ -9,8 +9,9 @@
 
 from classes.interface import MainWindow
 
-from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget, QInputDialog, QLabel
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget, QInputDialog
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QSize
 
 class ThemeButtons(QWidget):
 
@@ -26,10 +27,12 @@ class ThemeButtons(QWidget):
         if iconPath == '':
             iconPath = ThemeButtons.DefaultThemeIcon
 
-        self.icon = QPixmap(iconPath).scaledToWidth(100)
-        iconSurface = QLabel()
-        iconSurface.setPixmap(self.icon)
-        layout.addWidget(iconSurface)
+        self.iconButton = QPushButton()
+        self.iconButton.setIcon(QIcon(iconPath))
+        self.iconButton.setIconSize(QSize(100,100))
+        self.iconButton.setFlat(True)
+        #self.iconButton.clicked.connect(lambda *args: print("test"))
+        layout.addWidget(self.iconButton)
 
         #Theme button
         themeButton = QPushButton(themeName)
