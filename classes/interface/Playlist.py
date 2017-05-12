@@ -4,7 +4,7 @@
 #Class responsible for the playlist's collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: May 09th 2017
+#Last Edited: May 12th 2017
 #---------------------------------
 
 import os
@@ -56,7 +56,9 @@ class Playlist(QWidget):
 
         #Controls of the tracklist
         controlsWidget = QWidget(self)
+        controlsWidget.setMaximumHeight(100)
         tracklistControlLayout = QHBoxLayout()
+        tracklistControlLayout.addStretch(1)
 
         #play button
         playButton = QPushButton()
@@ -102,6 +104,7 @@ class Playlist(QWidget):
         volumeControlLayout.addWidget(self.volumeSlider)
 
         volumeControlWidget.setLayout(volumeControlLayout)
+        tracklistControlLayout.addStretch(1)
         tracklistControlLayout.addWidget(volumeControlWidget)
 
         controlsWidget.setLayout(tracklistControlLayout)

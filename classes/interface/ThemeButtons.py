@@ -4,7 +4,7 @@
 #Class responsible for the theme and its collection of buttons used in the themes widget
 #
 #Application: DragonShout music sampler
-#Last Edited: Mai 07th 2017
+#Last Edited: Mai 12th 2017
 #---------------------------------
 
 from classes.interface import MainWindow
