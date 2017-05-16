@@ -10,7 +10,7 @@
 
 import os
 
-class Text:
+class Text():
     LanguageFilePath = 'lang.txt'
     SupportedLanguages = {'French' : 'fr', 'English' : 'en'}
 

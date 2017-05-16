@@ -4,7 +4,7 @@
 #Class responsible for the playlist's collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: May 12th 2017
+#Last Edited: May 16th 2017
 #---------------------------------
 
 import os
@@ -61,36 +61,34 @@ class Playlist(QWidget):
         tracklistControlLayout.addStretch(1)
 
         #play button
-        playButton = QPushButton()
-        playButton.setIcon(QIcon('ressources/interface/play.png'))
-        playButtonShortcut = QShortcut(Qt.Qt.Key_Space,self.mainWindow)
-        playButtonShortcut.activated.connect(lambda *args: playButton.animateClick())
-        playButton.setMaximumWidth(40)
-        playButton.clicked.connect(lambda *args: self.playMusic())
-        tracklistControlLayout.addWidget(playButton)
+        self.playButton = QPushButton()
+        self.playButton.setIcon(QIcon('ressources/interface/play.png'))
+        self.playButtonShortcut = QShortcut(Qt.Qt.Key_Space,self.mainWindow)
+        self.playButtonShortcut.activated.connect(lambda *args: self.playButton.animateClick())
+        self.playButton.setMaximumWidth(40)
+        self.playButton.clicked.connect(lambda *args: self.playMusic())
+        tracklistControlLayout.addWidget(self.playButton)
 
         #add button
-        addButton = QPushButton(self.mainWindow.text.localisation('buttons','addMusic','caption'))
-        addButton.setMaximumWidth(150)
-        addButton.clicked.connect(lambda *args: self.addMusicToList())
-        addButton.setEnabled(False)
-        tracklistControlLayout.addWidget(addButton)
-        self.addMusicButton = addButton
+        self.addButton = QPushButton(self.mainWindow.text.localisation('buttons','addMusic','caption'))
+        self.addButton.setMaximumWidth(150)
+        self.addButton.clicked.connect(lambda *args: self.addMusicToList())
+        self.addButton.setEnabled(False)
+        tracklistControlLayout.addWidget(self.addButton)
 
         #remove button
-        removeButton = QPushButton(self.mainWindow.text.localisation('buttons','removeMusic','caption'))
-        removeButton.setMaximumWidth(150)
-        removeButton.clicked.connect(lambda *args: self.removeMusicFromList())
-        removeButton.setEnabled(False)
-        tracklistControlLayout.addWidget(removeButton)
-        self.removeMusicButton = removeButton
+        self.removeButton = QPushButton(self.mainWindow.text.localisation('buttons','removeMusic','caption'))
+        self.removeButton.setMaximumWidth(150)
+        self.removeButton.clicked.connect(lambda *args: self.removeMusicFromList())
+        self.removeButton.setEnabled(False)
+        tracklistControlLayout.addWidget(self.removeButton)
 
         #stop button
-        stopButton = QPushButton()
-        stopButton.setIcon(QIcon('ressources/interface/stop.png'))
-        stopButton.setMaximumWidth(40)
-        stopButton.clicked.connect(lambda *args: self.stopMusic())
-        tracklistControlLayout.addWidget(stopButton)
+        self.stopButton = QPushButton()
+        self.stopButton.setIcon(QIcon('ressources/interface/stop.png'))
+        self.stopButton.setMaximumWidth(40)
+        self.stopButton.clicked.connect(lambda *args: self.stopMusic())
+        tracklistControlLayout.addWidget(self.stopButton)
 
         #Volume control
         volumeControlLayout = QHBoxLayout()

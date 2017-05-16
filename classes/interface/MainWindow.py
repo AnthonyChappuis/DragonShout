@@ -4,10 +4,8 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: April 20th 2017
+#Last Edited: Mai 16th 2017
 #---------------------------------
-
-from constants import *
 
 import os
 
@@ -25,13 +23,16 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QPushButton, QVBoxLayout, QGridLayout, QFileDialog, QMessageBox)
 
 class MainWindow(QMainWindow):
+    
     SupportedLibraryFiles = '*.json'
+    ApplicationIconPath = 'dragonShout.png'
+    ApplicationName = 'Dragon Shout'
 
     def __init__(self,application:QApplication):
         super().__init__()
 
-        self.setWindowTitle(APP_NAME)
-        self.setWindowIcon(QIcon('dragonShout.png'))
+        self.setWindowTitle(MainWindow.ApplicationName)
+        self.setWindowIcon(QIcon(MainWindow.ApplicationIconPath))
 
         self.text = Text()
 
