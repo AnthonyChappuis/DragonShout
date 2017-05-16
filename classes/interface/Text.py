@@ -77,7 +77,9 @@ class Text():
                 'scene': {'caption':'Scene','toolTip':"Changes the scene and gives access to a new group of themes"},
                 'newTheme': {'caption':'New theme','toolTip':"Add a new theme"},
                 'addMusic': {'caption':'Add a music','toolTip':'Add a music to the selected theme'},
-                'removeMusic': {'caption':'Remove a music','toolTip': 'Remove selected music from the selected theme'}
+                'removeMusic': {'caption':'Remove a music','toolTip': 'Remove selected music from the selected theme'},
+                'ok' : {'caption':'OK'},
+                'cancel' : {'caption':'Cancel'}
             }
 
             menus = {
@@ -101,7 +103,8 @@ class Text():
             dialogBoxes = {
                 'newTheme': {'caption':'New theme','toolTip':'Name the new theme','question':'Enter the theme name :'},
                 'addMusic': {'caption':'Choose a track to add to this theme','toolTip':'Navigate the drive for a track to add to the theme'},
-                'saveLibrary': {'title':'Save your work'}
+                'saveLibrary': {'title':'Save your work'},
+                'newIcon': {'question':'Change the icon :'}
             }
 
             labels = {
@@ -116,7 +119,9 @@ class Text():
                 'scene': {'caption':'Scène','toolTip':"Change de scène et accède à un nouveau groupe de thèmes"},
                 'newTheme': {'caption':'Nouveau thème','toolTip':"Ajoute un nouveau thème"},
                 'addMusic': {'caption':'Ajouter une musique','toolTip':'Ajouter une piste musicale au thème sélectioné'},
-                'removeMusic': {'caption':'Supprimer la musique','toolTip': 'Supprimer la musique choisie du thème sélectionné'}
+                'removeMusic': {'caption':'Supprimer la musique','toolTip': 'Supprimer la musique choisie du thème sélectionné'},
+                'ok' : {'caption':'OK'},
+                'cancel' : {'caption':'Annuler'}
             }
 
             menus =  {
@@ -140,7 +145,8 @@ class Text():
             dialogBoxes = {
                 'newTheme': {'caption':'Nouveau thème','toolTip':'Nommer le nouveau thème','question':'Entrer le nom du thème :'},
                 'addMusic': {'caption':'Choisir un morceau à ajouter au thème','toolTip':"Parcours le disque à la recherche d'un morceau à ajouter au thème"},
-                'saveLibrary': {'title':'Sauver votre travail'}
+                'saveLibrary': {'title':'Sauver votre travail'},
+                'newIcon': {'question':"Changer l'icone :"}
             }
 
             labels = {
