@@ -4,7 +4,7 @@
 #Class responsible for the themes' collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: May 07th 2017
+#Last Edited: May 16th 2017
 #---------------------------------
 
 from classes.interface import MainWindow
@@ -43,6 +43,7 @@ class Themes(QWidget):
         """Add a button to add a new theme to the given layout.
             Takes one parameter:
             - layout as QVBoxLayout object.
+            Returns nothing
         """
         newThemeButton = QPushButton(self.mainWindow.text.localisation('buttons','newTheme','caption'))
         newThemeButton.clicked.connect(lambda *args: self.addTheme())
@@ -50,6 +51,10 @@ class Themes(QWidget):
 
 
     def reset(self):
+        """Used to reset the themes layout by removing each childrens.
+            Takes no parameter.
+            Returns nothing.
+        """
         for i in reversed(range(self.themeButtonsLayout.count())):
             self.themeButtonsLayout.itemAt(i).widget().setParent(None)
             self.themeButtons = []
@@ -57,6 +62,7 @@ class Themes(QWidget):
     def setThemes(self):
         """Used to create the GUI elements for all existing themes.
             Takes no parameter.
+            Returns nothing.
         """
         self.reset()
         for theme in self.mainWindow.library.categories:
@@ -67,16 +73,19 @@ class Themes(QWidget):
     def addTheme(self):
         """Adds a new theme button to the theme main layout.
             Takes no parameter.
+            Returns nothing.
         """
-        themeName, ok = QInputDialog.getText(self,self.mainWindow.text.localisation('dialogBoxes','newTheme','caption'),self.mainWindow.text.localisation('dialogBoxes','newTheme','question'))
+        ok = False
+
+        themeName, themeIcon, ok = ThemeButtonDialogBox(self.mainWindow).getItems()
 
         if ok :
-            if themeName == '':
+            if themeName == '' or not isinstance(themeName, str):
                 themeName = self.mainWindow.text.localisation('buttons','newTheme','caption')
             self.mainWindow.library.add_category(themeName)
 
             #Theme widget
-            themeButton = ThemeButtons(themeName, self.mainWindow)
+            themeButton = ThemeButtons(themeName, themeIcon, self.mainWindow)
             self.themeButtons.append(themeButton)
             self.themeButtonsLayout.addWidget(themeButton)
 
@@ -86,6 +95,7 @@ class Themes(QWidget):
             Takes two parameter:
             - themeName as string
             - themeButtons object
+            Returns nothing.
         """
         choice = QMessageBox(QMessageBox.Question,self.mainWindow.text.localisation('messageBoxes','deleteTheme','title')+themeName+' ?',
                                                     self.mainWindow.text.localisation('messageBoxes','deleteTheme','caption'),

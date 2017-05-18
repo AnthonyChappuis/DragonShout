@@ -70,18 +70,18 @@ class Playlist(QWidget):
         tracklistControlLayout.addWidget(self.playButton)
 
         #add button
-        self.addButton = QPushButton(self.mainWindow.text.localisation('buttons','addMusic','caption'))
-        self.addButton.setMaximumWidth(150)
-        self.addButton.clicked.connect(lambda *args: self.addMusicToList())
-        self.addButton.setEnabled(False)
-        tracklistControlLayout.addWidget(self.addButton)
+        self.addMusicButton = QPushButton(self.mainWindow.text.localisation('buttons','addMusic','caption'))
+        self.addMusicButton.setMaximumWidth(150)
+        self.addMusicButton.clicked.connect(lambda *args: self.addMusicToList())
+        self.addMusicButton.setEnabled(False)
+        tracklistControlLayout.addWidget(self.addMusicButton)
 
         #remove button
-        self.removeButton = QPushButton(self.mainWindow.text.localisation('buttons','removeMusic','caption'))
-        self.removeButton.setMaximumWidth(150)
-        self.removeButton.clicked.connect(lambda *args: self.removeMusicFromList())
-        self.removeButton.setEnabled(False)
-        tracklistControlLayout.addWidget(self.removeButton)
+        self.removeMusicButton = QPushButton(self.mainWindow.text.localisation('buttons','removeMusic','caption'))
+        self.removeMusicButton.setMaximumWidth(150)
+        self.removeMusicButton.clicked.connect(lambda *args: self.removeMusicFromList())
+        self.removeMusicButton.setEnabled(False)
+        tracklistControlLayout.addWidget(self.removeMusicButton)
 
         #stop button
         self.stopButton = QPushButton()

@@ -16,20 +16,21 @@ from PyQt5.Qt import Qt
 
 class ThemeButtons(QWidget):
 
-    DefaultThemeIcon = 'ressources/interface/defaultThemeIcon.png'
+    DefaultThemeIconPath = 'ressources/interface/defaultThemeIcon.png'
 
-    def __init__(self, themeName:str, mainWindow:MainWindow, iconPath:str=''):
+    def __init__(self, themeName:str, themeIcon:QIcon,mainWindow:MainWindow):
         super().__init__()
 
         self.mainWindow = mainWindow
         layout = QHBoxLayout()
 
-        if iconPath == '':
-            iconPath = ThemeButtons.DefaultThemeIcon
+        #Verify if themeIcon is a QICon item and defaults it if not.
+        if not isinstance(themeIcon, QIcon) :
+            themeIcon = QIcon(ThemeButtons.DefaultThemeIconPath)
 
         #Theme button
         self.themeButton = QPushButton(themeName)
-        self.themeButton.setIcon(QIcon(iconPath))
+        self.themeButton.setIcon(themeIcon)
         self.themeButton.setIconSize(QSize(100,100))
         self.themeButton.setFlat(True)
         self.themeButton.clicked.connect(lambda *args: self.selectTheme(self.sender().text()))
