@@ -4,13 +4,12 @@
 #Handle the dialogbox used when adding a new theme button to the application
 #
 #Application: DragonShout music sampler
-#Last Edited: Mai 16th 2017
+#Last Edited: Mai 18th 2017
 #---------------------------------
 
 import os
 
 from classes.interface import MainWindow
-from classes.interface.ThemeButtons import ThemeButtons
 
 from PyQt5.QtWidgets import QDialog, QPushButton, QGridLayout, QLineEdit, QLabel, QFileDialog
 from PyQt5.QtGui import QIcon
@@ -18,6 +17,8 @@ from PyQt5.QtCore import QSize
 from PyQt5.Qt import Qt
 
 class ThemeButtonDialogBox(QDialog):
+
+    DefaultThemeIconPath = 'ressources/interface/defaultThemeIcon.png'
 
     def __init__(self, mainWindow:MainWindow):
         super().__init__()
@@ -37,7 +38,7 @@ class ThemeButtonDialogBox(QDialog):
         self.themeIconButtonLabel = QLabel(self.mainWindow.text.localisation('dialogBoxes','newIcon','question'))
 
         self.themeIconButton = QPushButton()
-        self.themeIconButton.setIcon(QIcon(ThemeButtons.DefaultThemeIconPath))
+        self.themeIconButton.setIcon(QIcon(ThemeButtonDialogBox.DefaultThemeIconPath))
         self.themeIconButton.setIconSize(QSize(100,100))
         self.themeIconButton.setFlat(True)
         self.themeIconButton.clicked.connect(lambda *args: self.getNewIcon())

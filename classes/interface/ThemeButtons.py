@@ -4,10 +4,11 @@
 #Class responsible for the theme and its collection of buttons used in the themes widget
 #
 #Application: DragonShout music sampler
-#Last Edited: Mai 12th 2017
+#Last Edited: May 18th 2017
 #---------------------------------
 
 from classes.interface import MainWindow
+from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
 
 from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget, QInputDialog
 from PyQt5.QtGui import QIcon
@@ -16,9 +17,8 @@ from PyQt5.Qt import Qt
 
 class ThemeButtons(QWidget):
 
-    DefaultThemeIconPath = 'ressources/interface/defaultThemeIcon.png'
 
-    def __init__(self, themeName:str, themeIcon:QIcon,mainWindow:MainWindow):
+    def __init__(self, themeName:str, themeIcon:QIcon, mainWindow:MainWindow):
         super().__init__()
 
         self.mainWindow = mainWindow
@@ -26,7 +26,7 @@ class ThemeButtons(QWidget):
 
         #Verify if themeIcon is a QICon item and defaults it if not.
         if not isinstance(themeIcon, QIcon) :
-            themeIcon = QIcon(ThemeButtons.DefaultThemeIconPath)
+            themeIcon = QIcon()
 
         #Theme button
         self.themeButton = QPushButton(themeName)
@@ -39,7 +39,7 @@ class ThemeButtons(QWidget):
         #Edit button
         self.editButton = QPushButton('Edit')
         self.editButton.setMaximumWidth(50)
-        self.editButton.clicked.connect(lambda *args: self.editThemeName(self.themeButton.text()))
+        self.editButton.clicked.connect(lambda *args: self.editTheme(self.themeButton.text()))
         layout.addWidget(self.editButton)
 
         #Remove button
@@ -60,16 +60,17 @@ class ThemeButtons(QWidget):
             self.mainWindow.playlist.setList(themeName,theme.tracks)
             self.mainWindow.playlist.toggleSuppressButton()
 
-    def editThemeName(self, themeName:str):
+    def editTheme(self, themeName:str):
         """Change the name of a theme both in the UI and in the library.
             Takes one parameter:
             - themeName as string
         """
-        newThemeName, ok = QInputDialog.getText(self,themeName,self.mainWindow.text.localisation('dialogBoxes','newTheme','question'))
+        newThemeName, newThemeIcon, ok = ThemeButtonDialogBox(self.mainWindow).getItems()
         category = self.mainWindow.library.get_category(themeName)
 
         if ok and category:
             self.themeButton.setText(newThemeName)
+            self.themeButton.setIcon(newThemeIcon)
             category.name = newThemeName
 
             if self.mainWindow.playlist.label.text() == themeName:
