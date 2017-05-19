@@ -4,7 +4,7 @@
 #Class responsible for the theme and its collection of buttons used in the themes widget
 #
 #Application: DragonShout music sampler
-#Last Edited: May 18th 2017
+#Last Edited: May 19th 2017
 #---------------------------------
 
 from classes.interface import MainWindow
@@ -18,19 +18,20 @@ from PyQt5.Qt import Qt
 class ThemeButtons(QWidget):
 
 
-    def __init__(self, themeName:str, themeIcon:QIcon, mainWindow:MainWindow):
+    def __init__(self, themeName:str, themeIconPath:str, mainWindow:MainWindow):
         super().__init__()
 
         self.mainWindow = mainWindow
         layout = QHBoxLayout()
 
-        #Verify if themeIcon is a QICon item and defaults it if not.
-        if not isinstance(themeIcon, QIcon) :
-            themeIcon = QIcon()
+        #Verify if themeIconPath is a QICon item and defaults it if not.
+        if themeIconPath == '' or not isinstance(themeIconPath, str) :
+            themeIconPath = ThemeButtonDialogBox.DefaultThemeIconPath
 
         #Theme button
         self.themeButton = QPushButton(themeName)
-        self.themeButton.setIcon(themeIcon)
+        self.themeIconPath = themeIconPath
+        self.themeButton.setIcon(QIcon(self.themeIconPath))
         self.themeButton.setIconSize(QSize(100,100))
         self.themeButton.setFlat(True)
         self.themeButton.clicked.connect(lambda *args: self.selectTheme(self.sender().text()))
@@ -65,13 +66,14 @@ class ThemeButtons(QWidget):
             Takes one parameter:
             - themeName as string
         """
-        newThemeName, newThemeIcon, ok = ThemeButtonDialogBox(self.mainWindow).getItems()
+        newThemeName, newThemeIconPath, ok = ThemeButtonDialogBox(self.mainWindow, self.themeButton.text(), self.themeIconPath).getItems()
         category = self.mainWindow.library.get_category(themeName)
 
         if ok and category:
             self.themeButton.setText(newThemeName)
-            self.themeButton.setIcon(newThemeIcon)
+            self.themeButton.setIcon(QIcon(newThemeIconPath))
             category.name = newThemeName
+            category.iconPath = newThemeIconPath
 
             if self.mainWindow.playlist.label.text() == themeName:
                 self.mainWindow.playlist.label.setText(newThemeName)

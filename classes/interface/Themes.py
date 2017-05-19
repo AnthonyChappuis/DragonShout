@@ -4,7 +4,7 @@
 #Class responsible for the themes' collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: May 18th 2017
+#Last Edited: May 19th 2017
 #---------------------------------
 
 from classes.interface import MainWindow
@@ -66,7 +66,7 @@ class Themes(QWidget):
         """
         self.reset()
         for theme in self.mainWindow.library.categories:
-            themeButton = ThemeButtons(theme.name,self.mainWindow)
+            themeButton = ThemeButtons(theme.name, theme.iconPath, self.mainWindow)
             self.themeButtonsLayout.addWidget(themeButton)
             self.themeButtons.append(themeButton)
 
@@ -77,15 +77,15 @@ class Themes(QWidget):
         """
         ok = False
 
-        themeName, themeIcon, ok = ThemeButtonDialogBox(self.mainWindow).getItems()
+        themeName, themeIconPath, ok = ThemeButtonDialogBox(self.mainWindow).getItems()
 
         if ok :
             if themeName == '' or not isinstance(themeName, str):
                 themeName = self.mainWindow.text.localisation('buttons','newTheme','caption')
-            self.mainWindow.library.add_category(themeName)
+            self.mainWindow.library.add_category(themeName,themeIconPath)
 
             #Theme widget
-            themeButton = ThemeButtons(themeName, themeIcon, self.mainWindow)
+            themeButton = ThemeButtons(themeName, themeIconPath, self.mainWindow)
             self.themeButtons.append(themeButton)
             self.themeButtonsLayout.addWidget(themeButton)
 

@@ -4,7 +4,7 @@
 #Handle the dialogbox used when adding a new theme button to the application
 #
 #Application: DragonShout music sampler
-#Last Edited: Mai 18th 2017
+#Last Edited: Mai 19th 2017
 #---------------------------------
 
 import os
@@ -20,11 +20,18 @@ class ThemeButtonDialogBox(QDialog):
 
     DefaultThemeIconPath = 'ressources/interface/defaultThemeIcon.png'
 
-    def __init__(self, mainWindow:MainWindow):
+    def __init__(self, mainWindow:MainWindow, themeName:str='notset', themeIconPath:str='notset'):
         super().__init__()
 
         self.mainWindow = mainWindow
         self.okOrNot = False
+
+        #parameters defaulting
+        if themeName == 'notset' or not isinstance(themeName, str):
+            themeName = self.mainWindow.text.localisation('dialogBoxes','newTheme','caption')
+
+        if themeIconPath == 'notset' or not isinstance(themeIconPath, str):
+            themeIconPath = ThemeButtonDialogBox.DefaultThemeIconPath
 
         #window title and icon
         self.setWindowIcon(QIcon(MainWindow.MainWindow.ApplicationIconPath))
@@ -32,13 +39,14 @@ class ThemeButtonDialogBox(QDialog):
 
         #Theme name
         self.themeNameLabel = QLabel(self.mainWindow.text.localisation('dialogBoxes','newTheme','question'))
-        self.themeName = QLineEdit(self.mainWindow.text.localisation('dialogBoxes','newTheme','caption'))
+        self.themeName = QLineEdit(themeName)
 
         #icon
         self.themeIconButtonLabel = QLabel(self.mainWindow.text.localisation('dialogBoxes','newIcon','question'))
+        self.iconPath = themeIconPath
 
         self.themeIconButton = QPushButton()
-        self.themeIconButton.setIcon(QIcon(ThemeButtonDialogBox.DefaultThemeIconPath))
+        self.themeIconButton.setIcon(QIcon(self.iconPath))
         self.themeIconButton.setIconSize(QSize(100,100))
         self.themeIconButton.setFlat(True)
         self.themeIconButton.clicked.connect(lambda *args: self.getNewIcon())
@@ -65,11 +73,11 @@ class ThemeButtonDialogBox(QDialog):
             Takes no parameter.
             Returns:
             - themeName as string.
-            - themeIcon as QIcon object.
+            - iconPath as string.
             - okOrNot as boolean.
         """
         self.exec()
-        return self.themeName.text(), self.themeIconButton.icon(), self.okOrNot
+        return self.themeName.text(), self.iconPath, self.okOrNot
 
     def getNewIcon(self):
         """Opens a filesystem dialog to choose a new icon file for the theme.
@@ -80,6 +88,7 @@ class ThemeButtonDialogBox(QDialog):
 
         if ok :
             self.themeIconButton.setIcon(QIcon(filepath))
+            self.iconPath = filepath
 
     def closeDialog(self, okOrNot:bool):
         """Close the dialog.

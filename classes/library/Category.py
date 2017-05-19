@@ -14,7 +14,7 @@
 #					_tracks as list
 #						Attribut containing the list of tracks for the category
 #
-#Modifications:
+#Last edited: May 19th 2017
 ###############################################################################
 
 from classes.library.Track import Track
@@ -47,7 +47,7 @@ class Category:
 		if "__class__" in data :
 			if data["__class__"] == "Category":
 				#Creating Category instance
-				category_object = Category(data["name"])
+				category_object = Category(data["name"], data["iconPath"])
 
 				#unserializing tracks for this category
 				track_list = []
@@ -60,8 +60,9 @@ class Category:
 	unserialize = classmethod(unserialize)
 
 	#constructor
-	def __init__(self,name: str):
+	def __init__(self,name: str, iconPath: str=''):
 		self._name = name
+		self._iconPath = iconPath
 		self._tracks = []
 		#Bumping category number
 		Category._category_number += 1
@@ -70,12 +71,19 @@ class Category:
 	def _get_name(self):
 		return self._name
 
+	def _get_iconPath(self):
+		return self._iconPath
+
 	def _get_tracks(self):
 		return self._tracks
+
 
 	#mutators
 	def _set_name(self,new_name: str):
 		self._name = new_name
+
+	def _set_iconPath(self,new_iconPath: str):
+		self._iconPath = new_iconPath
 
 	def _set_tracks(self,tracks: list):
 		self._tracks = tracks
@@ -84,6 +92,9 @@ class Category:
 	def _del_name(self):
 		del self._name
 
+	def _del_iconPath(self):
+		del self._iconPath
+
 	def _del_tracks(self):
 		del self._tracks
 
@@ -91,11 +102,15 @@ class Category:
 	def _help_name():
 		return "Contains the category name"
 
+	def _help_iconPath():
+		return "Contains the icon filepath for this category"
+
 	def _help_tracks():
 		return "contains the list of tracks for the given category"
 
 	#properties
 	name = property(_get_name,		_set_name,		_del_name,		_help_name)
+	iconPath = property(_get_iconPath,		_set_iconPath,		_del_iconPath,		_help_iconPath)
 	tracks = property(_get_tracks,	_set_tracks,	_del_tracks,	_help_tracks)
 
 	#methods
@@ -124,4 +139,5 @@ class Category:
 
 		return {"__class__": 	"Category",
 				"name":			self.name,
+				"iconPath":		self.iconPath,
 				"tracks":		track_list}
