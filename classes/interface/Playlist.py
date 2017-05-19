@@ -139,7 +139,7 @@ class Playlist(QWidget):
             - duration as integer (in msec).
         """
         self.durationBar.setMaximum(duration)
-        self.durationBar.setValue(self.ProgressStep)
+        self.durationBar.setValue(0)
         self.durationTimer.start()
 
     def updateDurationBar(self):
@@ -147,6 +147,7 @@ class Playlist(QWidget):
             Takes no parameter.
         """
         self.durationBar.setValue(self.durationBar.value()+self.ProgressStep)
+        self.durationBar.repaint()
 
         if self.durationBar.value() > self.durationBar.maximum():
             self.resetDurationBar()
