@@ -89,12 +89,10 @@ class MainWindow(QMainWindow):
         languageMenu = optionsMenu.addMenu(self.text.localisation('menuEntries','language','caption'))
 
         #Creating language actions
-        action = QAction(QIcon('ressources/interface/england.png'), 'English',self)
-        action.triggered.connect(lambda *args: self.changeLanguage(Text.SupportedLanguages['English']))
-        languageMenu.addAction(action)
-        action = QAction(QIcon('ressources/interface/France.png'), 'Français',self)
-        action.triggered.connect(lambda *args: self.changeLanguage(Text.SupportedLanguages['French']))
-        languageMenu.addAction(action)
+        for languageKey, languageValues in self.text.SupportedLanguages.items():
+            action = QAction(QIcon(languageValues['icon']), languageValues['caption'],self)
+            action.triggered.connect(lambda *args: self.changeLanguage(self.sender().text()))
+            languageMenu.addAction(action)
 
         #Splitter containing all other elements of MainWindow
         #----------------------------------------------------
@@ -115,7 +113,7 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(centralWidget)
 
-    def changeLanguage(self,language:str=Text.SupportedLanguages['English']):
+    def changeLanguage(self,language:str=Text.SupportedLanguages['English']['caption']):
         """Change the language of the application. Called by a signal emited when clicking on another language"""
         QMessageBox(QMessageBox.Information,self.text.localisation('messageBoxes','saveLanguage','title'),self.text.localisation('messageBoxes','saveLanguage','caption')).exec()
         self.text.saveLanguage(language)

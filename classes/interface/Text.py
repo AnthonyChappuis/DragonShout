@@ -12,7 +12,9 @@ import os
 
 class Text():
     LanguageFilePath = 'lang.txt'
-    SupportedLanguages = {'French' : 'fr', 'English' : 'en'}
+    SupportedLanguages = {  'French' : {'caption':'Français','icon':'ressources/interface/France.png'},
+                            'English' : {'caption': 'English','icon':'ressources/interface/england.png'}
+                        }
 
     def isSupportedLanguage(self, language:str):
         """Check if the given language is supported by the application
@@ -24,9 +26,8 @@ class Text():
         supported = False
 
         for supportedLanguageKey, supportedLanguageValue in Text.SupportedLanguages.items() :
-            if language == supportedLanguageValue :
+            if language == supportedLanguageValue['caption'] :
                 supported = True
-
         return supported
 
 
@@ -36,20 +37,20 @@ class Text():
             Takes no parameter.
             Returns nothing.
         """
-        #Check if the language file exist and create it uf necessary
+        #Check if the language file exist and create it if necessary
         if os.path.isfile(Text.LanguageFilePath) :
-            languageFile = open(Text.LanguageFilePath,'r')
+            languageFile = open(Text.LanguageFilePath,'r', encoding='utf-8')
             language = str.rstrip(languageFile.read())
         else:
-            language = Text.SupportedLanguages['English']
+            language = Text.SupportedLanguages['English']['caption']
             self.saveLanguage(language)
 
 
-        #Defaults to english is the language is not recognized as a supported language
+        #Defaults to english if the language is not recognized as a supported language
         if self.isSupportedLanguage(language) :
             self.language = language
         else:
-            self.language = Text.SupportedLanguages['English']
+            self.language = Text.SupportedLanguages['English']['caption']
 
     def saveLanguage(self, language:str):
         """Save the chosen language in lang.txt at the Text.LanguageFilePath location.
@@ -61,6 +62,7 @@ class Text():
 
         languageFile = open(Text.LanguageFilePath, 'w', encoding='utf-8')
         languageFile.write(language)
+        languageFile.close()
 
 
     def localisation(self,elementType:str,elementName:str,textType:str = 'caption'):
@@ -71,7 +73,7 @@ class Text():
         self.loadLanguage()
 
         #English
-        if self.language == Text.SupportedLanguages['English']:
+        if self.language == Text.SupportedLanguages['English']['caption']:
 
             buttons = {
                 'scene': {'caption':'Scene','toolTip':"Changes the scene and gives access to a new group of themes"},
@@ -115,7 +117,7 @@ class Text():
             }
 
         #French
-        if self.language == Text.SupportedLanguages['French']:
+        if self.language == Text.SupportedLanguages['French']['caption']:
             buttons = {
                 'scene': {'caption':'Scène','toolTip':"Change de scène et accède à un nouveau groupe de thèmes"},
                 'newTheme': {'caption':'Nouveau thème','toolTip':"Ajoute un nouveau thème"},
