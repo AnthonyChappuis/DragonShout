@@ -4,7 +4,7 @@
 #Class responsible for the playlist's collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: May 16th 2017
+#Last Edited: October 05th 2017
 #---------------------------------
 
 import os

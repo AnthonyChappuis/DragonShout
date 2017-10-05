@@ -4,7 +4,7 @@
 #This class handle the music for the application. Uses two separate QMediaPlayers
 #
 #Application: DragonShout music sampler
-#Last Edited: May 09th 2017
+#Last Edited: October 05th 2017
 #---------------------------------
 from classes.interface import MainWindow
 

@@ -5,7 +5,7 @@
 #It also manage which language is used when showing textes.
 #
 #Application: DragonShout music sampler
-#Last Edited: April 25th 2017
+#Last Edited: October 05th 2017
 #---------------------------------
 
 import os
