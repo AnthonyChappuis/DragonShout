@@ -97,7 +97,8 @@ class Text():
             messageBoxes = {
                 'deleteTheme': {'caption':'Do you really want to delete this theme ?', 'title':'Delete '},
                 'loadLibrary': {'caption':'Please load a valid DragonShout library !', 'title':'Invalid file'},
-                'saveLanguage': {'caption':'Restart the application to apply changes','title':'Language changed'}
+                'saveLanguage': {'caption':'Restart the application to apply changes','title':'Language changed'},
+                'loadMedia': {'caption':"Player encountered an error relative to the loaded music. Check that your file is supported by your operating system.",'title':'Missing codec or invalid file'}
             }
 
             dialogBoxes = {
@@ -139,7 +140,8 @@ class Text():
             messageBoxes = {
                 'deleteTheme': {'caption':'Voulez vous vraiment supprimer le thème ?', 'title':'Supprimer '},
                 'loadLibrary': {'caption':'Veillez charger une librairie DragonShout valide !', 'title':'Fichier invalide'},
-                'saveLanguage': {'caption':"Redémarrer l'application pour appliquer le changement.",'title':'Langue changée'}
+                'saveLanguage': {'caption':"Redémarrer l'application pour appliquer le changement.",'title':'Langue changée'},
+                'loadMedia': {'caption':"Le lecteur a rencontré une erreur en chargeant la musique. Vérifier que le fichier est pris en charge par votre système d'exploitation.",'title':'Codec manquant ou fichier invalide'}
             }
 
             dialogBoxes = {

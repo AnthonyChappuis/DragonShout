@@ -10,6 +10,7 @@ from classes.interface import MainWindow
 
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudio
 from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QMessageBox
 
 class MusicPlayer():
 
@@ -48,13 +49,19 @@ class MusicPlayer():
             Takes one parameter :
             - player as QMediaPlayer object.
         """
+        #Media loaded in the Player
         if player.mediaStatus() == QMediaPlayer.LoadedMedia:
             player.play()
             self.fadeSound(player,MusicPlayer.FadeIn)
             self.mainWindow.playlist.initiateDurationBar(player.duration())
 
+        #Player reached the end of the current media
         if player.mediaStatus() == QMediaPlayer.EndOfMedia:
             self.mainWindow.playlist.playNextMedia()
+
+        #Player encountered an error relative to the loaded media
+        if player.mediaStatus() == QMediaPlayer.InvalidMedia:
+            QMessageBox(QMessageBox.Critical,self.mainWindow.text.localisation('messageBoxes','loadMedia','title'),self.mainWindow.text.localisation('messageBoxes','loadMedia','caption')).exec()
 
     def changeVolume(self, volume:int):
         """Change the volume of the MusicPlayer.
