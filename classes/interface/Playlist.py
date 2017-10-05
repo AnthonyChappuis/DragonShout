@@ -138,6 +138,7 @@ class Playlist(QWidget):
             Takes one parameter:
             - duration as integer (in msec).
         """
+        self.resetDurationBar()
         self.durationBar.setMaximum(duration)
         self.durationBar.setValue(0)
         self.durationTimer.start()

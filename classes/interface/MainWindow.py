@@ -23,7 +23,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QPushButton, QVBoxLayout, QGridLayout, QFileDialog, QMessageBox)
 
 class MainWindow(QMainWindow):
-    
+
     SupportedLibraryFiles = '*.json'
     ApplicationIconPath = 'dragonShout.png'
     ApplicationName = 'Dragon Shout'
