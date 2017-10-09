@@ -12,6 +12,7 @@ import os
 from classes.interface.Text import Text
 from classes.interface.Playlist import Playlist
 from classes.interface.Themes import Themes
+from classes.interface.Sampler import Sampler
 
 from classes.library.Library import Library
 
@@ -41,6 +42,7 @@ class MainWindow(QMainWindow):
 
         self.themes = Themes(self)
         self.playlist = Playlist(self)
+        self.sampler = Sampler(self)
 
         self.menuBar()
 
@@ -104,6 +106,9 @@ class MainWindow(QMainWindow):
 
         #Playlist
         mainHorizontalSplitter.addWidget(self.playlist)
+
+        #Sampler
+        mainHorizontalSplitter.addWidget(self.sampler)
 
         #adding the splitter containing the main elements to the window
         genericLayout = QHBoxLayout()
