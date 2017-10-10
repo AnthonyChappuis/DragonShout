@@ -20,10 +20,49 @@ class Sampler(QWidget):
 
         self.mainWindow = mainWindow
 
-        self.sampleButtons = []
+        self.sampleButtons = [[]]
+        self.lastRowIndex = 0
+
+        self.MAXBUTTONPERROW = 4
 
         self.mainLayout = QGridLayout()
         self.mainLayout.setAlignment(Qt.Qt.AlignHCenter)
         self.setLayout(self.mainLayout)
 
-        self.mainLayout.addWidget(QPushButton())
+        self.addSampleButton()
+        self.addSampleButton()
+        self.addSampleButton()
+        self.addSampleButton()
+        self.addSampleButton()
+        self.addSampleButton()
+        self.addSampleButton()
+
+        self.constructGrid()
+
+
+    def constructGrid(self):
+        """Constructs the buttons' grid according to the self.sampleButtons property
+            - Takes no parameter.
+            - Returns nothing
+        """
+        row = 0
+        while row <= self.lastRowIndex:
+            maxColumn = len(self.sampleButtons[row])
+            column = 0
+            while column < maxColumn:
+                self.mainLayout.addWidget(self.sampleButtons[row][column],row,column)
+                column += 1
+            row += 1
+
+    def addSampleButton(self):
+        """Append a new QPushButton to self.sampleButtons.
+            - Takes no parameter.
+            - Returns nothing.
+        """
+        #Check if the last row is full according to self.MAXBUTTONPERROW.
+        #It begins a new row if necessary
+        if len(self.sampleButtons[self.lastRowIndex]) >= self.MAXBUTTONPERROW:
+            self.sampleButtons.append([])
+            self.lastRowIndex += 1
+
+        self.sampleButtons[self.lastRowIndex].append(QPushButton())
