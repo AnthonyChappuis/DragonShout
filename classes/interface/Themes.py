@@ -22,12 +22,16 @@ class Themes(QWidget):
 
         self.mainWindow = mainWindow
         self.themeButtons = []
+
+        #Main layout
         self.mainLayout = QVBoxLayout()
         self.mainLayout.setAlignment(Qt.Qt.AlignHCenter)
         self.setLayout(self.mainLayout)
 
+        #New theme button
         self.addNewThemeButton(self.mainLayout)
 
+        #theme buttons layout
         self.themeButtonsLayout = QVBoxLayout()
         self.themeButtonsLayout.setAlignment(Qt.Qt.AlignHCenter)
         themeButtonsWidget = QWidget()
