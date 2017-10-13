@@ -51,8 +51,6 @@ class MainWindow(QMainWindow):
         self.playlist = Playlist(self)
         self.sampler = Sampler(self)
 
-        self.SPLITTERHANDLEWIDTH = 20
-
         self.menuBar()
 
         self.setGUI()
@@ -108,7 +106,6 @@ class MainWindow(QMainWindow):
         #Splitter containing all other elements of MainWindow
         #----------------------------------------------------
         mainHorizontalSplitter = QSplitter()
-        mainHorizontalSplitter.setHandleWidth(self.SPLITTERHANDLEWIDTH)
         windowWidth = self.geometry().width()
 
         #Theme selection and controls
