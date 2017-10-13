@@ -63,7 +63,7 @@ class Sampler(QWidget):
             - Takes no parameter.
             - Returns nothing.
         """
-        self.newSampleButton = QPushButton('New sample')
+        self.newSampleButton = QPushButton(self.mainWindow.text.localisation('buttons','addSample','caption'))
         self.newSampleButton.clicked.connect(lambda *args: self.addSampleButton())
         self.mainLayout.addWidget(self.newSampleButton)
 

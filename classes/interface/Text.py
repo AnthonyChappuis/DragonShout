@@ -81,7 +81,8 @@ class Text():
                 'addMusic': {'caption':'Add a music','toolTip':'Add a music to the selected theme'},
                 'removeMusic': {'caption':'Remove a music','toolTip': 'Remove selected music from the selected theme'},
                 'ok' : {'caption':'OK'},
-                'cancel' : {'caption':'Cancel'}
+                'cancel' : {'caption':'Cancel'},
+                'addSample': {'caption':'Add an effect','toolTip':"Add a new effect button to the sampler"}
             }
 
             menus = {
@@ -124,7 +125,8 @@ class Text():
                 'addMusic': {'caption':'Ajouter une musique','toolTip':'Ajouter une piste musicale au thème sélectioné'},
                 'removeMusic': {'caption':'Supprimer la musique','toolTip': 'Supprimer la musique choisie du thème sélectionné'},
                 'ok' : {'caption':'OK'},
-                'cancel' : {'caption':'Annuler'}
+                'cancel' : {'caption':'Annuler'},
+                'addSample': {'caption':'Ajouter un effet','toolTip':"Ajouter un nouveau bouton d'effet au sampler"}
             }
 
             menus =  {
