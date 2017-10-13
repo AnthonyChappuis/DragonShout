@@ -33,22 +33,18 @@ class Sampler(QWidget):
         #New sample button
         self.addNewSampleButton()
 
-        self.addSampleButton()
-        self.addSampleButton()
-        self.addSampleButton()
-        self.addSampleButton()
-        self.addSampleButton()
-        self.addSampleButton()
-
         #Sample buttons grid layout
-        self.constructGrid()
+        self.sampleButtonsGridLayout = self.constructGrid()
+        buttonGrid = QWidget()
+        buttonGrid.setLayout(self.sampleButtonsGridLayout)
+        self.mainLayout.addWidget(buttonGrid)
 
         self.mainLayout.addStretch(1)
 
     def constructGrid(self):
         """Constructs the buttons' grid according to the self.sampleButtons property
             - Takes no parameter.
-            - Returns nothing
+            - Returns a QGridLayout containing the sample buttons.
         """
         gridLayout = QGridLayout()
         row = 0
@@ -60,16 +56,16 @@ class Sampler(QWidget):
                 column += 1
             row += 1
 
-        buttonGrid = QWidget()
-        buttonGrid.setLayout(gridLayout)
-        self.mainLayout.addWidget(buttonGrid)
+        return gridLayout
 
     def addNewSampleButton(self):
         """Add the 'Add a new sample button' button to the interface.
             - Takes no parameter.
             - Returns nothing.
         """
-        self. mainLayout.addWidget(QPushButton('New sample'))
+        self.newSampleButton = QPushButton('New sample')
+        self.newSampleButton.clicked.connect(lambda *args: self.addSampleButton())
+        self.mainLayout.addWidget(self.newSampleButton)
 
 
     def addSampleButton(self):
@@ -79,8 +75,15 @@ class Sampler(QWidget):
         """
         #Check if the last row is full according to self.MAXBUTTONPERROW.
         #It begins a new row if necessary
-        if len(self.sampleButtons[self.lastRowIndex]) >= self.MAXBUTTONPERROW:
+        buttonColumn = len(self.sampleButtons[self.lastRowIndex])
+        if buttonColumn >= self.MAXBUTTONPERROW:
             self.sampleButtons.append([])
             self.lastRowIndex += 1
+            buttonColumn = 0
 
-        self.sampleButtons[self.lastRowIndex].append(QPushButton(str(self.lastRowIndex)))
+        sampleButton = QPushButton(str(self.lastRowIndex))
+        buttonRow = self.lastRowIndex
+
+        self.sampleButtons[self.lastRowIndex].append(sampleButton)
+
+        self.sampleButtonsGridLayout.addWidget(sampleButton,buttonRow,buttonColumn)
