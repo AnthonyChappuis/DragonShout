@@ -70,7 +70,6 @@ class Sampler(QWidget):
             - Returns nothing.
         """
         self. mainLayout.addWidget(QPushButton('New sample'))
-        #self.mainLayout.addWidget(QSpacer())
 
 
     def addSampleButton(self):

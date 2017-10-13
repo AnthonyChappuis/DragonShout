@@ -32,9 +32,16 @@ class MainWindow(QMainWindow):
     def __init__(self,application:QApplication):
         super().__init__()
 
+        #Global style sheet
+        self.GLOBALSTYLESHEETPATH = "ressources/interface/global.css"
+        styleSheet = open(self.GLOBALSTYLESHEETPATH,'r', encoding='utf-8').read()
+        self.setStyleSheet(styleSheet)
+
+        #Window decoration
         self.setWindowTitle(MainWindow.ApplicationName)
         self.setWindowIcon(QIcon(MainWindow.ApplicationIconPath))
 
+        #Variable and CONSTANTS
         self.text = Text()
 
         self.library = ''
