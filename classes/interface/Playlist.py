@@ -189,7 +189,21 @@ class Playlist(QWidget):
         """Remove the selected music from the tracklist.
             Takes no parameter.
         """
-        print('delete')
+        track = self.trackList.currentItem()
+        category = self.label.text()
+        library = self.mainWindow.library
+
+        #Parsing library to find current category
+        for libCategory in library.categories :
+            if libCategory.name == category :
+                #Parsing category to find the selected track
+                for libTrack in libCategory.tracks :
+                    if libTrack.name == track.text() :
+                        #Delete the track in the category
+                        libCategory.remove_track(libTrack)
+                        #Delete the list entry
+                        for item in self.trackList.selectedItems():
+                            self.trackList.takeItem(self.trackList.row(item))
 
     def toggleSuppressButton(self):
         """(De)activate the suppress button.
