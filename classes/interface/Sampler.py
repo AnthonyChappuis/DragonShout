@@ -4,10 +4,11 @@
 #This class manage the buttons of the sampler function.
 #
 #Application: DragonShout music sampler
-#Last Edited: October 09th 2017
+#Last Edited: October 18th 2017
 #---------------------------------
 
 from classes.interface import MainWindow
+from classes.interface.SoundEffect import SoundEffect
 
 from PyQt5 import Qt
 
@@ -81,9 +82,18 @@ class Sampler(QWidget):
             self.lastRowIndex += 1
             buttonColumn = 0
 
-        sampleButton = QPushButton(str(self.lastRowIndex))
+        sampleButton = SoundEffect()
+        sampleButton.clicked.connect(lambda *args: self.playSoundEffect())
         buttonRow = self.lastRowIndex
 
         self.sampleButtons[self.lastRowIndex].append(sampleButton)
 
         self.sampleButtonsGridLayout.addWidget(sampleButton,buttonRow,buttonColumn)
+
+    def playSoundEffect(self, soundEffect:str='test'):
+        """Called when a soundEffect button is clicked.
+            - Takes one parameter:
+                - soundEffect as soundEffect Object.
+            - Returns nothing.
+        """
+        print(soundEffect)

@@ -24,7 +24,7 @@ class ThemeButtons(QWidget):
         self.mainWindow = mainWindow
         layout = QHBoxLayout()
 
-        #Verify if themeIconPath is a QICon item and defaults it if not.
+        #Verify if themeIconPath is a str item and defaults it if not.
         if themeIconPath == '' or not isinstance(themeIconPath, str) :
             themeIconPath = ThemeButtonDialogBox.DefaultThemeIconPath
 
