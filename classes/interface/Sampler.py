@@ -11,7 +11,9 @@ from classes.interface import MainWindow
 from classes.interface.SoundEffect import SoundEffect
 
 from PyQt5 import Qt
+from PyQt5.QtCore import QUrl
 
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QVBoxLayout
 
 class Sampler(QWidget):
@@ -20,6 +22,7 @@ class Sampler(QWidget):
         super().__init__()
 
         self.mainWindow = mainWindow
+        self.samplePlayer = QMediaPlayer()
 
         self.sampleButtons = [[]]
         self.lastRowIndex = 0
@@ -83,17 +86,20 @@ class Sampler(QWidget):
             buttonColumn = 0
 
         sampleButton = SoundEffect()
-        sampleButton.clicked.connect(lambda *args: self.playSoundEffect())
+        sampleButton.clicked.connect(lambda *args: self.playSoundEffect(self.sender()))
         buttonRow = self.lastRowIndex
 
         self.sampleButtons[self.lastRowIndex].append(sampleButton)
 
         self.sampleButtonsGridLayout.addWidget(sampleButton,buttonRow,buttonColumn)
 
-    def playSoundEffect(self, soundEffect:str='test'):
+    def playSoundEffect(self, soundEffect:SoundEffect):
         """Called when a soundEffect button is clicked.
             - Takes one parameter:
                 - soundEffect as soundEffect Object.
             - Returns nothing.
         """
-        print(soundEffect)
+        print(str(soundEffect))
+        media = QMediaContent(QUrl.fromLocalFile(soundEffect.filepath))
+        self.samplePlayer.setMedia(media)
+        self.samplePlayer.play()

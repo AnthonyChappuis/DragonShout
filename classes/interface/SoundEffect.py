@@ -16,15 +16,15 @@ from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
 
 class SoundEffect(QPushButton):
 
-    def __init__(self, soundEffectFilePath:str='', soundEffectIconPath:str=''):
+    def __init__(self, soundEffectFilePath:str="C:\\Users\\Ardias\\Music\\Manran\\The Test\\10k-Tattie.mp3", soundEffectIconPath:str=''):
         super().__init__()
 
         self.filepath = soundEffectFilePath
         self.text = QFileInfo(soundEffectFilePath).fileName()
+        self.setFlat(True)
 
         #Verify if soundEffectIconPath is an str item and defaults it if not.
         if soundEffectIconPath == '' or not isinstance(soundEffectIconPath, str) :
             soundEffectIconPath = ThemeButtonDialogBox.DefaultThemeIconPath
         self.soundEffectIconPath = soundEffectIconPath
-
-        self.icon = QIcon(self.soundEffectIconPath)
+        self.setIcon(QIcon(self.soundEffectIconPath))
