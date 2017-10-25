@@ -5,7 +5,7 @@
 # It heritates from QPushButton.
 #
 #Application: DragonShout music sampler
-#Last Edited: October 18th 2017
+#Last Edited: October 25th 2017
 #---------------------------------
 
 from PyQt5.QtGui import QIcon

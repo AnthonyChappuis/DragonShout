@@ -106,6 +106,7 @@ class Text():
 
             dialogBoxes = {
                 'newTheme': {'caption':'New theme','toolTip':'Name the new theme','question':'Enter the theme name :'},
+                'newSample': {'caption':'New sound effect','toolTip':'Choose a new sound effect','question':'Choose a new sound effect :'},
                 'addMusic': {'caption':'Choose a track to add to this theme','toolTip':'Navigate the drive for a track to add to the theme'},
                 'saveLibrary': {'title':'Save your work'},
                 'newIcon': {'question':'Change the icon :'}
@@ -150,6 +151,7 @@ class Text():
 
             dialogBoxes = {
                 'newTheme': {'caption':'Nouveau thème','toolTip':'Nommer le nouveau thème','question':'Entrer le nom du thème :'},
+                'newSample': {'caption':'Nouvel effet sonore','toolTip':'Choisir un nouvel effet sonore','question':'Sélectionner un nouvel effet sonore :'},
                 'addMusic': {'caption':'Choisir un morceau à ajouter au thème','toolTip':"Parcours le disque à la recherche d'un morceau à ajouter au thème"},
                 'saveLibrary': {'title':'Sauver votre travail'},
                 'newIcon': {'question':"Changer l'icone :"}

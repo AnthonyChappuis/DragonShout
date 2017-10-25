@@ -4,11 +4,12 @@
 #This class manage the buttons of the sampler function.
 #
 #Application: DragonShout music sampler
-#Last Edited: October 18th 2017
+#Last Edited: October 25th 2017
 #---------------------------------
 
 from classes.interface import MainWindow
 from classes.interface.SoundEffect import SoundEffect
+from classes.interface.SampleButtonDialogBox import SampleButtonDialogBox
 
 from PyQt5 import Qt
 from PyQt5.QtCore import QUrl
@@ -79,19 +80,22 @@ class Sampler(QWidget):
         """
         #Check if the last row is full according to self.MAXBUTTONPERROW.
         #It begins a new row if necessary
-        buttonColumn = len(self.sampleButtons[self.lastRowIndex])
-        if buttonColumn >= self.MAXBUTTONPERROW:
-            self.sampleButtons.append([])
-            self.lastRowIndex += 1
-            buttonColumn = 0
+        path,icon, ok = SampleButtonDialogBox(self.mainWindow).getItems()
 
-        sampleButton = SoundEffect()
-        sampleButton.clicked.connect(lambda *args: self.playSoundEffect(self.sender()))
-        buttonRow = self.lastRowIndex
+        if ok :
+            buttonColumn = len(self.sampleButtons[self.lastRowIndex])
+            if buttonColumn >= self.MAXBUTTONPERROW:
+                self.sampleButtons.append([])
+                self.lastRowIndex += 1
+                buttonColumn = 0
 
-        self.sampleButtons[self.lastRowIndex].append(sampleButton)
+            sampleButton = SoundEffect(path,icon)
+            sampleButton.clicked.connect(lambda *args: self.playSoundEffect(self.sender()))
+            buttonRow = self.lastRowIndex
 
-        self.sampleButtonsGridLayout.addWidget(sampleButton,buttonRow,buttonColumn)
+            self.sampleButtons[self.lastRowIndex].append(sampleButton)
+
+            self.sampleButtonsGridLayout.addWidget(sampleButton,buttonRow,buttonColumn)
 
     def playSoundEffect(self, soundEffect:SoundEffect):
         """Called when a soundEffect button is clicked.
