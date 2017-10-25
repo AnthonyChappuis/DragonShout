@@ -21,7 +21,6 @@ class SoundEffect(QPushButton):
 
         self.filepath = soundEffectFilePath
         self.text = QFileInfo(soundEffectFilePath).fileName()
-        self.setFlat(True)
 
         #Verify if soundEffectIconPath is an str item and defaults it if not.
         if soundEffectIconPath == '' or not isinstance(soundEffectIconPath, str) :
