@@ -4,7 +4,7 @@
 #This class manage the buttons of the sampler function.
 #
 #Application: DragonShout music sampler
-#Last Edited: October 25th 2017
+#Last Edited: November 01st 2017
 #---------------------------------
 
 from classes.interface import MainWindow
@@ -15,7 +15,7 @@ from PyQt5 import Qt
 from PyQt5.QtCore import QUrl
 
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QVBoxLayout, QHBoxLayout
 
 class Sampler(QWidget):
 
@@ -28,6 +28,8 @@ class Sampler(QWidget):
         self.sampleButtons = [[]]
         self.lastRowIndex = 0
 
+        self.editMode = False
+
         self.MAXBUTTONPERROW = 4
 
         #Main layout
@@ -35,8 +37,8 @@ class Sampler(QWidget):
         self.mainLayout.setAlignment(Qt.Qt.AlignHCenter)
         self.setLayout(self.mainLayout)
 
-        #New sample button
-        self.addNewSampleButton()
+        #Control buttons
+        self.addControlButtons()
 
         #Sample buttons grid layout
         self.sampleButtonsGridLayout = self.constructGrid()
@@ -63,15 +65,39 @@ class Sampler(QWidget):
 
         return gridLayout
 
-    def addNewSampleButton(self):
-        """Add the 'Add a new sample button' button to the interface.
+    def addControlButtons(self):
+        """Add the the control buttons to the interface.
             - Takes no parameter.
             - Returns nothing.
         """
+        #New sample button
         self.newSampleButton = QPushButton(self.mainWindow.text.localisation('buttons','addSample','caption'))
         self.newSampleButton.clicked.connect(lambda *args: self.addSampleButton())
-        self.mainLayout.addWidget(self.newSampleButton)
 
+        #Toggle edit mode button
+        self.toggleEditModeButton = QPushButton('Edit')
+        self.toggleEditModeButton.clicked.connect(lambda *args: self.toggleEditMode())
+
+        #Add to layout
+        controlLayout = QHBoxLayout()
+        controlLayout.addWidget(self.newSampleButton)
+        controlLayout.addWidget(self.toggleEditModeButton)
+        controlWidget = QWidget()
+        controlWidget.setLayout(controlLayout)
+        self.mainLayout.addWidget(controlWidget)
+
+    def toggleEditMode(self):
+        """Activate or deactivate edit mode for the sampler.
+            - Takes no parameter.
+            - Returns nothing.
+        """
+        if self.editMode == True:
+            self.editMode = False
+            self.toggleEditModeButton.setStyleSheet('')
+        else :
+            self.editMode = True
+            styleSheet = open('ressources/interface/toggleEditModeButton.css','r', encoding='utf-8').read()
+            self.toggleEditModeButton.setStyleSheet(styleSheet)
 
     def addSampleButton(self):
         """Append a new QPushButton to self.sampleButtons.

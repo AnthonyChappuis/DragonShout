@@ -16,7 +16,7 @@ from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
 
 class SoundEffect(QPushButton):
 
-    def __init__(self, soundEffectFilePath:str="C:\\Users\\Ardias\\Music\\Manran\\The Test\\10k-Tattie.mp3", soundEffectIconPath:str=''):
+    def __init__(self, soundEffectFilePath:str='', soundEffectIconPath:str=''):
         super().__init__()
 
         self.filepath = soundEffectFilePath
