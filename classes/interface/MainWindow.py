@@ -33,7 +33,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         #Global style sheet
-        self.GLOBALSTYLESHEETPATH = "ressources/interface/global.css"
+        self.GLOBALSTYLESHEETPATH = "ressources/interface/stylesheets/global.css"
         styleSheet = open(self.GLOBALSTYLESHEETPATH,'r', encoding='utf-8').read()
         self.setStyleSheet(styleSheet)
 

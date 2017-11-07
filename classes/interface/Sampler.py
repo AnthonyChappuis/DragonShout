@@ -19,6 +19,14 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QVBoxLayout, QHBo
 
 class Sampler(QWidget):
 
+    #Sampler modes
+    PLAYMODE = '0'
+    EDITMODE = '1'
+    DELETEMODE = '2'
+
+    #Sampler styleSheets
+    ACTIVEBUTTONSSTYLESHEETPATH = 'ressources/interface/stylesheets/activeSamplerToggleButtons.css'
+
     def __init__(self, mainWindow:MainWindow):
         super().__init__()
 
@@ -28,7 +36,7 @@ class Sampler(QWidget):
         self.sampleButtons = [[]]
         self.lastRowIndex = 0
 
-        self.editMode = False
+        self.samplerMode = Sampler.PLAYMODE
 
         self.MAXBUTTONPERROW = 4
 
@@ -40,6 +48,7 @@ class Sampler(QWidget):
         #Control buttons
         self.addControlButtons()
 
+
         #Sample buttons grid layout
         self.sampleButtonsGridLayout = self.constructGrid()
         buttonGrid = QWidget()
@@ -47,6 +56,13 @@ class Sampler(QWidget):
         self.mainLayout.addWidget(buttonGrid)
 
         self.mainLayout.addStretch(1)
+
+        self.addSampleButton()
+        self.addSampleButton()
+        self.addSampleButton()
+        self.addSampleButton()
+        self.addSampleButton()
+        self.addSampleButton()
 
     def constructGrid(self):
         """Constructs the buttons' grid according to the self.sampleButtons property
@@ -76,28 +92,59 @@ class Sampler(QWidget):
 
         #Toggle edit mode button
         self.toggleEditModeButton = QPushButton('Edit')
-        self.toggleEditModeButton.clicked.connect(lambda *args: self.toggleEditMode())
+        self.toggleEditModeButton.clicked.connect(lambda *args: self.toggleMode(Sampler.EDITMODE))
+
+        #Toggle delete button
+        self.toggleDeleteModeButton = QPushButton('Delete')
+        self.toggleDeleteModeButton.clicked.connect(lambda *args: self.toggleMode(Sampler.DELETEMODE))
 
         #Add to layout
         controlLayout = QHBoxLayout()
         controlLayout.addWidget(self.newSampleButton)
         controlLayout.addWidget(self.toggleEditModeButton)
+        controlLayout.addWidget(self.toggleDeleteModeButton)
         controlWidget = QWidget()
         controlWidget.setLayout(controlLayout)
         self.mainLayout.addWidget(controlWidget)
 
-    def toggleEditMode(self):
-        """Activate or deactivate edit mode for the sampler.
-            - Takes no parameter.
+    def toggleMode(self, samplerMode:int):
+        """Activate or deactivate different mode for the sampler.
+            - Takes one parameter:
+                - samplerMode as One of the Sampler constants: PLAYMODE, EDITMODE, DELETEMODE.
             - Returns nothing.
         """
-        if self.editMode == True:
-            self.editMode = False
-            self.toggleEditModeButton.setStyleSheet('')
-        else :
-            self.editMode = True
-            styleSheet = open('ressources/interface/toggleEditModeButton.css','r', encoding='utf-8').read()
-            self.toggleEditModeButton.setStyleSheet(styleSheet)
+        if samplerMode == Sampler.EDITMODE:
+            #Checks if Edit mode is already active
+            if self.samplerMode == Sampler.EDITMODE:
+                #Deactivate Edit mode and returns to Play mode
+                self.samplerMode = Sampler.PLAYMODE
+                self.toggleEditModeButton.setStyleSheet(None)
+                self.toggleDeleteModeButton.setStyleSheet(None)
+            else:
+                #Activate Edit mode
+                self.samplerMode = samplerMode
+                styleSheet = open(Sampler.ACTIVEBUTTONSSTYLESHEETPATH,'r', encoding='utf-8').read()
+                self.toggleEditModeButton.setStyleSheet(styleSheet)
+                self.toggleDeleteModeButton.setStyleSheet(None)
+
+        elif samplerMode == Sampler.DELETEMODE:
+            #Checks if Delete mode is already active
+            if self.samplerMode == Sampler.DELETEMODE:
+                #Deactivate Delete mode and returns to Play mode
+                self.samplerMode = Sampler.PLAYMODE
+                self.toggleEditModeButton.setStyleSheet(None)
+                self.toggleDeleteModeButton.setStyleSheet(None)
+            else:
+                #Activate Delete mode
+                self.samplerMode = samplerMode
+                styleSheet = open(Sampler.ACTIVEBUTTONSSTYLESHEETPATH,'r', encoding='utf-8').read()
+                self.toggleEditModeButton.setStyleSheet(None)
+                self.toggleDeleteModeButton.setStyleSheet(styleSheet)
+
+        else:
+            self.samplerMode = Sampler.PLAYMODE
+            self.toggleEditModeButton.setStyleSheet(None)
+            self.toggleDeleteButton.setStyleSheet(None)
 
     def addSampleButton(self):
         """Append a new QPushButton to self.sampleButtons.
@@ -106,7 +153,10 @@ class Sampler(QWidget):
         """
         #Check if the last row is full according to self.MAXBUTTONPERROW.
         #It begins a new row if necessary
-        path,icon, ok = SampleButtonDialogBox(self.mainWindow).getItems()
+        #path,icon, ok = SampleButtonDialogBox(self.mainWindow).getItems()
+        ok = True
+        path = ''
+        icon = ''
 
         if ok :
             buttonColumn = len(self.sampleButtons[self.lastRowIndex])
@@ -122,6 +172,16 @@ class Sampler(QWidget):
             self.sampleButtons[self.lastRowIndex].append(sampleButton)
 
             self.sampleButtonsGridLayout.addWidget(sampleButton,buttonRow,buttonColumn)
+
+    def removeSampleButton(self, sampleButton:SoundEffect):
+        """Remove a sample button, require the edit mode.
+            - Takes one parameter:
+                - sampleButton as SoundEffect object.
+            - Returns nothing.
+        """
+        #Checks if edit mode is active:
+        if self.samplerMode:
+            self.sampleButtonsGridLayout.removeWidget(sampleButton)
 
     def playSoundEffect(self, soundEffect:SoundEffect):
         """Called when a soundEffect button is clicked.
