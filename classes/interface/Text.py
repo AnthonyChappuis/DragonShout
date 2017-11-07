@@ -82,7 +82,9 @@ class Text():
                 'removeMusic': {'caption':'Remove a music','toolTip': 'Remove selected music from the selected theme'},
                 'ok' : {'caption':'OK'},
                 'cancel' : {'caption':'Cancel'},
-                'addSample': {'caption':'Add an effect','toolTip':"Add a new effect button to the sampler"}
+                'addSample': {'caption':'Add an effect','toolTip':"Add a new effect button to the sampler"},
+                'samplerEditButton': {'caption':'Edit','toolTip':'Activate edit mode to change a sound effect. Click againg to deactivate.'},
+                'samplerDeleteButton': {'caption':'Delete','toolTip':'Activate delete mode to suppress sound effects. Click again to deactivate.'}
             }
 
             menus = {
@@ -127,7 +129,9 @@ class Text():
                 'removeMusic': {'caption':'Supprimer la musique','toolTip': 'Supprimer la musique choisie du thème sélectionné'},
                 'ok' : {'caption':'OK'},
                 'cancel' : {'caption':'Annuler'},
-                'addSample': {'caption':'Ajouter un effet','toolTip':"Ajouter un nouveau bouton d'effet au sampler"}
+                'addSample': {'caption':'Ajouter un effet','toolTip':"Ajouter un nouveau bouton d'effet au sampler"},
+                'samplerEditButton': {'caption':'Modifier','toolTip':'Active le mode édition pour modifier les effets sonores. Cliquer à nouveau pour désactiver'},
+                'samplerDeleteButton': {'caption':'Supprimer','toolTip':'Active le mode suppression pour retirer les effets sonores. Cliquer à nouveau pour désactiver'}
             }
 
             menus =  {

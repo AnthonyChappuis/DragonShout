@@ -84,11 +84,11 @@ class Sampler(QWidget):
         self.newSampleButton.clicked.connect(lambda *args: self.addSampleButton())
 
         #Toggle edit mode button
-        self.toggleEditModeButton = QPushButton('Edit')
+        self.toggleEditModeButton = QPushButton(self.mainWindow.text.localisation('buttons','samplerEditButton','caption'))
         self.toggleEditModeButton.clicked.connect(lambda *args: self.toggleMode(Sampler.EDITMODE))
 
         #Toggle delete button
-        self.toggleDeleteModeButton = QPushButton('Delete')
+        self.toggleDeleteModeButton = QPushButton(self.mainWindow.text.localisation('buttons','samplerDeleteButton','caption'))
         self.toggleDeleteModeButton.clicked.connect(lambda *args: self.toggleMode(Sampler.DELETEMODE))
 
         #Add to layout
