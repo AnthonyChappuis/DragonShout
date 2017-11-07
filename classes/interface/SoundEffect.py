@@ -16,6 +16,8 @@ from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
 
 class SoundEffect(QPushButton):
 
+    BUTTONSTYLESHEETPATH = 'ressources/interface/stylesheets/soundEffectButtons.css'
+
     def __init__(self, soundEffectFilePath:str='', soundEffectIconPath:str=''):
         super().__init__()
 
@@ -26,4 +28,6 @@ class SoundEffect(QPushButton):
         if soundEffectIconPath == '' or not isinstance(soundEffectIconPath, str) :
             soundEffectIconPath = ThemeButtonDialogBox.DefaultThemeIconPath
         self.soundEffectIconPath = soundEffectIconPath
+        styleSheets = open(SoundEffect.BUTTONSTYLESHEETPATH,'r',encoding='utf-8').read()
+        self.setStyleSheet(styleSheets)
         self.setIcon(QIcon(self.soundEffectIconPath))

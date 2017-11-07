@@ -1,0 +1,24 @@
+SoundEffect
+  {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5%;
+    border-top-color: white;
+    border-left-color: white;
+    border-right-color: grey;
+    border-bottom-color: grey;
+
+    padding: 5%;
+
+    min-width: 50px;
+    min-height: 50px;
+  }
+
+SoundEffect:pressed
+  {
+    background-color: rgb(200, 200, 200);
+    border-top-color: grey;
+    border-left-color: grey;
+    border-right-color: white;
+    border-bottom-color: white;
+  }

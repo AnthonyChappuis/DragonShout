@@ -57,13 +57,6 @@ class Sampler(QWidget):
 
         self.mainLayout.addStretch(1)
 
-        self.addSampleButton()
-        self.addSampleButton()
-        self.addSampleButton()
-        self.addSampleButton()
-        self.addSampleButton()
-        self.addSampleButton()
-
     def constructGrid(self):
         """Constructs the buttons' grid according to the self.sampleButtons property
             - Takes no parameter.
@@ -153,10 +146,7 @@ class Sampler(QWidget):
         """
         #Check if the last row is full according to self.MAXBUTTONPERROW.
         #It begins a new row if necessary
-        #path,icon, ok = SampleButtonDialogBox(self.mainWindow).getItems()
-        ok = True
-        path = ''
-        icon = ''
+        path,icon, ok = SampleButtonDialogBox(self.mainWindow).getItems()
 
         if ok :
             buttonColumn = len(self.sampleButtons[self.lastRowIndex])
