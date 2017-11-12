@@ -181,7 +181,14 @@ class Sampler(QWidget):
         """
         #Checks sampler's mode
         if self.samplerMode == Sampler.EDITMODE:
-            print('edit')
+            for rowIndex, buttonRow in enumerate(self.sampleButtons):
+                for columnIndex, storedButton in enumerate(buttonRow):
+                    if soundEffect == storedButton:
+                        filepath,iconPath,ok = SampleButtonDialogBox(self.mainWindow,soundEffect.filepath,soundEffect.iconPath).getItems()
+                        if ok :
+                            self.sampleButtons[rowIndex][columnIndex].changeFile(filepath)
+                            self.sampleButtons[rowIndex][columnIndex].changeIcon(iconPath)
+
         elif self.samplerMode == Sampler.DELETEMODE:
             print('delete')
         else: #Any other cases defaults to playmode

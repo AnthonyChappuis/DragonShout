@@ -21,7 +21,7 @@ class SampleButtonDialogBox(QDialog):
 
     DefaultSampleIconPath = 'ressources/interface/defaultThemeIcon.png'
 
-    def __init__(self, mainWindow:MainWindow, samplePath:str='', sampleIconPath:str='notset'):
+    def __init__(self, mainWindow:MainWindow, samplePath:str='...', sampleIconPath:str='notset'):
         super().__init__()
 
         self.mainWindow = mainWindow
@@ -39,7 +39,7 @@ class SampleButtonDialogBox(QDialog):
         self.samplePath = samplePath
         self.sampleFileSelectLabel = QLabel(self.mainWindow.text.localisation('dialogBoxes','newSample','question'))
 
-        self.sampleFileSelectButton = QPushButton(" ... ")
+        self.sampleFileSelectButton = QPushButton(QFileInfo(samplePath).fileName())
         self.sampleFileSelectButton.clicked.connect(lambda *args: self.getNewFilePath())
 
         #icon
@@ -96,7 +96,12 @@ class SampleButtonDialogBox(QDialog):
             Takes no parameter.
             Returns nothing.
         """
-        filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newSample','question'),os.path.expanduser('~'),"*.mp3 *.wav *.flac *.aac")
+        if os.path.isfile(self.samplePath):
+            filepath = self.samplePath
+        else:
+            filepath = '~/Music'
+
+        filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newSample','question'),os.path.expanduser(filepath),"*.mp3 *.wav *.flac *.aac")
 
         if ok :
             self.samplePath = filepath

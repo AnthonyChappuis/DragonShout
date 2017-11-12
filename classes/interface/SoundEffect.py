@@ -18,16 +18,29 @@ class SoundEffect(QPushButton):
 
     BUTTONSTYLESHEETPATH = 'ressources/interface/stylesheets/soundEffectButtons.css'
 
-    def __init__(self, soundEffectFilePath:str='', soundEffectIconPath:str=''):
+    def __init__(self, soundEffectFilePath:str='', iconPath:str=''):
         super().__init__()
 
-        self.filepath = soundEffectFilePath
-        self.text = QFileInfo(soundEffectFilePath).fileName()
+        self.changeFile(soundEffectFilePath)
+        self.changeStyleSheet()
 
-        #Verify if soundEffectIconPath is an str item and defaults it if not.
-        if soundEffectIconPath == '' or not isinstance(soundEffectIconPath, str) :
-            soundEffectIconPath = ThemeButtonDialogBox.DefaultThemeIconPath
-        self.soundEffectIconPath = soundEffectIconPath
-        styleSheets = open(SoundEffect.BUTTONSTYLESHEETPATH,'r',encoding='utf-8').read()
-        self.setStyleSheet(styleSheets)
-        self.setIcon(QIcon(self.soundEffectIconPath))
+        #Verify if iconPath is an str item and defaults it if not.
+        if iconPath == '' or not isinstance(iconPath, str) :
+            iconPath = ThemeButtonDialogBox.DefaultThemeIconPath
+        self.changeIcon(iconPath)
+
+    def changeIcon(self, iconPath:str):
+        self.iconPath = iconPath
+        self.setIcon(QIcon(iconPath))
+
+    def changeFile(self, filepath:str):
+        self.filepath = filepath
+        self.setText(QFileInfo(filepath).fileName())
+
+    def changeStyleSheet(self, styleSheetPath:str='Default'):
+        if styleSheetPath == 'Default':
+            styleSheet = open(SoundEffect.BUTTONSTYLESHEETPATH,'r',encoding='utf-8').read()
+        else:
+            styleSheet = open(styleSheetPath,'r',encoding='utf-8').read()
+
+        self.setStyleSheet(styleSheet)
