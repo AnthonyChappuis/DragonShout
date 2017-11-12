@@ -85,7 +85,12 @@ class SampleButtonDialogBox(QDialog):
             Takes no parameter.
             Returns nothing.
         """
-        filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newIcon','question'),os.path.expanduser('~'),"*.jpg *.jpeg *.ico *.png")
+        if os.path.isfile(self.iconPath):
+            filepath = self.iconPath
+        else:
+            filepath = '~/Pictures'
+
+        filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newIcon','question'),os.path.expanduser(filepath),"*.jpg *.jpeg *.ico *.png")
 
         if ok :
             self.sampleIconButton.setIcon(QIcon(filepath))
