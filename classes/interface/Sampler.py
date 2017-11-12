@@ -156,7 +156,7 @@ class Sampler(QWidget):
                 buttonColumn = 0
 
             sampleButton = SoundEffect(path,icon)
-            sampleButton.clicked.connect(lambda *args: self.playSoundEffect(self.sender()))
+            sampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
             buttonRow = self.lastRowIndex
 
             self.sampleButtons[self.lastRowIndex].append(sampleButton)
@@ -173,13 +173,18 @@ class Sampler(QWidget):
         if self.samplerMode:
             self.sampleButtonsGridLayout.removeWidget(sampleButton)
 
-    def playSoundEffect(self, soundEffect:SoundEffect):
+    def clickOnSoundEffect(self, soundEffect:SoundEffect):
         """Called when a soundEffect button is clicked.
             - Takes one parameter:
                 - soundEffect as soundEffect Object.
             - Returns nothing.
         """
-        print(str(soundEffect))
-        media = QMediaContent(QUrl.fromLocalFile(soundEffect.filepath))
-        self.samplePlayer.setMedia(media)
-        self.samplePlayer.play()
+        #Checks sampler's mode
+        if self.samplerMode == Sampler.EDITMODE:
+            print('edit')
+        elif self.samplerMode == Sampler.DELETEMODE:
+            print('delete')
+        else: #Any other cases defaults to playmode
+            media = QMediaContent(QUrl.fromLocalFile(soundEffect.filepath))
+            self.samplePlayer.setMedia(media)
+            self.samplePlayer.play()
