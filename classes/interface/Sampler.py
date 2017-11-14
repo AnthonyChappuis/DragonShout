@@ -51,9 +51,9 @@ class Sampler(QWidget):
 
         #Sample buttons grid layout
         self.sampleButtonsGridLayout = self.constructGrid()
-        buttonGrid = QWidget()
-        buttonGrid.setLayout(self.sampleButtonsGridLayout)
-        self.mainLayout.addWidget(buttonGrid)
+        self.buttonGrid = QWidget()
+        self.buttonGrid.setLayout(self.sampleButtonsGridLayout)
+        self.mainLayout.addWidget(self.buttonGrid)
 
         self.mainLayout.addStretch(1)
 
@@ -163,15 +163,40 @@ class Sampler(QWidget):
 
             self.sampleButtonsGridLayout.addWidget(sampleButton,buttonRow,buttonColumn)
 
-    def removeSampleButton(self, sampleButton:SoundEffect):
-        """Remove a sample button, require the edit mode.
+    def removeSampleButton(self, soundEffect:SoundEffect):
+        """Remove a sample button, require the Delete mode.
             - Takes one parameter:
                 - sampleButton as SoundEffect object.
             - Returns nothing.
         """
-        #Checks if edit mode is active:
-        if self.samplerMode:
-            self.sampleButtonsGridLayout.removeWidget(sampleButton)
+        lastButtonColumn = len(self.sampleButtons[self.lastRowIndex])
+        for rowIndex, buttonRow in enumerate(self.sampleButtons):
+            for columnIndex, storedButton in enumerate(buttonRow):
+                if soundEffect == storedButton:
+                    self.sampleButtonsGridLayout.itemAtPosition(rowIndex,columnIndex).widget().setParent(None)
+                    self.sampleButtons[rowIndex].remove(self.sampleButtons[rowIndex][columnIndex])
+
+                    if (lastButtonColumn-1) < 0:
+                        self.sampleButtons.remove(self.sampleButtons[self.lastRowIndex])
+                        self.lastRowIndex -= 1
+
+        QWidget().setLayout(self.buttonGrid.layout())
+        self.buttonGrid.setLayout(self.constructGrid())
+
+
+    def editSampleButton(self, soundEffect:SoundEffect):
+        """Edit a sample button.
+            - Takes one parameter:
+                - sampleButton as SoundEffect object.
+            - Returns nothing.
+        """
+        for rowIndex, buttonRow in enumerate(self.sampleButtons):
+            for columnIndex, storedButton in enumerate(buttonRow):
+                if soundEffect == storedButton:
+                    filepath,iconPath,ok = SampleButtonDialogBox(self.mainWindow,soundEffect.filepath,soundEffect.iconPath).getItems()
+                    if ok :
+                        self.sampleButtons[rowIndex][columnIndex].changeFile(filepath)
+                        self.sampleButtons[rowIndex][columnIndex].changeIcon(iconPath)
 
     def clickOnSoundEffect(self, soundEffect:SoundEffect):
         """Called when a soundEffect button is clicked.
@@ -181,16 +206,11 @@ class Sampler(QWidget):
         """
         #Checks sampler's mode
         if self.samplerMode == Sampler.EDITMODE:
-            for rowIndex, buttonRow in enumerate(self.sampleButtons):
-                for columnIndex, storedButton in enumerate(buttonRow):
-                    if soundEffect == storedButton:
-                        filepath,iconPath,ok = SampleButtonDialogBox(self.mainWindow,soundEffect.filepath,soundEffect.iconPath).getItems()
-                        if ok :
-                            self.sampleButtons[rowIndex][columnIndex].changeFile(filepath)
-                            self.sampleButtons[rowIndex][columnIndex].changeIcon(iconPath)
+            self.editSampleButton(soundEffect)
 
         elif self.samplerMode == Sampler.DELETEMODE:
-            print('delete')
+            self.removeSampleButton(soundEffect)
+
         else: #Any other cases defaults to playmode
             media = QMediaContent(QUrl.fromLocalFile(soundEffect.filepath))
             self.samplePlayer.setMedia(media)
