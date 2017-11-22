@@ -16,18 +16,29 @@ from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
 
 class SoundEffect(QPushButton):
 
-    BUTTONSTYLESHEETPATH = 'ressources/interface/stylesheets/soundEffectButtons.css'
+    EFFECTBUTTONSTYLESHEETPATH = 'ressources/interface/stylesheets/soundEffectButtons.css'
+    DEFAULTBUTTONSTYLESHEETPATH = 'ressources/interface/stylesheets/defaultEffectButton.css'
+    DEFAULTBUTTONICONPATH = 'ressources/interface/defaultButtonIcon.png'
+    NEWEFFECTBUTTON = 0
+    SOUNDEFFECTBUTTON = 1
 
-    def __init__(self, soundEffectFilePath:str='', iconPath:str=''):
+    def __init__(self, buttonType:int, soundEffectFilePath:str='', iconPath:str='', coordinates:tuple=(0,0)):
         super().__init__()
 
-        self.changeFile(soundEffectFilePath)
-        self.changeStyleSheet()
+        self.coordinates = coordinates
 
-        #Verify if iconPath is an str item and defaults it if not.
-        if iconPath == '' or not isinstance(iconPath, str) :
-            iconPath = ThemeButtonDialogBox.DefaultThemeIconPath
-        self.changeIcon(iconPath)
+        if buttonType == SoundEffect.SOUNDEFFECTBUTTON:
+
+            self.changeFile(soundEffectFilePath)
+            self.changeStyleSheet()
+
+            #Verify if iconPath is an str item and defaults it if not.
+            if iconPath != '' and isinstance(iconPath, str) :
+                self.changeIcon(iconPath)
+
+        else:
+            self.changeIcon(SoundEffect.DEFAULTBUTTONICONPATH)
+            self.changeStyleSheet(SoundEffect.DEFAULTBUTTONSTYLESHEETPATH)
 
     def changeIcon(self, iconPath:str):
         self.iconPath = iconPath
@@ -39,7 +50,7 @@ class SoundEffect(QPushButton):
 
     def changeStyleSheet(self, styleSheetPath:str='Default'):
         if styleSheetPath == 'Default':
-            styleSheet = open(SoundEffect.BUTTONSTYLESHEETPATH,'r',encoding='utf-8').read()
+            styleSheet = open(SoundEffect.EFFECTBUTTONSTYLESHEETPATH,'r',encoding='utf-8').read()
         else:
             styleSheet = open(styleSheetPath,'r',encoding='utf-8').read()
 

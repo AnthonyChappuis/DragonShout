@@ -33,7 +33,6 @@ class Sampler(QWidget):
         self.mainWindow = mainWindow
         self.samplePlayer = QMediaPlayer()
 
-        self.sampleButtons = [[]]
         self.lastRowIndex = 0
 
         self.samplerMode = Sampler.PLAYMODE
@@ -65,10 +64,10 @@ class Sampler(QWidget):
         gridLayout = QGridLayout()
         row = 0
         while row <= self.lastRowIndex:
-            maxColumn = len(self.sampleButtons[row])
             column = 0
-            while column < maxColumn:
-                gridLayout.addWidget(self.sampleButtons[row][column],row,column)
+            while column < self.MAXBUTTONPERROW:
+                defaultSampleButton = SoundEffect(SoundEffect.NEWEFFECTBUTTON)
+                gridLayout.addWidget(defaultSampleButton,row,column)
                 column += 1
             row += 1
 
@@ -79,10 +78,6 @@ class Sampler(QWidget):
             - Takes no parameter.
             - Returns nothing.
         """
-        #New sample button
-        self.newSampleButton = QPushButton(self.mainWindow.text.localisation('buttons','addSample','caption'))
-        self.newSampleButton.clicked.connect(lambda *args: self.addSampleButton())
-
         #Toggle edit mode button
         self.toggleEditModeButton = QPushButton(self.mainWindow.text.localisation('buttons','samplerEditButton','caption'))
         self.toggleEditModeButton.clicked.connect(lambda *args: self.toggleMode(Sampler.EDITMODE))
@@ -93,7 +88,6 @@ class Sampler(QWidget):
 
         #Add to layout
         controlLayout = QHBoxLayout()
-        controlLayout.addWidget(self.newSampleButton)
         controlLayout.addWidget(self.toggleEditModeButton)
         controlLayout.addWidget(self.toggleDeleteModeButton)
         controlWidget = QWidget()
@@ -176,12 +170,12 @@ class Sampler(QWidget):
                     self.sampleButtonsGridLayout.itemAtPosition(rowIndex,columnIndex).widget().setParent(None)
                     self.sampleButtons[rowIndex].remove(self.sampleButtons[rowIndex][columnIndex])
 
-                    if (lastButtonColumn-1) < 0:
+                    if (lastButtonColumn-1) == 0 and self.lastRowIndex > 0 :
                         self.sampleButtons.remove(self.sampleButtons[self.lastRowIndex])
                         self.lastRowIndex -= 1
 
-        QWidget().setLayout(self.buttonGrid.layout())
-        self.buttonGrid.setLayout(self.constructGrid())
+        #QWidget().setLayout(self.buttonGrid.layout())
+        #self.buttonGrid.setLayout(self.constructGrid())
 
 
     def editSampleButton(self, soundEffect:SoundEffect):

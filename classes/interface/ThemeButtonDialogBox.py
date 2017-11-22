@@ -18,7 +18,7 @@ from PyQt5.Qt import Qt
 
 class ThemeButtonDialogBox(QDialog):
 
-    DefaultThemeIconPath = 'ressources/interface/defaultThemeIcon.png'
+    DefaultThemeIconPath = 'ressources/interface/defaultButtonIcon.png'
 
     def __init__(self, mainWindow:MainWindow, themeName:str='notset', themeIconPath:str='notset'):
         super().__init__()
