@@ -158,20 +158,13 @@ class Sampler(QWidget):
                 - sampleButton as SoundEffect object.
             - Returns nothing.
         """
-        lastButtonColumn = len(self.sampleButtons[self.lastRowIndex])
-        for rowIndex, buttonRow in enumerate(self.sampleButtons):
-            for columnIndex, storedButton in enumerate(buttonRow):
-                if soundEffect == storedButton:
-                    self.sampleButtonsGridLayout.itemAtPosition(rowIndex,columnIndex).widget().setParent(None)
-                    self.sampleButtons[rowIndex].remove(self.sampleButtons[rowIndex][columnIndex])
+        row = soundEffect.coordinates[0]
+        column = soundEffect.coordinates[1]
 
-                    if (lastButtonColumn-1) == 0 and self.lastRowIndex > 0 :
-                        self.sampleButtons.remove(self.sampleButtons[self.lastRowIndex])
-                        self.lastRowIndex -= 1
-
-        #QWidget().setLayout(self.buttonGrid.layout())
-        #self.buttonGrid.setLayout(self.constructGrid())
-
+        sampleButton = SoundEffect(SoundEffect.NEWEFFECTBUTTON,(row,column))
+        sampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
+        self.sampleButtonsGridLayout.itemAtPosition(row,column).widget().setParent(None)
+        self.sampleButtonsGridLayout.addWidget(sampleButton,row,column)
 
     def editSampleButton(self, soundEffect:SoundEffect):
         """Edit a sample button.
@@ -203,6 +196,6 @@ class Sampler(QWidget):
                 media = QMediaContent(QUrl.fromLocalFile(soundEffect.filepath))
                 self.samplePlayer.setMedia(media)
                 self.samplePlayer.play()
-                
+
         else: #Any other cases defaults to prompting the new sample button dialog.
             self.addSampleButton(soundEffect.coordinates)
