@@ -22,10 +22,11 @@ class SoundEffect(QPushButton):
     NEWEFFECTBUTTON = 0
     SOUNDEFFECTBUTTON = 1
 
-    def __init__(self, buttonType:int, soundEffectFilePath:str='', iconPath:str='', coordinates:tuple=(0,0)):
+    def __init__(self, buttonType:int, coordinates:tuple, soundEffectFilePath:str='', iconPath:str=''):
         super().__init__()
 
         self.coordinates = coordinates
+        self.buttonType = buttonType
 
         if buttonType == SoundEffect.SOUNDEFFECTBUTTON:
 

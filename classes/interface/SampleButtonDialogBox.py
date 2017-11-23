@@ -19,7 +19,7 @@ from PyQt5.Qt import Qt
 
 class SampleButtonDialogBox(QDialog):
 
-    DefaultSampleIconPath = 'ressources/interface/defaultThemeIcon.png'
+    DefaultSampleIconPath = 'ressources/interface/defaultButtonIcon.png'
 
     def __init__(self, mainWindow:MainWindow, samplePath:str='...', sampleIconPath:str='notset'):
         super().__init__()

@@ -33,7 +33,7 @@ class Sampler(QWidget):
         self.mainWindow = mainWindow
         self.samplePlayer = QMediaPlayer()
 
-        self.lastRowIndex = 0
+        self.lastRowIndex = 4
 
         self.samplerMode = Sampler.PLAYMODE
 
@@ -66,7 +66,8 @@ class Sampler(QWidget):
         while row <= self.lastRowIndex:
             column = 0
             while column < self.MAXBUTTONPERROW:
-                defaultSampleButton = SoundEffect(SoundEffect.NEWEFFECTBUTTON)
+                defaultSampleButton = SoundEffect(SoundEffect.NEWEFFECTBUTTON,(row,column))
+                defaultSampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
                 gridLayout.addWidget(defaultSampleButton,row,column)
                 column += 1
             row += 1
@@ -133,8 +134,8 @@ class Sampler(QWidget):
             self.toggleEditModeButton.setStyleSheet(None)
             self.toggleDeleteButton.setStyleSheet(None)
 
-    def addSampleButton(self):
-        """Append a new QPushButton to self.sampleButtons.
+    def addSampleButton(self, coordinates:tuple):
+        """Show the Sample button dialog to transform a default button into a soundEffect button.
             - Takes no parameter.
             - Returns nothing.
         """
@@ -143,19 +144,13 @@ class Sampler(QWidget):
         path,icon, ok = SampleButtonDialogBox(self.mainWindow).getItems()
 
         if ok :
-            buttonColumn = len(self.sampleButtons[self.lastRowIndex])
-            if buttonColumn >= self.MAXBUTTONPERROW:
-                self.sampleButtons.append([])
-                self.lastRowIndex += 1
-                buttonColumn = 0
+            row = coordinates[0]
+            column = coordinates[1]
 
-            sampleButton = SoundEffect(path,icon)
+            sampleButton = SoundEffect(SoundEffect.SOUNDEFFECTBUTTON,(row,column),path,icon)
             sampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
-            buttonRow = self.lastRowIndex
-
-            self.sampleButtons[self.lastRowIndex].append(sampleButton)
-
-            self.sampleButtonsGridLayout.addWidget(sampleButton,buttonRow,buttonColumn)
+            self.sampleButtonsGridLayout.itemAtPosition(row,column).widget().setParent(None)
+            self.sampleButtonsGridLayout.addWidget(sampleButton,row,column)
 
     def removeSampleButton(self, soundEffect:SoundEffect):
         """Remove a sample button, require the Delete mode.
@@ -205,7 +200,10 @@ class Sampler(QWidget):
         elif self.samplerMode == Sampler.DELETEMODE:
             self.removeSampleButton(soundEffect)
 
-        else: #Any other cases defaults to playmode
+        elif soundEffect.buttonType == SoundEffect.SOUNDEFFECTBUTTON:
             media = QMediaContent(QUrl.fromLocalFile(soundEffect.filepath))
             self.samplePlayer.setMedia(media)
             self.samplePlayer.play()
+
+        else: #Any other cases defaults to prompting the new sample button dialog.
+            self.addSampleButton(soundEffect.coordinates)
