@@ -179,13 +179,11 @@ class Sampler(QWidget):
                 - sampleButton as SoundEffect object.
             - Returns nothing.
         """
-        for rowIndex, buttonRow in enumerate(self.sampleButtons):
-            for columnIndex, storedButton in enumerate(buttonRow):
-                if soundEffect == storedButton:
-                    filepath,iconPath,ok = SampleButtonDialogBox(self.mainWindow,soundEffect.filepath,soundEffect.iconPath).getItems()
-                    if ok :
-                        self.sampleButtons[rowIndex][columnIndex].changeFile(filepath)
-                        self.sampleButtons[rowIndex][columnIndex].changeIcon(iconPath)
+        filepath,iconPath,ok = SampleButtonDialogBox(self.mainWindow,soundEffect.filepath,soundEffect.iconPath).getItems()
+
+        if ok :
+            soundEffect.changeFile(filepath)
+            soundEffect.changeIcon(iconPath)
 
     def clickOnSoundEffect(self, soundEffect:SoundEffect):
         """Called when a soundEffect button is clicked.
@@ -194,16 +192,17 @@ class Sampler(QWidget):
             - Returns nothing.
         """
         #Checks sampler's mode
-        if self.samplerMode == Sampler.EDITMODE:
-            self.editSampleButton(soundEffect)
+        if soundEffect.buttonType == SoundEffect.SOUNDEFFECTBUTTON:
+            if self.samplerMode == Sampler.EDITMODE:
+                self.editSampleButton(soundEffect)
 
-        elif self.samplerMode == Sampler.DELETEMODE:
-            self.removeSampleButton(soundEffect)
+            elif self.samplerMode == Sampler.DELETEMODE:
+                self.removeSampleButton(soundEffect)
 
-        elif soundEffect.buttonType == SoundEffect.SOUNDEFFECTBUTTON:
-            media = QMediaContent(QUrl.fromLocalFile(soundEffect.filepath))
-            self.samplePlayer.setMedia(media)
-            self.samplePlayer.play()
-
+            else :
+                media = QMediaContent(QUrl.fromLocalFile(soundEffect.filepath))
+                self.samplePlayer.setMedia(media)
+                self.samplePlayer.play()
+                
         else: #Any other cases defaults to prompting the new sample button dialog.
             self.addSampleButton(soundEffect.coordinates)

@@ -18,7 +18,7 @@ class SoundEffect(QPushButton):
 
     EFFECTBUTTONSTYLESHEETPATH = 'ressources/interface/stylesheets/soundEffectButtons.css'
     DEFAULTBUTTONSTYLESHEETPATH = 'ressources/interface/stylesheets/defaultEffectButton.css'
-    DEFAULTBUTTONICONPATH = 'ressources/interface/defaultButtonIcon.png'
+    DEFAULTBUTTONICONPATH = 'ressources/interface/addSampleButton.png'
     NEWEFFECTBUTTON = 0
     SOUNDEFFECTBUTTON = 1
 
@@ -27,6 +27,7 @@ class SoundEffect(QPushButton):
 
         self.coordinates = coordinates
         self.buttonType = buttonType
+        self.filepath = ''
 
         if buttonType == SoundEffect.SOUNDEFFECTBUTTON:
 
