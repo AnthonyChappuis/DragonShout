@@ -48,7 +48,6 @@ class SoundEffect(QPushButton):
 
     def changeFile(self, filepath:str):
         self.filepath = filepath
-        self.setText(QFileInfo(filepath).fileName())
 
     def changeStyleSheet(self, styleSheetPath:str='Default'):
         if styleSheetPath == 'Default':
