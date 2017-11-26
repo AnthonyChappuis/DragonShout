@@ -14,7 +14,6 @@ from classes.interface.SampleButtonDialogBox import SampleButtonDialogBox
 from PyQt5 import Qt
 from PyQt5.QtCore import QUrl
 
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QVBoxLayout, QHBoxLayout
 
 class Sampler(QWidget):
@@ -31,7 +30,6 @@ class Sampler(QWidget):
         super().__init__()
 
         self.mainWindow = mainWindow
-        self.samplePlayer = QMediaPlayer()
 
         self.lastRowIndex = 4
 
@@ -193,9 +191,7 @@ class Sampler(QWidget):
                 self.removeSampleButton(soundEffect)
 
             else :
-                media = QMediaContent(QUrl.fromLocalFile(soundEffect.filepath))
-                self.samplePlayer.setMedia(media)
-                self.samplePlayer.play()
+                soundEffect.playOrStop()
 
         else: #Any other cases defaults to prompting the new sample button dialog.
             self.addSampleButton(soundEffect.coordinates)

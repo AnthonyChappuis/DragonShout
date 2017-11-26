@@ -10,9 +10,11 @@
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtCore import QFileInfo
+from PyQt5.QtCore import QFileInfo, QUrl
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 
 from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
+
 
 class SoundEffect(QPushButton):
 
@@ -31,6 +33,7 @@ class SoundEffect(QPushButton):
 
         if buttonType == SoundEffect.SOUNDEFFECTBUTTON:
 
+            self.mediaPlayer = QMediaPlayer()
             self.changeFile(soundEffectFilePath)
             self.changeStyleSheet()
 
@@ -47,7 +50,14 @@ class SoundEffect(QPushButton):
         self.setIcon(QIcon(iconPath))
 
     def changeFile(self, filepath:str):
+        """Change sound Effect file and loads it into the player.
+            - Takes one parameter:
+                - filepath as str.
+            - Returns nothing.
+        """
         self.filepath = filepath
+        media = QMediaContent(QUrl.fromLocalFile(self.filepath))
+        self.mediaPlayer.setMedia(media)
 
     def changeStyleSheet(self, styleSheetPath:str='Default'):
         if styleSheetPath == 'Default':
@@ -56,3 +66,16 @@ class SoundEffect(QPushButton):
             styleSheet = open(styleSheetPath,'r',encoding='utf-8').read()
 
         self.setStyleSheet(styleSheet)
+
+    def playOrStop(self):
+        """Either start or stop the QMediaPlayer with the sound effect's file
+            - Takes no parameter.
+            - Returns nothing.
+        """
+        if self.buttonType == SoundEffect.SOUNDEFFECTBUTTON:
+            if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
+                self.mediaPlayer.stop()
+            else:
+                self.mediaPlayer.play()
+        else:
+            print('WARNING - this is a default button, no sound file is attached to it')
