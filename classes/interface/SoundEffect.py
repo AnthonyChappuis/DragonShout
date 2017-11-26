@@ -18,9 +18,16 @@ from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
 
 class SoundEffect(QPushButton):
 
+    #Style sheets
     EFFECTBUTTONSTYLESHEETPATH = 'ressources/interface/stylesheets/soundEffectButtons.css'
+    ACTIVEEFFECTBUTTONSSTYLESHEETPATH = 'ressources/interface/stylesheets/activeSoundEffectButtons.css'
+
     DEFAULTBUTTONSTYLESHEETPATH = 'ressources/interface/stylesheets/defaultEffectButton.css'
+
+    #Icons
     DEFAULTBUTTONICONPATH = 'ressources/interface/addSampleButton.png'
+
+    #Button Types
     NEWEFFECTBUTTON = 0
     SOUNDEFFECTBUTTON = 1
 
@@ -31,9 +38,11 @@ class SoundEffect(QPushButton):
         self.buttonType = buttonType
         self.filepath = ''
 
-        if buttonType == SoundEffect.SOUNDEFFECTBUTTON:
+        if buttonType == SoundEffect.SOUNDEFFECTBUTTON: #Creates a full sound effect Button
 
             self.mediaPlayer = QMediaPlayer()
+            self.mediaPlayer.stateChanged.connect(lambda *args: self.playerStatusChanged())
+
             self.changeFile(soundEffectFilePath)
             self.changeStyleSheet()
 
@@ -41,7 +50,7 @@ class SoundEffect(QPushButton):
             if iconPath != '' and isinstance(iconPath, str) :
                 self.changeIcon(iconPath)
 
-        else:
+        else: #Creates a default button to show effects availability on the interface
             self.changeIcon(SoundEffect.DEFAULTBUTTONICONPATH)
             self.changeStyleSheet(SoundEffect.DEFAULTBUTTONSTYLESHEETPATH)
 
@@ -68,7 +77,7 @@ class SoundEffect(QPushButton):
         self.setStyleSheet(styleSheet)
 
     def playOrStop(self):
-        """Either start or stop the QMediaPlayer with the sound effect's file
+        """Either start or stop the media player.
             - Takes no parameter.
             - Returns nothing.
         """
@@ -77,5 +86,18 @@ class SoundEffect(QPushButton):
                 self.mediaPlayer.stop()
             else:
                 self.mediaPlayer.play()
+
         else:
             print('WARNING - this is a default button, no sound file is attached to it')
+
+    def playerStatusChanged(self):
+        """Handle player status changes.
+            - Takes no parameter.
+            - Returns nothing.
+        """
+
+        if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
+            self.changeStyleSheet(SoundEffect.ACTIVEEFFECTBUTTONSSTYLESHEETPATH)
+
+        elif self.mediaPlayer.state() == QMediaPlayer.StoppedState:
+            self.changeStyleSheet(SoundEffect.EFFECTBUTTONSTYLESHEETPATH)
