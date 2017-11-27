@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QApplication
 if __name__ == '__main__':
 
     application = QApplication(sys.argv)
+    application.setApplicationName(MainWindow.ApplicationName)
 
     window = MainWindow(application)
 

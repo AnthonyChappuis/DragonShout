@@ -4,19 +4,22 @@
 #This class handle the music for the application. Uses two separate QMediaPlayers
 #
 #Application: DragonShout music sampler
-#Last Edited: April 7th 2017
+#Last Edited: October 05th 2017
 #---------------------------------
+from classes.interface import MainWindow
 
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudio
 from PyQt5.QtCore import QTimer
-from threading import Thread
+from PyQt5.QtWidgets import QMessageBox
 
 class MusicPlayer():
 
     FadeIn = 1
     FadeOut = -1
+    MaxVolume = 100
+    MinVolume = 0
 
-    def __init__(self, volume:int=100):
+    def __init__(self, mainWindow:MainWindow, volume:int=100):
         #Constants
         self.Pause = 50
 
@@ -28,26 +31,52 @@ class MusicPlayer():
 
         #variables
         self.volume = volume
+        self.mainWindow = mainWindow
 
         self.player1 = QMediaPlayer()
         self.player1.setAudioRole(QAudio.MusicRole)
         self.player1.setVolume(self.NoVolume)
-        self.player1.mediaStatusChanged.connect(lambda *args: self.playWhenLoaded(self.player1))
+        self.player1.mediaStatusChanged.connect(lambda *args: self.handlePlayerSignals(self.player1))
 
         self.player2 = QMediaPlayer()
         self.player2.setAudioRole(QAudio.MusicRole)
         self.player2.setVolume(self.NoVolume)
-        self.player2.mediaStatusChanged.connect(lambda *args: self.playWhenLoaded(self.player2))
+        self.player2.mediaStatusChanged.connect(lambda *args: self.handlePlayerSignals(self.player2))
 
 
-    def playWhenLoaded(self, player:QMediaPlayer):
-        """Verify if the media is loaded and launch the player.
+    def handlePlayerSignals(self, player:QMediaPlayer):
+        """Check which signal is emmited by the player.
             Takes one parameter :
             - player as QMediaPlayer object.
         """
+        #Media loaded in the Player
         if player.mediaStatus() == QMediaPlayer.LoadedMedia:
             player.play()
             self.fadeSound(player,MusicPlayer.FadeIn)
+            self.mainWindow.playlist.initiateDurationBar(player.duration())
+
+        #Player reached the end of the current media
+        if player.mediaStatus() == QMediaPlayer.EndOfMedia:
+            self.mainWindow.playlist.playNextMedia()
+
+        #Player encountered an error relative to the loaded media
+        if player.mediaStatus() == QMediaPlayer.InvalidMedia:
+            QMessageBox(QMessageBox.Critical,self.mainWindow.text.localisation('messageBoxes','loadMedia','title'),self.mainWindow.text.localisation('messageBoxes','loadMedia','caption')).exec()
+
+    def changeVolume(self, volume:int):
+        """Change the volume of the MusicPlayer.
+            Takes one parameter:
+            - volume as int.
+        """
+        if volume > MusicPlayer.MaxVolume :
+            volume = MusicPlayer.MaxVolume
+        if volume < MusicPlayer.MinVolume :
+            volume = MusicPlayer.MinVolume
+
+        self.volume = volume
+        self.player1.setVolume(self.volume)
+        self.player2.setVolume(self.volume)
+
 
     def changeMusic(self,media:QMediaContent):
         """Handle the change between two tracks using a fade-in/fade-out mechanism.
@@ -63,12 +92,12 @@ class MusicPlayer():
             #Player 1 is running
             if self.player1.state() == QMediaPlayer.PlayingState :
                 self.player2.setMedia(media)
-                Thread(target = self.fadeSound(self.player1,MusicPlayer.FadeOut)).start()
+                self.fadeSound(self.player1,MusicPlayer.FadeOut)
 
             #Player 2 is running
             elif self.player2.state() == QMediaPlayer.PlayingState :
                 self.player1.setMedia(media)
-                Thread(target = self.fadeSound(self.player2,MusicPlayer.FadeOut)).start()
+                self.fadeSound(self.player2,MusicPlayer.FadeOut)
 
     def fadeSound(self, player:QMediaPlayer, fadingType:int):
         """Defines if the fading action is a fade-In or a fade-out and call the corresponding timer and incrementOrDecrementVolume() function.
@@ -78,9 +107,11 @@ class MusicPlayer():
         """
         if fadingType == MusicPlayer.FadeIn :
             self.InFadingTimer.timeout.connect(lambda *args: self.incrementOrDecrementVolume(player,MusicPlayer.FadeIn))
+            self.mainWindow.themes.toggleThemes(False)
             self.InFadingTimer.start(self.Pause)
         else:
             self.OutFadingTimer.timeout.connect(lambda *args: self.incrementOrDecrementVolume(player,MusicPlayer.FadeOut))
+            self.mainWindow.themes.toggleThemes(False)
             self.OutFadingTimer.start(self.Pause)
 
 
@@ -91,27 +122,32 @@ class MusicPlayer():
             - fadingType as MusicPlayer.FadeIn or MusicPlayer.FadeOut constant.
 
         """
+        self.mainWindow.playlist.durationBar.setValue(player.volume())
         volume = player.volume()
         volume += self.VolumeStep*fadingType
         player.setVolume(volume)
-        print(str(player)+" volume + "+str(self.VolumeStep*fadingType)+" = "+str(player.volume()))
 
         if (player.volume() >= self.volume) and (fadingType == MusicPlayer.FadeIn) :
             self.InFadingTimer.stop()
             self.InFadingTimer.timeout.disconnect()
+            self.mainWindow.themes.toggleThemes(True)
 
         if (player.volume() <= self.NoVolume) and (fadingType == MusicPlayer.FadeOut) :
             self.OutFadingTimer.stop()
             player.setMedia(QMediaContent())
             player.stop()
             self.OutFadingTimer.timeout.disconnect()
+            self.mainWindow.themes.toggleThemes(True)
 
     def stop(self):
         """Stop all media players.
             Takes no parameter.
         """
-        Thread(target = self.fadeSound(self.player1,MusicPlayer.FadeOut)).start()
-        Thread(target = self.fadeSound(self.player2,MusicPlayer.FadeOut)).start()
+        if self.player1.state() == QMediaPlayer.PlayingState :
+            self.fadeSound(self.player1,MusicPlayer.FadeOut)
+
+        if self.player2.state() == QMediaPlayer.PlayingState :
+            self.fadeSound(self.player2,MusicPlayer.FadeOut)
 
     def getCurrentMedia(self):
         """Returns the name of the track being played

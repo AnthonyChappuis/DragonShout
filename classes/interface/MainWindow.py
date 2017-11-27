@@ -4,16 +4,15 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: March 23th 2017
+#Last Edited: Mai 16th 2017
 #---------------------------------
-
-from constants import *
 
 import os
 
 from classes.interface.Text import Text
 from classes.interface.Playlist import Playlist
 from classes.interface.Themes import Themes
+from classes.interface.Sampler import Sampler
 
 from classes.library.Library import Library
 
@@ -22,26 +21,35 @@ from PyQt5.QtCore import QFileInfo
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QHBoxLayout, QSplitter, QWidget, QListWidget, QLabel,
-    QPushButton, QVBoxLayout, QGridLayout, QFileDialog)
+    QPushButton, QVBoxLayout, QGridLayout, QFileDialog, QMessageBox)
 
 class MainWindow(QMainWindow):
 
+    SupportedLibraryFiles = '*.json'
+    ApplicationIconPath = 'dragonShout.png'
+    ApplicationName = 'Dragon Shout'
+
     def __init__(self,application:QApplication):
         super().__init__()
-        screen = application.desktop().screenGeometry()
 
-        self.setGeometry(50, 50, screen.width(), screen.height())
-        self.setWindowTitle(APP_NAME)
-        self.setWindowIcon(QIcon('dragonShout.png'))
+        #Global style sheet
+        self.GLOBALSTYLESHEETPATH = "ressources/interface/stylesheets/global.css"
+        styleSheet = open(self.GLOBALSTYLESHEETPATH,'r', encoding='utf-8').read()
+        self.setStyleSheet(styleSheet)
 
-        self.text = ''
-        self.changeLanguage()
+        #Window decoration
+        self.setWindowTitle(MainWindow.ApplicationName)
+        self.setWindowIcon(QIcon(MainWindow.ApplicationIconPath))
+
+        #Variable and CONSTANTS
+        self.text = Text()
 
         self.library = ''
         self.loadLibrary()
 
         self.themes = Themes(self)
         self.playlist = Playlist(self)
+        self.sampler = Sampler(self)
 
         self.menuBar()
 
@@ -90,12 +98,10 @@ class MainWindow(QMainWindow):
         languageMenu = optionsMenu.addMenu(self.text.localisation('menuEntries','language','caption'))
 
         #Creating language actions
-        action = QAction(QIcon('ressources/interface/england.png'), 'English',self)
-        action.triggered.connect(lambda *args: self.changeLanguage('english'))
-        languageMenu.addAction(action)
-        action = QAction(QIcon('ressources/interface/France.png'), 'Français',self)
-        action.triggered.connect(lambda *args: self.changeLanguage('french'))
-        languageMenu.addAction(action)
+        for languageKey, languageValues in self.text.SupportedLanguages.items():
+            action = QAction(QIcon(languageValues['icon']), languageValues['caption'],self)
+            action.triggered.connect(lambda *args: self.changeLanguage(self.sender().text()))
+            languageMenu.addAction(action)
 
         #Splitter containing all other elements of MainWindow
         #----------------------------------------------------
@@ -108,6 +114,9 @@ class MainWindow(QMainWindow):
         #Playlist
         mainHorizontalSplitter.addWidget(self.playlist)
 
+        #Sampler
+        mainHorizontalSplitter.addWidget(self.sampler)
+
         #adding the splitter containing the main elements to the window
         genericLayout = QHBoxLayout()
         genericLayout.addWidget(mainHorizontalSplitter)
@@ -116,14 +125,17 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(centralWidget)
 
-    def changeLanguage(self,language:str='english'):
+    def changeLanguage(self,language:str=Text.SupportedLanguages['English']['caption']):
         """Change the language of the application. Called by a signal emited when clicking on another language"""
-        self.text = Text(language)
+        QMessageBox(QMessageBox.Information,self.text.localisation('messageBoxes','saveLanguage','title'),self.text.localisation('messageBoxes','saveLanguage','caption')).exec()
+        self.text.saveLanguage(language)
 
     def loadLibrary(self,filepath:str=''):
         """Loads an existing library or creates a new one"""
-        if os.path.isfile(filepath):
+        if os.path.isfile(filepath) and Library.load(filepath):
         	self.library = Library.load(filepath)
+        elif os.path.isfile(filepath) and not Library.load(filepath):
+            QMessageBox(QMessageBox.Warning,self.text.localisation('messageBoxes','loadLibrary','title'),self.text.localisation('messageBoxes','loadLibrary','caption')).exec()
         else:
             self.library = Library("new_library","")
 
@@ -142,7 +154,9 @@ class MainWindow(QMainWindow):
         saveDialog.setAcceptMode(QFileDialog.AcceptSave)
 
         filepath , ok = saveDialog.getSaveFileName(self,self.text.localisation('dialogBoxes','saveLibrary','title'),os.path.expanduser('~'))
-        filepath += '.json'
+
+        if not filepath.endswith('.json') :
+            filepath += '.json'
 
         if ok :
             libraryName = QFileInfo(filepath).fileName()
@@ -152,7 +166,7 @@ class MainWindow(QMainWindow):
     def load(self):
         loadDialog = QFileDialog()
 
-        filepath, ok = loadDialog.getOpenFileName(self,'test',os.path.expanduser('~'))
+        filepath, ok = loadDialog.getOpenFileName(self,'test',os.path.expanduser('~'),MainWindow.SupportedLibraryFiles)
 
         if ok :
             self.loadLibrary(filepath)

@@ -15,7 +15,7 @@
 #				_filepath as string
 #					Contains the path to the library file on the drive
 #
-#Modifications: March 03rd 2017
+#Last edited: May 19th 2017
 ###############################################################################
 import os
 import json
@@ -37,11 +37,14 @@ class Library:
 		Takes one parameter:
 		- filepath as string
 		"""
-		with open(filepath, "r", encoding="utf-8") as json_file:
-			library_object = json.load(json_file, object_hook=cls.unserialize)
+		try :
+			with open(filepath, "r", encoding="utf-8") as json_file:
+				library_object = json.load(json_file, object_hook=cls.unserialize)
 
-		library_object.filepath = filepath
-		return library_object
+			library_object.filepath = filepath
+			return library_object
+		except :
+			return False
 	load = classmethod(load)
 
 	#class method
@@ -120,12 +123,12 @@ class Library:
 	categories 	= property(_get_categories,		_set_categories,	_del_categories,	_help_categories)
 
 	#methods
-	def add_category(self,name: str):
+	def add_category(self,name: str, iconPath: str=''):
 		"""Used to add a category to the library.
 		Takes one parameter:
 		- name as string
 		"""
-		self._categories.append(Category(name))
+		self._categories.append(Category(name,iconPath))
 
 	def get_category(self,name: str):
 		"""Used to get a specific category from the library.
