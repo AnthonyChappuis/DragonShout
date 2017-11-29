@@ -4,7 +4,7 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: Mai 16th 2017
+#Last Edited: November 29th 2017
 #---------------------------------
 
 import os
@@ -44,12 +44,11 @@ class MainWindow(QMainWindow):
         #Variable and CONSTANTS
         self.text = Text()
 
-        self.library = ''
         self.loadLibrary()
 
+        self.sampler = Sampler(self)
         self.themes = Themes(self)
         self.playlist = Playlist(self)
-        self.sampler = Sampler(self)
 
         self.menuBar()
 
@@ -132,12 +131,21 @@ class MainWindow(QMainWindow):
 
     def loadLibrary(self,filepath:str=''):
         """Loads an existing library or creates a new one"""
-        if os.path.isfile(filepath) and Library.load(filepath):
-        	self.library = Library.load(filepath)
+        if os.path.isfile(filepath) and Library.load(self,filepath):
+        	self.library = Library.load(self,filepath)
         elif os.path.isfile(filepath) and not Library.load(filepath):
             QMessageBox(QMessageBox.Warning,self.text.localisation('messageBoxes','loadLibrary','title'),self.text.localisation('messageBoxes','loadLibrary','caption')).exec()
         else:
-            self.library = Library("new_library","")
+            self.library = Library(self,"new_library","")
+
+    def loadSampler(self,filepath:str=''):
+        """Loads an existing sampleSet or creates a new one"""
+        if os.path.isfile(filepath) and self.sampler.load(filepath,'test'):
+        	self.sampler.load(filepath)
+        elif os.path.isfile(filepath) and not Sampler.load(filepath):
+            QMessageBox(QMessageBox.Warning,self.text.localisation('messageBoxes','loadLibrary','title'),self.text.localisation('messageBoxes','loadLibrary','caption')).exec()
+        else:
+            self.sampler = Sampler(self)
 
     def renameTheme(self,themeName:str):
         """Modify the name of the theme.
@@ -164,11 +172,9 @@ class MainWindow(QMainWindow):
             self.library.save(filepath)
 
     def load(self):
-        loadDialog = QFileDialog()
-
-        filepath, ok = loadDialog.getOpenFileName(self,'test',os.path.expanduser('~'),MainWindow.SupportedLibraryFiles)
-
+        filepath, ok = QFileDialog().getOpenFileName(self,'test',os.path.expanduser('~'),MainWindow.SupportedLibraryFiles)
         if ok :
             self.loadLibrary(filepath)
+            self.loadSampler(filepath)
             self.themes.setThemes()
             self.playlist.reset()

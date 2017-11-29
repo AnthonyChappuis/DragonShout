@@ -5,7 +5,7 @@
 # a sample button
 #
 #Application: DragonShout music sampler
-#Last Edited: October 25th 2017
+#Last Edited: November 29th 2017
 #---------------------------------
 
 import os
@@ -33,7 +33,7 @@ class SampleButtonDialogBox(QDialog):
 
         #window title and icon
         self.setWindowIcon(QIcon(MainWindow.MainWindow.ApplicationIconPath))
-        self.setWindowTitle(self.mainWindow.text.localisation('dialogBoxes','newTheme','caption'))
+        self.setWindowTitle(self.mainWindow.text.localisation('dialogBoxes','newSample','caption'))
 
         #sample filepath
         self.samplePath = samplePath

@@ -4,8 +4,10 @@
 #This class manage the buttons of the sampler function.
 #
 #Application: DragonShout music sampler
-#Last Edited: November 01st 2017
+#Last Edited: November 29th 2017
 #---------------------------------
+
+import json
 
 from classes.interface import MainWindow
 from classes.interface.SoundEffect import SoundEffect
@@ -31,44 +33,84 @@ class Sampler(QWidget):
 
         self.mainWindow = mainWindow
 
-        self.lastRowIndex = 4
+        self.lastRowIndex = 9
 
         self.samplerMode = Sampler.PLAYMODE
 
-        self.MAXBUTTONPERROW = 4
+        self.MAXBUTTONPERROW = 6
+
+        #Grid layout
+        self.sampleButtonsGridLayout = self.constructGrid()
 
         #Main layout
         self.mainLayout = QVBoxLayout()
         self.mainLayout.setAlignment(Qt.Qt.AlignHCenter)
         self.setLayout(self.mainLayout)
 
+        self.populateMainLayout()
+
+
+    def populateMainLayout(self):
+        """Used to place the various widget of this module on the main layout.
+            - Takes no parameter.
+            - Returns nothing.
+        """
         #Control buttons
         self.addControlButtons()
 
-
         #Sample buttons grid layout
-        self.sampleButtonsGridLayout = self.constructGrid()
         self.buttonGrid = QWidget()
         self.buttonGrid.setLayout(self.sampleButtonsGridLayout)
         self.mainLayout.addWidget(self.buttonGrid)
 
         self.mainLayout.addStretch(1)
 
-    def constructGrid(self):
+    def constructGrid(self, sampleSet:list=None):
         """Constructs the buttons' grid according to the self.sampleButtons property
             - Takes no parameter.
             - Returns a QGridLayout containing the sample buttons.
         """
         gridLayout = QGridLayout()
-        row = 0
-        while row <= self.lastRowIndex:
-            column = 0
-            while column < self.MAXBUTTONPERROW:
-                defaultSampleButton = SoundEffect(SoundEffect.NEWEFFECTBUTTON,(row,column))
-                defaultSampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
-                gridLayout.addWidget(defaultSampleButton,row,column)
-                column += 1
-            row += 1
+        self.sampleButtons = [[]]
+
+
+        #If a sample set is provided = create buttons according to the sample set
+        if sampleSet != None :
+            #Creating all objects from the sample set
+            soundEffects = []
+            for sampleJSON in sampleSet:
+                soundEffect = SoundEffect.unserialize(self.mainWindow,sampleJSON)
+                soundEffect.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
+                soundEffects.append(soundEffect)
+
+            row = 0
+            while row <= self.lastRowIndex:
+                column = 0
+                while column < self.MAXBUTTONPERROW:
+                    #Place each object on the grids
+                    for soundEffect in soundEffects:
+                        buttonRow = soundEffect.coordinates[0]
+                        buttonColumn = soundEffect.coordinates[1]
+                        if buttonRow == row and buttonColumn == column:
+                            gridLayout.addWidget(soundEffect,row,column)
+                            self.sampleButtons[row].append(soundEffect)
+                    column += 1
+                self.sampleButtons.append([])
+                row += 1
+
+        #if no sample set is provided = creates only default buttons
+        else:
+            row = 0
+            while row <= self.lastRowIndex:
+                column = 0
+                while column < self.MAXBUTTONPERROW:
+                    sampleButton = SoundEffect(self.mainWindow,SoundEffect.NEWEFFECTBUTTON,(row,column))
+                    sampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
+                    self.sampleButtons[row].append(sampleButton)
+                    gridLayout.addWidget(sampleButton,row,column)
+                    column += 1
+                self.sampleButtons.append([])
+                row += 1
 
         return gridLayout
 
@@ -145,10 +187,11 @@ class Sampler(QWidget):
             row = coordinates[0]
             column = coordinates[1]
 
-            sampleButton = SoundEffect(SoundEffect.SOUNDEFFECTBUTTON,(row,column),path,icon)
+            sampleButton = SoundEffect(self.mainWindow,SoundEffect.SOUNDEFFECTBUTTON,(row,column),path,icon)
             sampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
             self.sampleButtonsGridLayout.itemAtPosition(row,column).widget().setParent(None)
             self.sampleButtonsGridLayout.addWidget(sampleButton,row,column)
+            self.sampleButtons[row][column] = sampleButton
 
     def removeSampleButton(self, soundEffect:SoundEffect):
         """Remove a sample button, require the Delete mode.
@@ -159,10 +202,11 @@ class Sampler(QWidget):
         row = soundEffect.coordinates[0]
         column = soundEffect.coordinates[1]
 
-        sampleButton = SoundEffect(SoundEffect.NEWEFFECTBUTTON,(row,column))
+        sampleButton = SoundEffect(self.mainWindow, SoundEffect.NEWEFFECTBUTTON,(row,column))
         sampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
         self.sampleButtonsGridLayout.itemAtPosition(row,column).widget().setParent(None)
         self.sampleButtonsGridLayout.addWidget(sampleButton,row,column)
+        self.sampleButtons[row][column] = sampleButton
 
     def editSampleButton(self, soundEffect:SoundEffect):
         """Edit a sample button.
@@ -195,3 +239,44 @@ class Sampler(QWidget):
 
         else: #Any other cases defaults to prompting the new sample button dialog.
             self.addSampleButton(soundEffect.coordinates)
+
+    def load(self, filepath: str='',loadType:str="run"):
+        """Used to load a sample set from the hard drive (JSON).
+            - Takes one parameter:
+                - filepath as string
+            - Returns:
+                - False as boolean or sampleSet as list.
+        """
+    #try:
+        with open(filepath, "r", encoding="utf-8") as json_file:
+            completeJSON = json.load(json_file)
+
+        sampleSet = completeJSON["SampleSet"]
+
+        if loadType == "run":
+            newButtonGrid = QWidget()
+            newButtonsGridLayout = self.constructGrid(sampleSet)
+            newButtonGrid.setLayout(newButtonsGridLayout)
+            oldButtonGrid = self.mainLayout.replaceWidget(self.buttonGrid,newButtonGrid)
+
+            oldButtonGrid.widget().setParent(None)
+            self.buttonGrid = newButtonGrid
+            self.sampleButtonsGridLayout = newButtonsGridLayout
+
+        elif loadType == "test":
+            return True
+    #except :
+    #    return False
+
+    def serialize(self):
+        """Used to serialize instance data to JSON format.
+            - Takes no parameter.
+            - Returns instance data as dictionnary.
+        """
+
+        sampleButtons_list = []
+        for row in self.sampleButtons:
+            for sampleButton in row:
+                sampleButtons_list.append(sampleButton.serialize())
+
+        return sampleButtons_list
