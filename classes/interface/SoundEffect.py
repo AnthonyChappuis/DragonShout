@@ -33,7 +33,7 @@ class SoundEffect(QPushButton):
     SOUNDEFFECTBUTTON = 1
 
     #Class method
-    def unserialize(cls,data: dict):
+    def unserialize(cls,mainWindow:MainWindow,data: dict):
         """Used to unsrialize JSON data for SoundEffect instances
             - Takes one parameter:
                 - data as dictionnary
@@ -46,7 +46,7 @@ class SoundEffect(QPushButton):
                 soundEffect_object = SoundEffect(mainWindow,data["buttonType"],data["coordinates"],data["filepath"],data["iconPath"])
                 return soundEffect_object
             return data
-        unserialize = classmethod(unserialize)
+    unserialize = classmethod(unserialize)
 
     #constructor
     def __init__(self, mainWindow:MainWindow, buttonType:int, coordinates:tuple, soundEffectFilePath:str='', iconPath:str=''):

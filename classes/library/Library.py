@@ -40,15 +40,15 @@ class Library:
 		Takes one parameter:
 		- filepath as string
 		"""
-	#try :
-		with open(filepath, "r", encoding="utf-8") as json_file:
-			completeJSON = json.load(json_file)
+		try :
+			with open(filepath, "r", encoding="utf-8") as json_file:
+				completeJSON = json.load(json_file)
 
-		library_object = Library.unserialize(mainWindow,completeJSON["Library"])
-		library_object.filepath = filepath
-		return library_object
-	#except :
-		#return False
+			library_object = Library.unserialize(mainWindow,completeJSON["Library"])
+			library_object.filepath = filepath
+			return library_object
+		except :
+			return False
 	load = classmethod(load)
 
 	#class method
@@ -170,19 +170,22 @@ class Library:
 		"""
 		self.filepath = filepath
 
-		#if the file doesn't exist, create it
-		if not(os.path.isfile(filepath)):
-			open(filepath,"x", encoding="utf-8")
-
 		serial_library = self.serialize()
 		serial_sampler = self.mainWindow.sampler.serialize()
 
 		completeJSON = {"Library" : serial_library,
-						"SampleSet" : serial_sampler}
+		"SampleSet" : serial_sampler}
+
+		#if the file doesn't exist, create it
+		if not(os.path.isfile(filepath)):
+			jsonFile = open(filepath,"x", encoding="utf-8")
+			jsonFile.close()
+
 
 		with open(filepath,"w", encoding="utf-8") as json_file:
 			json.dump(completeJSON,json_file, indent=4)
 
+		json_file.close()
 
 	def serialize(self):
 		"""Used to serialize instance data to JSON format

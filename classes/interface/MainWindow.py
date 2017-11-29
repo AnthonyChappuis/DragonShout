@@ -45,8 +45,8 @@ class MainWindow(QMainWindow):
         self.text = Text()
 
         self.loadLibrary()
-        self.loadSampleSet()
 
+        self.sampler = Sampler(self)
         self.themes = Themes(self)
         self.playlist = Playlist(self)
 
@@ -138,10 +138,10 @@ class MainWindow(QMainWindow):
         else:
             self.library = Library(self,"new_library","")
 
-    def loadSampleSet(self,filepath:str=''):
+    def loadSampler(self,filepath:str=''):
         """Loads an existing sampleSet or creates a new one"""
-        if os.path.isfile(filepath) and Sampler.load(filepath):
-        	self.sampler = Sampler.load(filepath)
+        if os.path.isfile(filepath) and self.sampler.load(filepath,'test'):
+        	self.sampler.load(filepath)
         elif os.path.isfile(filepath) and not Sampler.load(filepath):
             QMessageBox(QMessageBox.Warning,self.text.localisation('messageBoxes','loadLibrary','title'),self.text.localisation('messageBoxes','loadLibrary','caption')).exec()
         else:
@@ -172,12 +172,9 @@ class MainWindow(QMainWindow):
             self.library.save(filepath)
 
     def load(self):
-        loadDialog = QFileDialog()
-
-        filepath, ok = loadDialog.getOpenFileName(self,'test',os.path.expanduser('~'),MainWindow.SupportedLibraryFiles)
-
+        filepath, ok = QFileDialog().getOpenFileName(self,'test',os.path.expanduser('~'),MainWindow.SupportedLibraryFiles)
         if ok :
             self.loadLibrary(filepath)
-            self.loadSampleSet(filepath)
+            self.loadSampler(filepath)
             self.themes.setThemes()
             self.playlist.reset()
