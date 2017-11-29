@@ -4,7 +4,7 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: Mai 16th 2017
+#Last Edited: November 29th 2017
 #---------------------------------
 
 import os
@@ -44,12 +44,11 @@ class MainWindow(QMainWindow):
         #Variable and CONSTANTS
         self.text = Text()
 
-        self.library = ''
         self.loadLibrary()
+        self.loadSampleSet()
 
         self.themes = Themes(self)
         self.playlist = Playlist(self)
-        self.sampler = Sampler(self)
 
         self.menuBar()
 
@@ -137,7 +136,16 @@ class MainWindow(QMainWindow):
         elif os.path.isfile(filepath) and not Library.load(filepath):
             QMessageBox(QMessageBox.Warning,self.text.localisation('messageBoxes','loadLibrary','title'),self.text.localisation('messageBoxes','loadLibrary','caption')).exec()
         else:
-            self.library = Library("new_library","")
+            self.library = Library(self,"new_library","")
+
+    def loadSampleSet(self,filepath:str=''):
+        """Loads an existing sampleSet or creates a new one"""
+        if os.path.isfile(filepath) and Sampler.load(filepath):
+        	self.sampler = Sampler.load(filepath)
+        elif os.path.isfile(filepath) and not Sampler.load(filepath):
+            QMessageBox(QMessageBox.Warning,self.text.localisation('messageBoxes','loadLibrary','title'),self.text.localisation('messageBoxes','loadLibrary','caption')).exec()
+        else:
+            self.sampler = Sampler(self)
 
     def renameTheme(self,themeName:str):
         """Modify the name of the theme.
@@ -170,5 +178,6 @@ class MainWindow(QMainWindow):
 
         if ok :
             self.loadLibrary(filepath)
+            self.loadSampleSet(filepath)
             self.themes.setThemes()
             self.playlist.reset()

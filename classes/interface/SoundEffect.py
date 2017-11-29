@@ -5,7 +5,7 @@
 # It heritates from QPushButton.
 #
 #Application: DragonShout music sampler
-#Last Edited: October 25th 2017
+#Last Edited: November 29th 2017
 #---------------------------------
 
 from PyQt5.QtGui import QIcon
@@ -32,6 +32,23 @@ class SoundEffect(QPushButton):
     NEWEFFECTBUTTON = 0
     SOUNDEFFECTBUTTON = 1
 
+    #Class method
+    def unserialize(cls,data: dict):
+        """Used to unsrialize JSON data for SoundEffect instances
+            - Takes one parameter:
+                - data as dictionnary
+                - mainWindow as MainWindow
+            - Returns nothing
+        """
+        if "__class__" in data :
+            if data["__class__"] == "SoundEffect":
+                #creating SoundEffect instance
+                soundEffect_object = SoundEffect(mainWindow,data["buttonType"],data["coordinates"],data["filepath"],data["iconPath"])
+                return soundEffect_object
+            return data
+        unserialize = classmethod(unserialize)
+
+    #constructor
     def __init__(self, mainWindow:MainWindow, buttonType:int, coordinates:tuple, soundEffectFilePath:str='', iconPath:str=''):
         super().__init__()
 
@@ -107,3 +124,14 @@ class SoundEffect(QPushButton):
 
         elif self.mediaPlayer.state() == QMediaPlayer.StoppedState:
             self.changeStyleSheet(SoundEffect.EFFECTBUTTONSTYLESHEETPATH)
+
+    def serialize(self):
+        """Used to serialize instance data to JSON format.
+            - Takes no parameter.
+            - Returns instance data as dictionnary.
+        """
+        return {"__class__":    "SoundEffect",
+                "coordinates":  self.coordinates,
+                "buttonType":   self.buttonType,
+                "filepath":     self.filepath,
+                "iconPath":     self.iconPath}

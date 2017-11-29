@@ -15,11 +15,14 @@
 #				_filepath as string
 #					Contains the path to the library file on the drive
 #
-#Last edited: May 19th 2017
+#Last edited: November 29th 2017
 ###############################################################################
 import os
 import json
+
+from classes.interface import MainWindow
 from classes.library.Category import Category
+from classes.interface.Sampler import Sampler
 
 class Library:
 	"""Class Library:
@@ -39,8 +42,9 @@ class Library:
 		"""
 		try :
 			with open(filepath, "r", encoding="utf-8") as json_file:
-				library_object = json.load(json_file, object_hook=cls.unserialize)
+				completeJSON = json.load(json_file, object_hook=cls.unserialize)
 
+			library_object = completeJSON.Library
 			library_object.filepath = filepath
 			return library_object
 		except :
@@ -72,10 +76,11 @@ class Library:
 	unserialize = classmethod(unserialize)
 
 	#constructor
-	def __init__(self,name:str, filepath: str):
+	def __init__(self, mainWindow:MainWindow, name:str, filepath: str):
 		self._name			= name
 		self._filepath 		= filepath
 		self._categories 	= []
+		self.mainWindow = mainWindow
 
 	#accessors
 	def _get_name(self):
@@ -169,8 +174,15 @@ class Library:
 		if not(os.path.isfile(filepath)):
 			open(filepath,"x", encoding="utf-8")
 
+		serial_library = self.serialize()
+		serial_sampler = self.mainWindow.sampler.serialize()
+
+		completeJSON = {"Library" : serial_library,
+						"SampleSet" : serial_sampler}
+
 		with open(filepath,"w", encoding="utf-8") as json_file:
-			json.dump(self.serialize(),json_file, indent=4)
+			json.dump(completeJSON,json_file, indent=4)
+
 
 	def serialize(self):
 		"""Used to serialize instance data to JSON format

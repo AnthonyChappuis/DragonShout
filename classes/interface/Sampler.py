@@ -4,8 +4,10 @@
 #This class manage the buttons of the sampler function.
 #
 #Application: DragonShout music sampler
-#Last Edited: November 01st 2017
+#Last Edited: November 29th 2017
 #---------------------------------
+
+import json
 
 from classes.interface import MainWindow
 from classes.interface.SoundEffect import SoundEffect
@@ -26,7 +28,24 @@ class Sampler(QWidget):
     #Sampler styleSheets
     ACTIVEBUTTONSSTYLESHEETPATH = 'ressources/interface/stylesheets/activeSamplerToggleButtons.css'
 
-    def __init__(self, mainWindow:MainWindow):
+    #Class method
+    def load(cls, filepath: str=''):
+        """Used to load a sample set from the hard drive (JSON).
+            - Takes one parameter:
+                - filepath as string
+            - Returns:
+                - False as boolean or sampleSet as list.
+        """
+        try:
+            with open(filepath, "r", encoding="utf-8") as json_file:
+                completeJSON = json.load(json_file, object_hook=cls.unserialize)
+            sampleSet = completeJSON.SampleSet
+            return sampleSet
+        except :
+            return False
+        load = classmethod(load)
+
+    def __init__(self, mainWindow:MainWindow, sampleSet:list=None):
         super().__init__()
 
         self.mainWindow = mainWindow
@@ -47,27 +66,36 @@ class Sampler(QWidget):
 
 
         #Sample buttons grid layout
-        self.sampleButtonsGridLayout = self.constructGrid()
+        self.sampleButtonsGridLayout = self.constructGrid(sampleSet)
         self.buttonGrid = QWidget()
         self.buttonGrid.setLayout(self.sampleButtonsGridLayout)
         self.mainLayout.addWidget(self.buttonGrid)
 
         self.mainLayout.addStretch(1)
 
-    def constructGrid(self):
+    def constructGrid(self, sampleSet:list):
         """Constructs the buttons' grid according to the self.sampleButtons property
             - Takes no parameter.
             - Returns a QGridLayout containing the sample buttons.
         """
         gridLayout = QGridLayout()
+        self.sampleButtons = [[]]
         row = 0
         while row <= self.lastRowIndex:
             column = 0
             while column < self.MAXBUTTONPERROW:
-                defaultSampleButton = SoundEffect(self.mainWindow,SoundEffect.NEWEFFECTBUTTON,(row,column))
-                defaultSampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
-                gridLayout.addWidget(defaultSampleButton,row,column)
+                if sampleSet != None :
+                    for sampleJSON in sampleSet:
+                        soundEffect = SoundEffect.unserialize(sampleJSON)
+                        if soundEffect.coordinates == (row,column):
+                            sampleButton = soundEffect
+                else:
+                    sampleButton = SoundEffect(self.mainWindow,SoundEffect.NEWEFFECTBUTTON,(row,column))
+                    sampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
+                    self.sampleButtons[row].append(sampleButton)
+                    gridLayout.addWidget(sampleButton,row,column)
                 column += 1
+            self.sampleButtons.append([])
             row += 1
 
         return gridLayout
@@ -149,6 +177,7 @@ class Sampler(QWidget):
             sampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
             self.sampleButtonsGridLayout.itemAtPosition(row,column).widget().setParent(None)
             self.sampleButtonsGridLayout.addWidget(sampleButton,row,column)
+            self.sampleButtons[row][column] = sampleButton
 
     def removeSampleButton(self, soundEffect:SoundEffect):
         """Remove a sample button, require the Delete mode.
@@ -163,6 +192,7 @@ class Sampler(QWidget):
         sampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
         self.sampleButtonsGridLayout.itemAtPosition(row,column).widget().setParent(None)
         self.sampleButtonsGridLayout.addWidget(sampleButton,row,column)
+        self.sampleButtons[row][column] = sampleButton
 
     def editSampleButton(self, soundEffect:SoundEffect):
         """Edit a sample button.
@@ -195,3 +225,17 @@ class Sampler(QWidget):
 
         else: #Any other cases defaults to prompting the new sample button dialog.
             self.addSampleButton(soundEffect.coordinates)
+
+    def serialize(self):
+        """Used to serialize instance data to JSON format.
+            - Takes no parameter.
+            - Returns instance data as dictionnary.
+        """
+
+        sampleButtons_list = []
+        for row in self.sampleButtons:
+            for sampleButton in row:
+                sampleButtons_list.append(sampleButton.serialize())
+
+        return {"__class__":        "SoundEffect",
+                "sampleButtons":    sampleButtons_list}
