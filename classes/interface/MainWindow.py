@@ -131,8 +131,8 @@ class MainWindow(QMainWindow):
 
     def loadLibrary(self,filepath:str=''):
         """Loads an existing library or creates a new one"""
-        if os.path.isfile(filepath) and Library.load(filepath):
-        	self.library = Library.load(filepath)
+        if os.path.isfile(filepath) and Library.load(self,filepath):
+        	self.library = Library.load(self,filepath)
         elif os.path.isfile(filepath) and not Library.load(filepath):
             QMessageBox(QMessageBox.Warning,self.text.localisation('messageBoxes','loadLibrary','title'),self.text.localisation('messageBoxes','loadLibrary','caption')).exec()
         else:

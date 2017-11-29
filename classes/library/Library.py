@@ -35,24 +35,24 @@ class Library:
 			Contains the path to the library file on the drive
 	"""
 
-	def load(cls,filepath: str):
+	def load(cls, mainWindow:MainWindow, filepath: str):
 		"""Used to load the library from the hard drive (JSON).
 		Takes one parameter:
 		- filepath as string
 		"""
-		try :
-			with open(filepath, "r", encoding="utf-8") as json_file:
-				completeJSON = json.load(json_file, object_hook=cls.unserialize)
+	#try :
+		with open(filepath, "r", encoding="utf-8") as json_file:
+			completeJSON = json.load(json_file)
 
-			library_object = completeJSON.Library
-			library_object.filepath = filepath
-			return library_object
-		except :
-			return False
+		library_object = Library.unserialize(mainWindow,completeJSON["Library"])
+		library_object.filepath = filepath
+		return library_object
+	#except :
+		#return False
 	load = classmethod(load)
 
 	#class method
-	def unserialize(cls, data: dict):
+	def unserialize(cls,mainWindow:MainWindow, data: dict):
 		"""Used to unserialize json data to set Library instance attributs and create Category
 		class instances.
 		Takes two parameters:
@@ -62,7 +62,7 @@ class Library:
 		if "__class__" in data :
 			if data["__class__"] == "Library":
 				#creating Library instance
-				library_object = Library(data["name"],"")
+				library_object = Library(mainWindow, data["name"],"")
 
 				#unserializing categories for this library
 				category_list = []

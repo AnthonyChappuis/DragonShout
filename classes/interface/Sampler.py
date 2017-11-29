@@ -36,14 +36,15 @@ class Sampler(QWidget):
             - Returns:
                 - False as boolean or sampleSet as list.
         """
-        try:
-            with open(filepath, "r", encoding="utf-8") as json_file:
-                completeJSON = json.load(json_file, object_hook=cls.unserialize)
-            sampleSet = completeJSON.SampleSet
-            return sampleSet
-        except :
-            return False
-        load = classmethod(load)
+    #try:
+        with open(filepath, "r", encoding="utf-8") as json_file:
+            completeJSON = json.load(json_file)
+
+        sampleSet = completeJSON["SampleSet"]
+        return sampleSet
+    #except :
+        #return False
+    load = classmethod(load)
 
     def __init__(self, mainWindow:MainWindow, sampleSet:list=None):
         super().__init__()
