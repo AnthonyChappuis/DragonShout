@@ -9,11 +9,12 @@
 #---------------------------------
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton, QMessageBox
 from PyQt5.QtCore import QFileInfo, QUrl
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 
-from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
+from classes.interface.SampleButtonDialogBox import SampleButtonDialogBox
+from classes.interface import MainWindow
 
 
 class SoundEffect(QPushButton):
@@ -31,9 +32,10 @@ class SoundEffect(QPushButton):
     NEWEFFECTBUTTON = 0
     SOUNDEFFECTBUTTON = 1
 
-    def __init__(self, buttonType:int, coordinates:tuple, soundEffectFilePath:str='', iconPath:str=''):
+    def __init__(self, mainWindow:MainWindow, buttonType:int, coordinates:tuple, soundEffectFilePath:str='', iconPath:str=''):
         super().__init__()
 
+        self.mainWindow = mainWindow
         self.coordinates = coordinates
         self.buttonType = buttonType
         self.filepath = ''
@@ -95,6 +97,10 @@ class SoundEffect(QPushButton):
             - Takes no parameter.
             - Returns nothing.
         """
+
+        #Player encountered an error relative to the loaded media
+        if self.mediaPlayer.mediaStatus() == QMediaPlayer.InvalidMedia:
+            QMessageBox(QMessageBox.Critical,self.mainWindow.text.localisation('messageBoxes','loadMedia','title'),self.mainWindow.text.localisation('messageBoxes','loadMedia','caption')).exec()
 
         if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
             self.changeStyleSheet(SoundEffect.ACTIVEEFFECTBUTTONSSTYLESHEETPATH)

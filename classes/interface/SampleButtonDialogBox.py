@@ -33,7 +33,7 @@ class SampleButtonDialogBox(QDialog):
 
         #window title and icon
         self.setWindowIcon(QIcon(MainWindow.MainWindow.ApplicationIconPath))
-        self.setWindowTitle(self.mainWindow.text.localisation('dialogBoxes','newTheme','caption'))
+        self.setWindowTitle(self.mainWindow.text.localisation('dialogBoxes','newSample','caption'))
 
         #sample filepath
         self.samplePath = samplePath

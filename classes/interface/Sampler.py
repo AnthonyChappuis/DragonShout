@@ -64,7 +64,7 @@ class Sampler(QWidget):
         while row <= self.lastRowIndex:
             column = 0
             while column < self.MAXBUTTONPERROW:
-                defaultSampleButton = SoundEffect(SoundEffect.NEWEFFECTBUTTON,(row,column))
+                defaultSampleButton = SoundEffect(self.mainWindow,SoundEffect.NEWEFFECTBUTTON,(row,column))
                 defaultSampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
                 gridLayout.addWidget(defaultSampleButton,row,column)
                 column += 1
@@ -145,7 +145,7 @@ class Sampler(QWidget):
             row = coordinates[0]
             column = coordinates[1]
 
-            sampleButton = SoundEffect(SoundEffect.SOUNDEFFECTBUTTON,(row,column),path,icon)
+            sampleButton = SoundEffect(self.mainWindow,SoundEffect.SOUNDEFFECTBUTTON,(row,column),path,icon)
             sampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
             self.sampleButtonsGridLayout.itemAtPosition(row,column).widget().setParent(None)
             self.sampleButtonsGridLayout.addWidget(sampleButton,row,column)
