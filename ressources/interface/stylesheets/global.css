@@ -3,3 +3,21 @@ QSplitter::handle
     background-color: rgb(200,200,200);
     border: 1px solid white;
   }
+
+/*MainWindow
+{
+  background: rgb(23,75,158);
+}
+
+QLabel
+{
+  color: white;
+}
+
+QPushButton
+{
+  border: 10px solid;
+  border-color: rgb(84,10,145);
+  background-color: rgb(84,10,145);
+  color: white;
+}*/

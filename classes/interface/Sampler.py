@@ -16,7 +16,7 @@ from classes.interface.SampleButtonDialogBox import SampleButtonDialogBox
 from PyQt5 import Qt
 from PyQt5.QtCore import QUrl
 
-from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QVBoxLayout, QHBoxLayout, QSlider
 
 class Sampler(QWidget):
 
@@ -24,6 +24,10 @@ class Sampler(QWidget):
     PLAYMODE = '0'
     EDITMODE = '1'
     DELETEMODE = '2'
+
+    #Sample volumes
+    MINVOLUME = 0
+    MAXVOLUME = 100
 
     #Sampler styleSheets
     ACTIVEBUTTONSSTYLESHEETPATH = 'ressources/interface/stylesheets/activeSamplerToggleButtons.css'
@@ -48,6 +52,7 @@ class Sampler(QWidget):
         self.setLayout(self.mainLayout)
 
         self.populateMainLayout()
+        self.changeVolume(int(Sampler.MAXVOLUME/2))
 
 
     def populateMainLayout(self):
@@ -131,6 +136,16 @@ class Sampler(QWidget):
         controlLayout = QHBoxLayout()
         controlLayout.addWidget(self.toggleEditModeButton)
         controlLayout.addWidget(self.toggleDeleteModeButton)
+
+        #Volume control
+        self.volumeSlider = QSlider(Qt.Qt.Vertical)
+        self.volumeSlider.setMinimum(Sampler.MINVOLUME)
+        self.volumeSlider.setMaximum(Sampler.MAXVOLUME)
+        self.volumeSlider.setTickPosition(QSlider.TicksBelow)
+        self.volumeSlider.valueChanged.connect(lambda *args: self.changeVolume(self.sender().value()))
+        self.volumeSlider.setValue(int(Sampler.MAXVOLUME/2))
+        controlLayout.addWidget(self.volumeSlider)
+
         controlWidget = QWidget()
         controlWidget.setLayout(controlLayout)
         self.mainLayout.addWidget(controlWidget)
@@ -240,6 +255,17 @@ class Sampler(QWidget):
         else: #Any other cases defaults to prompting the new sample button dialog.
             self.addSampleButton(soundEffect.coordinates)
 
+    def changeVolume(self, newVolume:int):
+        """Used to change all the soundEffects volume.
+            - Takes one parameter:
+                - newVolume as integer.
+            - Returns nothing.
+        """
+        for row in self.sampleButtons:
+            for soundEffect in row:
+                if soundEffect.buttonType == SoundEffect.SOUNDEFFECTBUTTON:
+                    soundEffect.mediaPlayer.setVolume(newVolume)
+
     def load(self, filepath: str='',loadType:str="run"):
         """Used to load a sample set from the hard drive (JSON).
             - Takes one parameter:
@@ -247,26 +273,26 @@ class Sampler(QWidget):
             - Returns:
                 - False as boolean or sampleSet as list.
         """
-    #try:
-        with open(filepath, "r", encoding="utf-8") as json_file:
-            completeJSON = json.load(json_file)
+        try:
+            with open(filepath, "r", encoding="utf-8") as json_file:
+                completeJSON = json.load(json_file)
 
-        sampleSet = completeJSON["SampleSet"]
+            sampleSet = completeJSON["SampleSet"]
 
-        if loadType == "run":
-            newButtonGrid = QWidget()
-            newButtonsGridLayout = self.constructGrid(sampleSet)
-            newButtonGrid.setLayout(newButtonsGridLayout)
-            oldButtonGrid = self.mainLayout.replaceWidget(self.buttonGrid,newButtonGrid)
+            if loadType == "run":
+                newButtonGrid = QWidget()
+                newButtonsGridLayout = self.constructGrid(sampleSet)
+                newButtonGrid.setLayout(newButtonsGridLayout)
+                oldButtonGrid = self.mainLayout.replaceWidget(self.buttonGrid,newButtonGrid)
 
-            oldButtonGrid.widget().setParent(None)
-            self.buttonGrid = newButtonGrid
-            self.sampleButtonsGridLayout = newButtonsGridLayout
+                oldButtonGrid.widget().setParent(None)
+                self.buttonGrid = newButtonGrid
+                self.sampleButtonsGridLayout = newButtonsGridLayout
 
-        elif loadType == "test":
-            return True
-    #except :
-    #    return False
+            elif loadType == "test":
+                return True
+        except :
+            return False
 
     def serialize(self):
         """Used to serialize instance data to JSON format.
