@@ -1,24 +1,24 @@
 SoundEffect
   {
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 5%;
-    border-top-color: white;
-    border-left-color: white;
-    border-right-color: grey;
-    border-bottom-color: grey;
+    border: 5px solid;
+    border-radius: 5px;
+    border-color:rgb(58, 83, 124);
+    background-color: rgb(58, 83, 124);
+    color: white;
 
     padding: 5%;
 
-    min-width: 50px;
-    min-height: 50px;
+    min-width: 40px;
+    min-height: 40px;
   }
 
 SoundEffect:pressed
   {
-    background-color: rgb(200, 200, 200);
-    border-top-color: grey;
-    border-left-color: grey;
-    border-right-color: white;
-    border-bottom-color: white;
+    background-color: rgb(55, 78, 117);
+    /*Foncé*/
+    border-top-color: rgb(43, 61, 91);
+    border-left-color: rgb(43, 61, 91);
+    /*Clair*/
+    border-right-color: rgb(70, 100, 150);
+    border-bottom-color: rgb(70, 100, 150);
   }
