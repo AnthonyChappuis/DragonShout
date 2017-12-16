@@ -39,3 +39,10 @@ QListWidget
   background-color:  rgb(58, 83, 124);
   color: white;
 }
+
+QProgressBar:horizontal
+{
+  border: None;
+  background: grey;
+  padding: 1px;
+}
