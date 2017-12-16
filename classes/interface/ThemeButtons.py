@@ -19,6 +19,8 @@ class ThemeButtons(QWidget):
 
     STYLESHEETPATH = "ressources/interface/stylesheets/themeButtons.css"
 
+    DELETEICONPATH = "ressources/interface/delete.png"
+
     def __init__(self, themeName:str, themeIconPath:str, mainWindow:MainWindow):
         super().__init__()
 
@@ -48,9 +50,10 @@ class ThemeButtons(QWidget):
         layout.addWidget(self.editButton)
 
         #Remove button
-        self.removeButton = QPushButton('X')
+        self.removeButton = QPushButton()
+        self.removeButton.setIcon(QIcon(ThemeButtons.DELETEICONPATH))
         self.removeButton.setStyleSheet(stylesheet)
-        self.removeButton.setMaximumWidth(20)
+        self.removeButton.setMaximumWidth(30)
         self.removeButton.clicked.connect(lambda *args: self.mainWindow.themes.deleteTheme(self.themeButton.text(),self))
         layout.addWidget(self.removeButton)
 
