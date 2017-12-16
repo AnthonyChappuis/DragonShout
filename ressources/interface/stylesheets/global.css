@@ -1,12 +1,11 @@
 QSplitter::handle
   {
-    background-color: rgb(200,200,200);
-    border: 1px solid white;
+    background-color: rgb(58, 83, 124);
   }
 
-/*MainWindow
+MainWindow
 {
-  background: rgb(23,75,158);
+  background: rgb(25, 44, 76);
 }
 
 QLabel
@@ -17,7 +16,14 @@ QLabel
 QPushButton
 {
   border: 10px solid;
-  border-color: rgb(84,10,145);
-  background-color: rgb(84,10,145);
+  border-color: rgb(94, 93, 93);
+  background-color: rgb(94, 93, 93);
   color: white;
-}*/
+}
+
+QListWidget
+{
+  border: none;
+  background-color:  rgb(58, 83, 124);
+  color: white;
+}
