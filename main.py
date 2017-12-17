@@ -12,9 +12,9 @@ if __name__.endswith('__main__'):
     myappid = 'AnthonyChappuis.DragonShout'
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     #-------------------
-    
+
     application = QApplication(sys.argv)
-    application.setApplicationName(MainWindow.ApplicationName)
+    application.setApplicationName(MainWindow.APPLICATIONNAME)
 
     window = MainWindow(application)
 

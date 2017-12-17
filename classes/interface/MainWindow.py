@@ -25,21 +25,21 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
 
 class MainWindow(QMainWindow):
 
-    SupportedLibraryFiles = '*.json'
-    ApplicationIconPath = 'dragonShout.png'
-    ApplicationName = 'Dragon Shout'
+    SUPPORTEDLIBRARYFILES = '*.json'
+    APPLICATIONICONPATH = 'dragonShout.png'
+    APPLICATIONNAME = 'Dragon Shout'
+    GLOBALSTYLESHEETPATH = "ressources/interface/stylesheets/global.css"
 
     def __init__(self,application:QApplication):
         super().__init__()
 
         #Global style sheet
-        self.GLOBALSTYLESHEETPATH = "ressources/interface/stylesheets/global.css"
-        styleSheet = open(self.GLOBALSTYLESHEETPATH,'r', encoding='utf-8').read()
+        styleSheet = open(MainWindow.GLOBALSTYLESHEETPATH,'r', encoding='utf-8').read()
         self.setStyleSheet(styleSheet)
 
         #Window decoration
-        self.setWindowTitle(MainWindow.ApplicationName)
-        self.setWindowIcon(QIcon(MainWindow.ApplicationIconPath))
+        self.setWindowTitle(MainWindow.APPLICATIONNAME)
+        self.setWindowIcon(QIcon(MainWindow.APPLICATIONICONPATH))
 
         #Variable and CONSTANTS
         self.text = Text()
@@ -172,7 +172,7 @@ class MainWindow(QMainWindow):
             self.library.save(filepath)
 
     def load(self):
-        filepath, ok = QFileDialog().getOpenFileName(self,'test',os.path.expanduser('~'),MainWindow.SupportedLibraryFiles)
+        filepath, ok = QFileDialog().getOpenFileName(self,'test',os.path.expanduser('~'),MainWindow.SUPPORTEDLIBRARYFILES)
         if ok :
             self.loadLibrary(filepath)
             self.loadSampler(filepath)

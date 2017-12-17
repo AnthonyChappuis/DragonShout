@@ -8,6 +8,16 @@ MainWindow
   background: rgb(25, 44, 76);
 }
 
+SampleButtonDialogBox
+{
+  background: rgb(25, 44, 76);
+}
+
+ThemeButtonDialogBox
+{
+  background: rgb(25, 44, 76);
+}
+
 QLabel
 {
   color: white;

@@ -26,6 +26,9 @@ class ThemeButtonDialogBox(QDialog):
         self.mainWindow = mainWindow
         self.okOrNot = False
 
+        styleSheet = open(MainWindow.MainWindow.GLOBALSTYLESHEETPATH,'r', encoding='utf-8').read()
+        self.setStyleSheet(styleSheet)
+
         #parameters defaulting
         if themeName == 'notset' or not isinstance(themeName, str):
             themeName = self.mainWindow.text.localisation('dialogBoxes','newTheme','caption')
@@ -34,7 +37,7 @@ class ThemeButtonDialogBox(QDialog):
             themeIconPath = ThemeButtonDialogBox.DefaultThemeIconPath
 
         #window title and icon
-        self.setWindowIcon(QIcon(MainWindow.MainWindow.ApplicationIconPath))
+        self.setWindowIcon(QIcon(MainWindow.MainWindow.APPLICATIONICONPATH))
         self.setWindowTitle(self.mainWindow.text.localisation('dialogBoxes','newTheme','caption'))
 
         #Theme name
