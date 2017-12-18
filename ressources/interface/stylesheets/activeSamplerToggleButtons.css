@@ -1,6 +1,12 @@
 QPushButton
 {
-  border-color: rgb(75, 100, 75);
+  /*Foncé*/
+  border-bottom-color: rgb(49, 66, 49);
+  border-right-color: rgb(49, 66, 49);
+  /*Clair*/
+  border-left-color: rgb(80, 109, 80);
+  border-top-color: rgb(80, 109, 80);
+
   background-color: rgb(75, 100, 75);
 }
 

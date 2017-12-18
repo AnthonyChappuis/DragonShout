@@ -2,7 +2,13 @@ SoundEffect
   {
     border: 5px solid;
     border-radius: 5px;
-    border-color: rgb(37, 81, 48);
+    /*Foncé*/
+    border-top-color: rgb(28, 61, 36);
+    border-left-color: rgb(28, 61, 36);
+    /*Clair*/
+    border-right-color: rgb(52, 117, 68);
+    border-bottom-color: rgb(52, 117, 68);
+
     background-color: rgb(37, 81, 48);
     color: white;
 
@@ -15,10 +21,4 @@ SoundEffect
 SoundEffect:pressed
   {
     background-color: rgb(30, 66, 39);
-    /*Foncé*/
-    border-top-color: rgb(28, 61, 36);
-    border-left-color: rgb(28, 61, 36);
-    /*Clair*/
-    border-right-color: rgb(52, 117, 68);
-    border-bottom-color: rgb(52, 117, 68);
   }

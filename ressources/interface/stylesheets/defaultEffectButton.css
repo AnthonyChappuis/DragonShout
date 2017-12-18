@@ -1,6 +1,12 @@
 SoundEffect
   {
-    border-color:rgb(58, 83, 124);
+    /*Foncé*/
+    border-bottom-color: rgb(43, 61, 91);
+    border-right-color: rgb(43, 61, 91);
+    /*Clair*/
+    border-left-color: rgb(70, 100, 150);
+    border-top-color: rgb(70, 100, 150);
+
     background-color: rgb(58, 83, 124);
     color: white;
 

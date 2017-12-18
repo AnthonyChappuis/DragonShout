@@ -45,7 +45,6 @@ class ThemeButtons(QWidget):
         #Edit button
         self.editButton = QPushButton('Edit')
         self.editButton.setStyleSheet(stylesheet)
-        self.editButton.setMaximumWidth(50)
         self.editButton.clicked.connect(lambda *args: self.editTheme(self.themeButton.text()))
         layout.addWidget(self.editButton)
 
@@ -53,7 +52,7 @@ class ThemeButtons(QWidget):
         self.removeButton = QPushButton()
         self.removeButton.setIcon(QIcon(ThemeButtons.DELETEICONPATH))
         self.removeButton.setStyleSheet(stylesheet)
-        self.removeButton.setMaximumWidth(30)
+        self.removeButton.setMinimumWidth(50)
         self.removeButton.clicked.connect(lambda *args: self.mainWindow.themes.deleteTheme(self.themeButton.text(),self))
         layout.addWidget(self.removeButton)
 

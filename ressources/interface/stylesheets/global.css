@@ -1,6 +1,13 @@
 QSplitter::handle
   {
     background-color: rgb(58, 83, 124);
+    border: 5px dashed;
+    /*Foncé*/
+    border-bottom-color: rgb(43, 61, 91);
+    border-right-color: rgb(43, 61, 91);
+    /*Clair*/
+    border-left-color: rgb(70, 100, 150);
+    border-top-color: rgb(70, 100, 150);
   }
 
 MainWindow
@@ -26,9 +33,22 @@ QLabel
 QPushButton
 {
   border: 10px solid;
-  border-color: rgb(94, 93, 93);
   background-color: rgb(94, 93, 93);
+  padding: 10px;
   color: white;
+  /*Foncé*/
+  border-bottom-color: rgb(58, 58, 58);
+  border-right-color: rgb(58, 58, 58);
+  /*Clair*/
+  border-left-color: rgb(89, 89, 89);
+  border-top-color: rgb(89, 89, 89);
+}
+
+QPushButton:disabled
+{
+  color: grey;
+  background-color: rgb(94, 93, 110);
+  border-color: rgb(94, 93, 110);
 }
 
 QPushButton:pressed
@@ -45,9 +65,9 @@ QPushButton:pressed
 
 QListWidget
 {
-  border: none;
   background-color:  rgb(58, 83, 124);
   color: white;
+  border-color: red;
 }
 
 QProgressBar:horizontal
@@ -55,4 +75,9 @@ QProgressBar:horizontal
   border: None;
   background: grey;
   padding: 1px;
+}
+
+QMenuBar
+{
+  background: rgb(230,230,230);
 }

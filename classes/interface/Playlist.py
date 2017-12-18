@@ -65,20 +65,18 @@ class Playlist(QWidget):
         self.playButton.setIcon(QIcon('ressources/interface/play.png'))
         self.playButtonShortcut = QShortcut(Qt.Qt.Key_Space,self.mainWindow)
         self.playButtonShortcut.activated.connect(lambda *args: self.playButton.animateClick())
-        self.playButton.setMaximumWidth(40)
+        self.playButton.setMinimumWidth(50)
         self.playButton.clicked.connect(lambda *args: self.playMusic())
         tracklistControlLayout.addWidget(self.playButton)
 
         #add button
         self.addMusicButton = QPushButton(self.mainWindow.text.localisation('buttons','addMusic','caption'))
-        self.addMusicButton.setMaximumWidth(150)
         self.addMusicButton.clicked.connect(lambda *args: self.addMusicToList())
         self.addMusicButton.setEnabled(False)
         tracklistControlLayout.addWidget(self.addMusicButton)
 
         #remove button
         self.removeMusicButton = QPushButton(self.mainWindow.text.localisation('buttons','removeMusic','caption'))
-        self.removeMusicButton.setMaximumWidth(150)
         self.removeMusicButton.clicked.connect(lambda *args: self.removeMusicFromList())
         self.removeMusicButton.setEnabled(False)
         tracklistControlLayout.addWidget(self.removeMusicButton)
@@ -86,7 +84,7 @@ class Playlist(QWidget):
         #stop button
         self.stopButton = QPushButton()
         self.stopButton.setIcon(QIcon('ressources/interface/stop.png'))
-        self.stopButton.setMaximumWidth(40)
+        self.stopButton.setMinimumWidth(50)
         self.stopButton.clicked.connect(lambda *args: self.stopMusic())
         tracklistControlLayout.addWidget(self.stopButton)
 
