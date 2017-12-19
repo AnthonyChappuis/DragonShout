@@ -3,10 +3,10 @@
 block_cipher = None
 
 
-a = Analysis(['DragonShout\\DragonShout.py'],
-             pathex=['C:\\Sync\\Programmation'],
+a = Analysis(['DragonShout.py'],
+             pathex=[],
              binaries=[],
-             datas=[('DragonShout\\ressources', '.\\ressources'),('DragonShout\\dragonShout.png','.')],
+             datas=[('ressources', 'ressources'),('dragonShout.png','.')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
