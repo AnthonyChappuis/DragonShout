@@ -20,3 +20,7 @@ The last used technologies are:
 - Python 3.6.3
 - PyQt 5.9.2
 - SIP 4.19.16
+
+Note:
+- Installing libqt5multimedia5-plugins might be necessary to use sources with your system if you obtain :
+ "defaultServiceProvider::requestService(): no service found for - "org.qt-project.qt.mediaplayer"" error.
