@@ -4,7 +4,7 @@
 #Class responsible for the themes' collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: May 19th 2017
+#Last Edited: January 31th 2018
 #---------------------------------
 
 from classes.interface import MainWindow
@@ -106,7 +106,6 @@ class Themes(QWidget):
                                                     QMessageBox.Yes | QMessageBox.No).exec()
 
         if choice == QMessageBox.Yes :
-            category = self.mainWindow.library.get_category(themeName)
 
             if themeName == self.mainWindow.playlist.label.text():
                 self.mainWindow.playlist.reset()
@@ -114,8 +113,8 @@ class Themes(QWidget):
             if themeButtons in self.themeButtons :
                 self.themeButtons.remove(themeButtons)
 
-            if category :
-                del category
+            if self.mainWindow.library.get_category(themeName) :
+                self.mainWindow.library.remove_category(themeName)
                 themeButtons.deleteLater()
 
     def toggleThemes(self, toggleType:bool):
