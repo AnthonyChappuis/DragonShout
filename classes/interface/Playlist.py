@@ -183,7 +183,13 @@ class Playlist(QWidget):
         """Select the next media of the list and gives it to the player.
             Takes no parameter.
         """
-        nextRow = self.trackList.currentRow()+1
+
+        #Check if repeat button is active
+        if self.repeat :
+            nextRow = self.trackList.currentRow()
+        else:
+            nextRow = self.trackList.currentRow()+1
+
         maxRow = self.trackList.count()
 
         #Restart at top of the list if the end is reached
