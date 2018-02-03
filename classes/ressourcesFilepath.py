@@ -11,4 +11,5 @@ class Stylesheets():
     activeToggleButtons = "ressources/interface/stylesheets/activeToggleButtons.css"
 
 class Images():
+    applicationIcon = "dragonShout.png"
     repeatIcon = "ressources/interface/repeat.png"

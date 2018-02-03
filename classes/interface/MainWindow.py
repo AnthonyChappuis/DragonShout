@@ -55,7 +55,7 @@ class MainWindow(QMainWindow):
         self.setGUI()
 
         self.show()
-
+        
     def setGUI(self):
         """Generates the main window user interface"""
         #Creating status bar
