@@ -4,7 +4,7 @@
 #Class responsible for the playlist's collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: October 17th 2017
+#Last Edited: February 03rd 2018
 #---------------------------------
 
 import os
@@ -14,6 +14,8 @@ from classes.interface import MainWindow
 from classes.library.Library import Library
 from classes.library.Track import Track
 from classes.multimedia.MusicPlayer import MusicPlayer
+from classes.ressourcesFilepath import Stylesheets
+from classes.ressourcesFilepath import Images
 
 from PyQt5 import Qt
 from PyQt5.QtCore import QFileInfo, QUrl, QTimer
@@ -30,6 +32,7 @@ class Playlist(QWidget):
         self.tracks = []
         self.label = ''
         self.musicPlayer = MusicPlayer(mainWindow)
+        self.repeat = False
 
         #Label of the tracklist
         playlistVerticalLayout = QVBoxLayout()
@@ -101,6 +104,13 @@ class Playlist(QWidget):
 
         volumeControlWidget.setLayout(volumeControlLayout)
         tracklistControlLayout.addStretch(1)
+
+        #Repeat control
+        self.repeatToggleButton = QPushButton()
+        self.repeatToggleButton.setIcon(QIcon(Images.repeatIcon))
+        self.repeatToggleButton.clicked.connect(lambda *args: self.toggleRepeat())
+
+        tracklistControlLayout.addWidget(self.repeatToggleButton)
         tracklistControlLayout.addWidget(volumeControlWidget)
 
         controlsWidget.setLayout(tracklistControlLayout)
@@ -254,3 +264,16 @@ class Playlist(QWidget):
         """
         self.musicPlayer.stop()
         self.resetDurationBar()
+
+    def toggleRepeat(self):
+        """Toggle between repeating a single track or playing once.
+            Takes no parameter.
+            Returns nothing.
+        """
+        if self.repeat :
+            self.repeat = False
+            self.repeatToggleButton.setStyleSheet("")
+        else:
+            self.repeat = True
+            styleSheet = open(Stylesheets.activeToggleButtons,'r', encoding='utf-8').read()
+            self.repeatToggleButton.setStyleSheet(styleSheet)
