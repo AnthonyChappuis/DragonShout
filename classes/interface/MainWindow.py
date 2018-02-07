@@ -4,7 +4,7 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: November 29th 2017
+#Last Edited: February 07th 2018
 #---------------------------------
 
 import os
@@ -13,6 +13,7 @@ from classes.interface.Text import Text
 from classes.interface.Playlist import Playlist
 from classes.interface.Themes import Themes
 from classes.interface.Sampler import Sampler
+from classes.ressourcesFilepath import Stylesheets
 
 from classes.library.Library import Library
 
@@ -28,13 +29,12 @@ class MainWindow(QMainWindow):
     SUPPORTEDLIBRARYFILES = '*.json'
     APPLICATIONICONPATH = 'dragonShout.png'
     APPLICATIONNAME = 'Dragon Shout'
-    GLOBALSTYLESHEETPATH = "ressources/interface/stylesheets/global.css"
 
     def __init__(self,application:QApplication):
         super().__init__()
 
         #Global style sheet
-        styleSheet = open(MainWindow.GLOBALSTYLESHEETPATH,'r', encoding='utf-8').read()
+        styleSheet = open(Stylesheets.globalStyle,'r', encoding='utf-8').read()
         self.setStyleSheet(styleSheet)
 
         #Window decoration
@@ -55,7 +55,7 @@ class MainWindow(QMainWindow):
         self.setGUI()
 
         self.show()
-        
+
     def setGUI(self):
         """Generates the main window user interface"""
         #Creating status bar
