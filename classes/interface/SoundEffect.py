@@ -15,19 +15,10 @@ from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 
 from classes.interface.SampleButtonDialogBox import SampleButtonDialogBox
 from classes.interface import MainWindow
+from classes.ressourcesFilepath import Stylesheets, Images
 
 
 class SoundEffect(QPushButton):
-
-    #Style sheets
-    EFFECTBUTTONSTYLESHEETPATH = 'ressources/interface/stylesheets/soundEffectButtons.css'
-    ACTIVEEFFECTBUTTONSSTYLESHEETPATH = 'ressources/interface/stylesheets/activeSoundEffectButtons.css'
-
-    DEFAULTBUTTONSTYLESHEETPATH = 'ressources/interface/stylesheets/defaultEffectButton.css'
-
-    #Icons
-    DEFAULTBUTTONICONPATH = 'ressources/interface/addSampleButton.png'
-
     #Button Types
     NEWEFFECTBUTTON = 0
     SOUNDEFFECTBUTTON = 1
@@ -70,8 +61,8 @@ class SoundEffect(QPushButton):
                 self.changeIcon(iconPath)
 
         else: #Creates a default button to show effects availability on the interface
-            self.changeIcon(SoundEffect.DEFAULTBUTTONICONPATH)
-            self.changeStyleSheet(SoundEffect.DEFAULTBUTTONSTYLESHEETPATH)
+            self.changeIcon(Images.addSampleButtonIcon)
+            self.changeStyleSheet(Stylesheets.defaultButtons)
 
     def changeIcon(self, iconPath:str):
         self.iconPath = iconPath
@@ -89,7 +80,7 @@ class SoundEffect(QPushButton):
 
     def changeStyleSheet(self, styleSheetPath:str='Default'):
         if styleSheetPath == 'Default':
-            styleSheet = open(SoundEffect.EFFECTBUTTONSTYLESHEETPATH,'r',encoding='utf-8').read()
+            styleSheet = open(Stylesheets.effectButtons,'r',encoding='utf-8').read()
         else:
             styleSheet = open(styleSheetPath,'r',encoding='utf-8').read()
 
@@ -120,10 +111,10 @@ class SoundEffect(QPushButton):
             QMessageBox(QMessageBox.Critical,self.mainWindow.text.localisation('messageBoxes','loadMedia','title'),self.mainWindow.text.localisation('messageBoxes','loadMedia','caption')).exec()
 
         if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
-            self.changeStyleSheet(SoundEffect.ACTIVEEFFECTBUTTONSSTYLESHEETPATH)
+            self.changeStyleSheet(Stylesheets.activeEffectButtons)
 
         elif self.mediaPlayer.state() == QMediaPlayer.StoppedState:
-            self.changeStyleSheet(SoundEffect.EFFECTBUTTONSTYLESHEETPATH)
+            self.changeStyleSheet(Stylesheets.effectButtons)
 
     def serialize(self):
         """Used to serialize instance data to JSON format.

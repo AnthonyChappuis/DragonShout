@@ -10,6 +10,7 @@
 import os
 
 from classes.interface import MainWindow
+from classes.ressourcesFilepath import Stylesheets, Images
 
 from PyQt5.QtWidgets import QDialog, QPushButton, QGridLayout, QLineEdit, QLabel, QFileDialog
 from PyQt5.QtGui import QIcon
@@ -18,15 +19,13 @@ from PyQt5.Qt import Qt
 
 class ThemeButtonDialogBox(QDialog):
 
-    DefaultThemeIconPath = 'ressources/interface/defaultButtonIcon.png'
-
     def __init__(self, mainWindow:MainWindow, themeName:str='notset', themeIconPath:str='notset'):
         super().__init__()
 
         self.mainWindow = mainWindow
         self.okOrNot = False
 
-        styleSheet = open(MainWindow.MainWindow.GLOBALSTYLESHEETPATH,'r', encoding='utf-8').read()
+        styleSheet = open(Stylesheets.globalStyle,'r', encoding='utf-8').read()
         self.setStyleSheet(styleSheet)
 
         #parameters defaulting
@@ -34,7 +33,7 @@ class ThemeButtonDialogBox(QDialog):
             themeName = self.mainWindow.text.localisation('dialogBoxes','newTheme','caption')
 
         if themeIconPath == 'notset' or not isinstance(themeIconPath, str):
-            themeIconPath = ThemeButtonDialogBox.DefaultThemeIconPath
+            themeIconPath = Images.defaultButtonIcon
 
         #window title and icon
         self.setWindowIcon(QIcon(MainWindow.MainWindow.APPLICATIONICONPATH))

@@ -4,7 +4,7 @@
 #Class responsible for the playlist's collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: October 17th 2017
+#Last Edited: February 03rd 2018
 #---------------------------------
 
 import os
@@ -14,6 +14,8 @@ from classes.interface import MainWindow
 from classes.library.Library import Library
 from classes.library.Track import Track
 from classes.multimedia.MusicPlayer import MusicPlayer
+from classes.ressourcesFilepath import Stylesheets
+from classes.ressourcesFilepath import Images
 
 from PyQt5 import Qt
 from PyQt5.QtCore import QFileInfo, QUrl, QTimer
@@ -30,6 +32,7 @@ class Playlist(QWidget):
         self.tracks = []
         self.label = ''
         self.musicPlayer = MusicPlayer(mainWindow)
+        self.repeat = False
 
         #Label of the tracklist
         playlistVerticalLayout = QVBoxLayout()
@@ -62,7 +65,7 @@ class Playlist(QWidget):
 
         #play button
         self.playButton = QPushButton()
-        self.playButton.setIcon(QIcon('ressources/interface/play.png'))
+        self.playButton.setIcon(QIcon(Images.playIcon))
         self.playButtonShortcut = QShortcut(Qt.Qt.Key_Space,self.mainWindow)
         self.playButtonShortcut.activated.connect(lambda *args: self.playButton.animateClick())
         self.playButton.setMinimumWidth(50)
@@ -83,7 +86,7 @@ class Playlist(QWidget):
 
         #stop button
         self.stopButton = QPushButton()
-        self.stopButton.setIcon(QIcon('ressources/interface/stop.png'))
+        self.stopButton.setIcon(QIcon(Images.stopIcon))
         self.stopButton.setMinimumWidth(50)
         self.stopButton.clicked.connect(lambda *args: self.stopMusic())
         tracklistControlLayout.addWidget(self.stopButton)
@@ -101,6 +104,13 @@ class Playlist(QWidget):
 
         volumeControlWidget.setLayout(volumeControlLayout)
         tracklistControlLayout.addStretch(1)
+
+        #Repeat control
+        self.repeatToggleButton = QPushButton()
+        self.repeatToggleButton.setIcon(QIcon(Images.repeatIcon))
+        self.repeatToggleButton.clicked.connect(lambda *args: self.toggleRepeat())
+
+        tracklistControlLayout.addWidget(self.repeatToggleButton)
         tracklistControlLayout.addWidget(volumeControlWidget)
 
         controlsWidget.setLayout(tracklistControlLayout)
@@ -173,7 +183,13 @@ class Playlist(QWidget):
         """Select the next media of the list and gives it to the player.
             Takes no parameter.
         """
-        nextRow = self.trackList.currentRow()+1
+
+        #Check if repeat button is active
+        if self.repeat :
+            nextRow = self.trackList.currentRow()
+        else:
+            nextRow = self.trackList.currentRow()+1
+
         maxRow = self.trackList.count()
 
         #Restart at top of the list if the end is reached
@@ -254,3 +270,16 @@ class Playlist(QWidget):
         """
         self.musicPlayer.stop()
         self.resetDurationBar()
+
+    def toggleRepeat(self):
+        """Toggle between repeating a single track or playing once.
+            Takes no parameter.
+            Returns nothing.
+        """
+        if self.repeat :
+            self.repeat = False
+            self.repeatToggleButton.setStyleSheet("")
+        else:
+            self.repeat = True
+            styleSheet = open(Stylesheets.activeToggleButtons,'r', encoding='utf-8').read()
+            self.repeatToggleButton.setStyleSheet(styleSheet)

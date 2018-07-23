@@ -32,7 +32,7 @@ QLabel
 
 QPushButton
 {
-  border: 10px solid;
+  border: 5px solid;
   background-color: rgb(94, 93, 93);
   padding: 10px;
   color: white;

@@ -10,16 +10,14 @@
 from classes.interface import MainWindow
 from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
 
+from classes. ressourcesFilepath import Stylesheets, Images
+
 from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget, QInputDialog
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize
 from PyQt5.Qt import Qt
 
 class ThemeButtons(QWidget):
-
-    STYLESHEETPATH = "ressources/interface/stylesheets/themeButtons.css"
-
-    DELETEICONPATH = "ressources/interface/delete.png"
 
     def __init__(self, themeName:str, themeIconPath:str, mainWindow:MainWindow):
         super().__init__()
@@ -31,7 +29,7 @@ class ThemeButtons(QWidget):
         if themeIconPath == '' or not isinstance(themeIconPath, str) :
             themeIconPath = ThemeButtonDialogBox.DefaultThemeIconPath
 
-        stylesheet = open(ThemeButtons.STYLESHEETPATH,'r',encoding='utf-8').read()
+        stylesheet = open(Stylesheets.themeButtons,'r',encoding='utf-8').read()
 
         #Theme button
         self.themeButton = QPushButton(themeName)
@@ -50,7 +48,7 @@ class ThemeButtons(QWidget):
 
         #Remove button
         self.removeButton = QPushButton()
-        self.removeButton.setIcon(QIcon(ThemeButtons.DELETEICONPATH))
+        self.removeButton.setIcon(QIcon(Images.deleteButtonIcon))
         self.removeButton.setStyleSheet(stylesheet)
         self.removeButton.setMinimumWidth(50)
         self.removeButton.clicked.connect(lambda *args: self.mainWindow.themes.deleteTheme(self.themeButton.text(),self))

@@ -4,12 +4,13 @@
 #This class manage the buttons of the sampler function.
 #
 #Application: DragonShout music sampler
-#Last Edited: November 29th 2017
+#Last Edited: February 03rd 2018
 #---------------------------------
 
 import json
 
 from classes.interface import MainWindow
+from classes.ressourcesFilepath import Stylesheets
 from classes.interface.SoundEffect import SoundEffect
 from classes.interface.SampleButtonDialogBox import SampleButtonDialogBox
 
@@ -28,9 +29,6 @@ class Sampler(QWidget):
     #Sample volumes
     MINVOLUME = 0
     MAXVOLUME = 100
-
-    #Sampler styleSheets
-    ACTIVEBUTTONSSTYLESHEETPATH = 'ressources/interface/stylesheets/activeSamplerToggleButtons.css'
 
     def __init__(self, mainWindow:MainWindow):
         super().__init__()
@@ -166,7 +164,7 @@ class Sampler(QWidget):
             else:
                 #Activate Edit mode
                 self.samplerMode = samplerMode
-                styleSheet = open(Sampler.ACTIVEBUTTONSSTYLESHEETPATH,'r', encoding='utf-8').read()
+                styleSheet = open(Stylesheets.activeToggleButtons,'r', encoding='utf-8').read()
                 self.toggleEditModeButton.setStyleSheet(styleSheet)
                 self.toggleDeleteModeButton.setStyleSheet(None)
 
@@ -180,7 +178,7 @@ class Sampler(QWidget):
             else:
                 #Activate Delete mode
                 self.samplerMode = samplerMode
-                styleSheet = open(Sampler.ACTIVEBUTTONSSTYLESHEETPATH,'r', encoding='utf-8').read()
+                styleSheet = open(Stylesheets.activeToggleButtons,'r', encoding='utf-8').read()
                 self.toggleEditModeButton.setStyleSheet(None)
                 self.toggleDeleteModeButton.setStyleSheet(styleSheet)
 

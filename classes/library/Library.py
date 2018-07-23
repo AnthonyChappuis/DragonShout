@@ -15,7 +15,7 @@
 #				_filepath as string
 #					Contains the path to the library file on the drive
 #
-#Last edited: November 29th 2017
+#Last edited: January 31th 2018
 ###############################################################################
 import os
 import json
@@ -134,6 +134,17 @@ class Library:
 		- name as string
 		"""
 		self._categories.append(Category(name,iconPath))
+
+	def remove_category(self, name:str):
+		"""Used to remove a category from the library.
+		Takes one paramter:
+		- name as string.
+		Returns nothing.
+		"""
+		category  = self.get_category(name)
+
+		if category :
+			self.categories.remove(category)
 
 	def get_category(self,name: str):
 		"""Used to get a specific category from the library.

@@ -1,0 +1,22 @@
+QPushButton
+{
+  /*Foncé*/
+  border-bottom-color: rgb(49, 66, 49);
+  border-right-color: rgb(49, 66, 49);
+  /*Clair*/
+  border-left-color: rgb(80, 109, 80);
+  border-top-color: rgb(80, 109, 80);
+
+  background-color: rgb(75, 100, 75);
+}
+
+QPushButton:pressed
+{
+  background-color: rgb(64, 86, 64);
+  /*Foncé*/
+  border-top-color: rgb(49, 66, 49);
+  border-left-color: rgb(49, 66, 49);
+  /*Clair*/
+  border-right-color: rgb(80, 109, 80);
+  border-bottom-color: rgb(80, 109, 80);
+}

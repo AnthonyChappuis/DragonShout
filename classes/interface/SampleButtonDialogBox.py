@@ -11,6 +11,7 @@
 import os
 
 from classes.interface import MainWindow
+from classes.ressourcesFilepath import Stylesheets, Images
 
 from PyQt5.QtWidgets import QDialog, QPushButton, QGridLayout, QLineEdit, QLabel, QFileDialog
 from PyQt5.QtGui import QIcon
@@ -19,7 +20,6 @@ from PyQt5.Qt import Qt
 
 class SampleButtonDialogBox(QDialog):
 
-    DefaultSampleIconPath = 'ressources/interface/defaultButtonIcon.png'
 
     def __init__(self, mainWindow:MainWindow, samplePath:str='...', sampleIconPath:str='notset'):
         super().__init__()
@@ -27,12 +27,12 @@ class SampleButtonDialogBox(QDialog):
         self.mainWindow = mainWindow
         self.okOrNot = False
 
-        styleSheet = open(MainWindow.MainWindow.GLOBALSTYLESHEETPATH,'r', encoding='utf-8').read()
+        styleSheet = open(Stylesheets.globalStyle,'r', encoding='utf-8').read()
         self.setStyleSheet(styleSheet)
 
         #parameters defaulting
         if sampleIconPath == 'notset' or not isinstance(sampleIconPath, str):
-            sampleIconPath = SampleButtonDialogBox.DefaultSampleIconPath
+            sampleIconPath = Images.defaultButtonIcon
 
         #window title and icon
         self.setWindowIcon(QIcon(MainWindow.MainWindow.APPLICATIONICONPATH))
