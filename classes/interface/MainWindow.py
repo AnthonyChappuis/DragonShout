@@ -4,7 +4,7 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: February 07th 2018
+#Last Edited: Joly 26th 2018
 #---------------------------------
 
 import os
@@ -18,7 +18,7 @@ from classes.ressourcesFilepath import Stylesheets
 from classes.library.Library import Library
 
 from PyQt5 import Qt, QtGui
-from PyQt5.QtCore import QFileInfo
+from PyQt5.QtCore import QFileInfo, QStandardPaths
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QHBoxLayout, QSplitter, QWidget, QListWidget, QLabel,
@@ -160,8 +160,9 @@ class MainWindow(QMainWindow):
         """
         saveDialog = QFileDialog()
         saveDialog.setAcceptMode(QFileDialog.AcceptSave)
+        userFolderPath = QStandardPaths.locate(QStandardPaths.HomeLocation, '', QStandardPaths.LocateDirectory)
 
-        filepath , ok = saveDialog.getSaveFileName(self,self.text.localisation('dialogBoxes','saveLibrary','title'),os.path.expanduser('~'))
+        filepath , ok = saveDialog.getSaveFileName(self,self.text.localisation('dialogBoxes','saveLibrary','title'),os.path.expanduser(userFolderPath))
 
         if not filepath.endswith('.json') :
             filepath += '.json'
@@ -172,7 +173,8 @@ class MainWindow(QMainWindow):
             self.library.save(filepath)
 
     def load(self):
-        filepath, ok = QFileDialog().getOpenFileName(self,'test',os.path.expanduser('~'),MainWindow.SUPPORTEDLIBRARYFILES)
+        homeFolderPath = QStandardPaths.locate(QStandardPaths.HomeLocation, '', QStandardPaths.LocateDirectory)
+        filepath, ok = QFileDialog().getOpenFileName(self,'test',os.path.expanduser(homeFolderPath),MainWindow.SUPPORTEDLIBRARYFILES)
         if ok :
             self.loadLibrary(filepath)
             self.loadSampler(filepath)

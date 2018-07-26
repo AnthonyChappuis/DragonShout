@@ -4,7 +4,7 @@
 #Class responsible for the playlist's collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: February 03rd 2018
+#Last Edited: July 26th 2018
 #---------------------------------
 
 import os
@@ -18,7 +18,7 @@ from classes.ressourcesFilepath import Stylesheets
 from classes.ressourcesFilepath import Images
 
 from PyQt5 import Qt
-from PyQt5.QtCore import QFileInfo, QUrl, QTimer
+from PyQt5.QtCore import QFileInfo, QUrl, QTimer, QStandardPaths
 from PyQt5.QtGui import QIcon
 from PyQt5.QtMultimedia import QMediaContent
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QPushButton, QFileDialog, QAbstractItemView, QShortcut, QProgressBar, QSlider
@@ -172,7 +172,8 @@ class Playlist(QWidget):
         """Calls a file dialog to choose a music to add to the tracklist.
             Takes no parameter.
         """
-        filesList, ok = QFileDialog().getOpenFileNames(self,self.mainWindow.text.localisation('dialogBoxes','addMusic','caption'),os.path.expanduser('~'),"*.mp3 *.wav *.ogg *.flac *.wma *.aiff *.m4a")
+        musicFolderPath = QStandardPaths.locate(QStandardPaths.MusicLocation, '', QStandardPaths.LocateDirectory)
+        filesList, ok = QFileDialog().getOpenFileNames(self,self.mainWindow.text.localisation('dialogBoxes','addMusic','caption'),os.path.expanduser(musicFolderPath),"*.mp3 *.wav *.ogg *.flac *.wma *.aiff *.m4a")
         if ok :
             for filePath in filesList :
                 name = QFileInfo(filePath).fileName()
