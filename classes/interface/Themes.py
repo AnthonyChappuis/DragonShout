@@ -4,7 +4,7 @@
 #Class responsible for the themes' collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: January 31th 2018
+#Last Edited: August 07th 2018
 #---------------------------------
 
 from classes.interface import MainWindow
@@ -13,7 +13,7 @@ from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
 
 from PyQt5 import Qt
 from PyQt5.QtWidgets import (QWidget, QPushButton, QVBoxLayout, QInputDialog,
-    QHBoxLayout, QMessageBox)
+    QHBoxLayout, QMessageBox, QScrollArea)
 
 class Themes(QWidget):
 
@@ -32,15 +32,20 @@ class Themes(QWidget):
         self.addNewThemeButton(self.mainLayout)
 
         #theme buttons layout
-        self.themeButtonsLayout = QVBoxLayout()
+        themeButtonsLayout = QVBoxLayout()
+        self.themeButtonsLayout = themeButtonsLayout
         self.themeButtonsLayout.setAlignment(Qt.Qt.AlignHCenter)
+
+        #Theme buttons widget
         themeButtonsWidget = QWidget()
         themeButtonsWidget.setLayout(self.themeButtonsLayout)
-        self.mainLayout.addWidget(themeButtonsWidget)
 
-        for theme in self.mainWindow.library.categories:
-            self.addTheme(theme.name)
+        # Theme buttons scrolling area
+        scrollArea = QScrollArea()
+        scrollArea.setVerticalScrollBarPolicy(Qt.Qt.ScrollBarAlwaysOn)
+        scrollArea.setWidget(themeButtonsWidget)
 
+        self.mainLayout.addWidget(scrollArea)
         self.mainLayout.addStretch(1)
 
     def addNewThemeButton(self, mainLayout:QVBoxLayout):
