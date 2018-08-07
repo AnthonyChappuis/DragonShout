@@ -4,7 +4,7 @@
 #Class responsible for the themes' collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: January 31th 2018
+#Last Edited: August 07th 2018
 #---------------------------------
 
 from classes.interface import MainWindow
@@ -13,7 +13,7 @@ from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
 
 from PyQt5 import Qt
 from PyQt5.QtWidgets import (QWidget, QPushButton, QVBoxLayout, QInputDialog,
-    QHBoxLayout, QMessageBox)
+    QHBoxLayout, QMessageBox, QScrollArea)
 
 class Themes(QWidget):
 
@@ -34,14 +34,18 @@ class Themes(QWidget):
         #theme buttons layout
         self.themeButtonsLayout = QVBoxLayout()
         self.themeButtonsLayout.setAlignment(Qt.Qt.AlignHCenter)
+
+        #Theme buttons widget
         themeButtonsWidget = QWidget()
         themeButtonsWidget.setLayout(self.themeButtonsLayout)
-        self.mainLayout.addWidget(themeButtonsWidget)
 
-        for theme in self.mainWindow.library.categories:
-            self.addTheme(theme.name)
+        # Theme buttons scrolling area
+        self.scrollArea =  QScrollArea(self)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setWidget(themeButtonsWidget)
 
-        self.mainLayout.addStretch(1)
+        self.mainLayout.addWidget(self.scrollArea)
 
     def addNewThemeButton(self, mainLayout:QVBoxLayout):
         """Add a button to add a new theme to the given layout.
@@ -89,10 +93,9 @@ class Themes(QWidget):
             self.mainWindow.library.add_category(themeName,themeIconPath)
 
             #Theme widget
-            themeButton = ThemeButtons(themeName, themeIconPath, self.mainWindow)
-            self.themeButtons.append(themeButton)
-            self.themeButtonsLayout.addWidget(themeButton)
-
+            themeButtons = ThemeButtons(themeName, themeIconPath, self.mainWindow)
+            self.themeButtons.append(themeButtons)
+            self.themeButtonsLayout.addWidget(themeButtons)
 
     def deleteTheme(self, themeName:str, themeButtons:ThemeButtons):
         """Delete the theme both in the UI and in the library.

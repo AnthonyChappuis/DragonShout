@@ -5,7 +5,7 @@
 # a sample button
 #
 #Application: DragonShout music sampler
-#Last Edited: November 29th 2017
+#Last Edited: Jula 26th 2018
 #---------------------------------
 
 import os
@@ -15,7 +15,7 @@ from classes.ressourcesFilepath import Stylesheets, Images
 
 from PyQt5.QtWidgets import QDialog, QPushButton, QGridLayout, QLineEdit, QLabel, QFileDialog
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QSize, QFileInfo
+from PyQt5.QtCore import QSize, QFileInfo, QStandardPaths
 from PyQt5.Qt import Qt
 
 class SampleButtonDialogBox(QDialog):
@@ -88,12 +88,9 @@ class SampleButtonDialogBox(QDialog):
             Takes no parameter.
             Returns nothing.
         """
-        if os.path.isfile(self.iconPath):
-            filepath = self.iconPath
-        else:
-            filepath = '~/Pictures'
+        picturesFolderPath = QStandardPaths.locate(QStandardPaths.PicturesLocation, '', QStandardPaths.LocateDirectory)
 
-        filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newIcon','question'),os.path.expanduser(filepath),"*.jpg *.jpeg *.ico *.png")
+        filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newIcon','question'),os.path.expanduser(picturesFolderPath),"*.jpg *.jpeg *.ico *.png")
 
         if ok :
             self.sampleIconButton.setIcon(QIcon(filepath))
@@ -107,7 +104,7 @@ class SampleButtonDialogBox(QDialog):
         if os.path.isfile(self.samplePath):
             filepath = self.samplePath
         else:
-            filepath = '~/Music'
+            filepath = QStandardPaths.locate(QStandardPaths.MusicLocation, '', QStandardPaths.LocateDirectory)
 
         filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newSample','question'),os.path.expanduser(filepath),"*.mp3 *.wav *.flac *.aac")
 

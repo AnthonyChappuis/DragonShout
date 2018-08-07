@@ -4,7 +4,7 @@
 #Handle the dialogbox used when adding a new theme button to the application
 #
 #Application: DragonShout music sampler
-#Last Edited: Mai 19th 2017
+#Last Edited: July 26th 2018b
 #---------------------------------
 
 import os
@@ -14,7 +14,7 @@ from classes.ressourcesFilepath import Stylesheets, Images
 
 from PyQt5.QtWidgets import QDialog, QPushButton, QGridLayout, QLineEdit, QLabel, QFileDialog
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QSize
+from PyQt5.QtCore import QSize, QStandardPaths
 from PyQt5.Qt import Qt
 
 class ThemeButtonDialogBox(QDialog):
@@ -86,7 +86,10 @@ class ThemeButtonDialogBox(QDialog):
             Takes no parameter.
             Returns nothing.
         """
-        filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newIcon','question'),os.path.expanduser('~'),"*.jpg *.jpeg *.ico *.png")
+
+        picturesFolderPath = QStandardPaths.locate(QStandardPaths.PicturesLocation, '', QStandardPaths.LocateDirectory)
+
+        filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newIcon','question'),os.path.expanduser(picturesFolderPath),"*.jpg *.jpeg *.ico *.png")
 
         if ok :
             self.themeIconButton.setIcon(QIcon(filepath))
