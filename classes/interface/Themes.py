@@ -42,11 +42,11 @@ class Themes(QWidget):
 
         # Theme buttons scrolling area
         scrollArea = QScrollArea()
+        scrollArea.setWidgetResizable(True)
         scrollArea.setVerticalScrollBarPolicy(Qt.Qt.ScrollBarAlwaysOn)
         scrollArea.setWidget(themeButtonsWidget)
 
         self.mainLayout.addWidget(scrollArea)
-        self.mainLayout.addStretch(1)
 
     def addNewThemeButton(self, mainLayout:QVBoxLayout):
         """Add a button to add a new theme to the given layout.
