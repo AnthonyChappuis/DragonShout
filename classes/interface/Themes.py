@@ -32,8 +32,7 @@ class Themes(QWidget):
         self.addNewThemeButton(self.mainLayout)
 
         #theme buttons layout
-        themeButtonsLayout = QVBoxLayout()
-        self.themeButtonsLayout = themeButtonsLayout
+        self.themeButtonsLayout = QVBoxLayout()
         self.themeButtonsLayout.setAlignment(Qt.Qt.AlignHCenter)
 
         #Theme buttons widget
@@ -41,12 +40,12 @@ class Themes(QWidget):
         themeButtonsWidget.setLayout(self.themeButtonsLayout)
 
         # Theme buttons scrolling area
-        scrollArea = QScrollArea()
-        scrollArea.setWidgetResizable(True)
-        scrollArea.setVerticalScrollBarPolicy(Qt.Qt.ScrollBarAlwaysOn)
-        scrollArea.setWidget(themeButtonsWidget)
+        self.scrollArea =  QScrollArea(self)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setWidget(themeButtonsWidget)
 
-        self.mainLayout.addWidget(scrollArea)
+        self.mainLayout.addWidget(self.scrollArea)
 
     def addNewThemeButton(self, mainLayout:QVBoxLayout):
         """Add a button to add a new theme to the given layout.
@@ -94,10 +93,9 @@ class Themes(QWidget):
             self.mainWindow.library.add_category(themeName,themeIconPath)
 
             #Theme widget
-            themeButton = ThemeButtons(themeName, themeIconPath, self.mainWindow)
-            self.themeButtons.append(themeButton)
-            self.themeButtonsLayout.addWidget(themeButton)
-
+            themeButtons = ThemeButtons(themeName, themeIconPath, self.mainWindow)
+            self.themeButtons.append(themeButtons)
+            self.themeButtonsLayout.addWidget(themeButtons)
 
     def deleteTheme(self, themeName:str, themeButtons:ThemeButtons):
         """Delete the theme both in the UI and in the library.
