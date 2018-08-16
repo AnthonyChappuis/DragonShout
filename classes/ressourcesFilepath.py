@@ -4,7 +4,7 @@
 #Contain the filepath to every ressources of the application.
 #
 #Application: DragonShout music sampler
-#Last Edited: February 03rd 2018
+#Last Edited: August 16th 2018
 #---------------------------------
 
 class Stylesheets():
@@ -12,10 +12,11 @@ class Stylesheets():
     themeButtons = "ressources/interface/stylesheets/themeButtons.css"
     activeToggleButtons = "ressources/interface/stylesheets/activeToggleButtons.css"
 
-    effectButtons = "ressources/interface/stylesheets/soundEffectButtons.css"
-    activeEffectButtons = "ressources/interface/stylesheets/activeSoundEffectButtons.css"
+    effectButtons = "ressources/interface/stylesheets/soundEffects/soundEffectButtons.css"
+    redEffectButtons = "ressources/interface/styleSheets/soundEffects/redSoundEffectButtons.css"
+    activeEffectButtons = "ressources/interface/stylesheets/soundEffects/activeSoundEffectButtons.css"
 
-    defaultButtons = "ressources/interface/stylesheets/defaultEffectButton.css"
+    defaultButtons = "ressources/interface/stylesheets/defaultButtons.css"
 
 class Images():
     applicationIcon = "dragonShout.png"

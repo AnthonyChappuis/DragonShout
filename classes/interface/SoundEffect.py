@@ -5,7 +5,7 @@
 # It heritates from QPushButton.
 #
 #Application: DragonShout music sampler
-#Last Edited: November 29th 2017
+#Last Edited: August 16th 2018
 #---------------------------------
 
 from PyQt5.QtGui import QIcon
@@ -54,7 +54,10 @@ class SoundEffect(QPushButton):
             self.mediaPlayer.stateChanged.connect(lambda *args: self.playerStatusChanged())
 
             self.changeFile(soundEffectFilePath)
+            self.styleSheet = Stylesheets.effectButtons
             self.changeStyleSheet()
+
+            #self.changeColor()
 
             #Verify if iconPath is an str item and defaults it if not.
             if iconPath != '' and isinstance(iconPath, str) :
@@ -62,7 +65,8 @@ class SoundEffect(QPushButton):
 
         else: #Creates a default button to show effects availability on the interface
             self.changeIcon(Images.addSampleButtonIcon)
-            self.changeStyleSheet(Stylesheets.defaultButtons)
+            self.styleSheet = Stylesheets.defaultButtons
+            self.changeStyleSheet()
 
     def changeIcon(self, iconPath:str):
         self.iconPath = iconPath
@@ -80,7 +84,7 @@ class SoundEffect(QPushButton):
 
     def changeStyleSheet(self, styleSheetPath:str='Default'):
         if styleSheetPath == 'Default':
-            styleSheet = open(Stylesheets.effectButtons,'r',encoding='utf-8').read()
+            styleSheet = open(self.styleSheet,'r',encoding='utf-8').read()
         else:
             styleSheet = open(styleSheetPath,'r',encoding='utf-8').read()
 
@@ -114,7 +118,7 @@ class SoundEffect(QPushButton):
             self.changeStyleSheet(Stylesheets.activeEffectButtons)
 
         elif self.mediaPlayer.state() == QMediaPlayer.StoppedState:
-            self.changeStyleSheet(Stylesheets.effectButtons)
+            self.changeStyleSheet()
 
     def serialize(self):
         """Used to serialize instance data to JSON format.
@@ -126,3 +130,11 @@ class SoundEffect(QPushButton):
                 "buttonType":   self.buttonType,
                 "filepath":     self.filepath,
                 "iconPath":     self.iconPath}
+
+    def changeColor(self):
+        """Used to specify the color of the button.
+            - Takes no parameter.
+            - Returns nothing.
+        """
+        self.styleSheet = Stylesheets.redEffectButtons
+        self.changeStyleSheet()
