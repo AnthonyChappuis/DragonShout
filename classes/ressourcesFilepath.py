@@ -8,16 +8,21 @@
 #---------------------------------
 
 class Stylesheets():
+    #Diverse
     globalStyle = "ressources/interface/stylesheets/global.css"
     themeButtons = "ressources/interface/stylesheets/themeButtons.css"
     activeToggleButtons = "ressources/interface/stylesheets/activeToggleButtons.css"
 
+    #Effect buttons
     effectButtons = "ressources/interface/stylesheets/soundEffects/soundEffectButtons.css"
     redEffectButtons = "ressources/interface/styleSheets/soundEffects/redSoundEffectButtons.css"
     yellowEffectButtons = "ressources/interface/stylesheets/soundEffects/yellowSoundEffectButtons.css"
+    greyEffectButtons = "ressources/interface/stylesheets/soundEffects/greySoundEffectButtons.css"
+    purpleEffectButtons = "ressources/interface/stylesheets/soundEffects/purpleSoundEffectButtons.css"
+    blueEffectButtons = "ressources/interface/stylesheets/soundEffects/blueSoundEffectButtons.css"
     activeEffectButtons = "ressources/interface/stylesheets/soundEffects/activeSoundEffectButtons.css"
-
     defaultButtons = "ressources/interface/stylesheets/defaultButtons.css"
+
 
 class Images():
     applicationIcon = "dragonShout.png"

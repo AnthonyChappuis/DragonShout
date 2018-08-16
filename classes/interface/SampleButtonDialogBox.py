@@ -63,12 +63,18 @@ class SampleButtonDialogBox(QDialog):
         self.colorSchemes = []
         colorNumber = 0
 
-        for vert in range(1):
+        for vert in range(2):
             for hor in range(3):
                 if colorNumber == 1 :
                     styleSheetPath = Stylesheets.redEffectButtons
                 elif colorNumber == 2 :
                     styleSheetPath = Stylesheets.yellowEffectButtons
+                elif colorNumber == 3 :
+                    styleSheetPath = Stylesheets.greyEffectButtons
+                elif colorNumber == 4 :
+                    styleSheetPath = Stylesheets.purpleEffectButtons
+                elif colorNumber == 5 :
+                    styleSheetPath = Stylesheets.blueEffectButtons
                 else :
                     styleSheetPath = Stylesheets.effectButtons
 

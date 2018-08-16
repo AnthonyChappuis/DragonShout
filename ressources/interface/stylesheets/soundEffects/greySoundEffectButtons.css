@@ -1,0 +1,30 @@
+QPushButton
+  {
+    border: 5px solid;
+    border-radius: 5px;
+    /*Foncé*/
+    border-bottom-color: rgb(150, 150, 150);
+    border-right-color: rgb(150, 150, 150);
+    /*Clair*/
+    border-left-color: rgb(193, 193, 193);
+    border-top-color: rgb(193, 193, 193);
+
+    background-color: rgb(180, 180, 180);
+    color: black;
+
+    padding: 5%;
+
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+QPushButton:pressed
+  {
+    background-color: rgb(173, 173, 173);
+    /*Foncé*/
+    border-top-color: rgb(150, 150, 150);
+    border-left-color: rgb(150, 150, 150);
+    /*Clair*/
+    border-right-color: rgb(193, 193, 193);
+    border-bottom-color: rgb(193, 193, 193);
+  }
