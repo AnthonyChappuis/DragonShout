@@ -1,4 +1,4 @@
-SoundEffect
+QPushButton
   {
     border: 5px solid;
     border-radius: 5px;
@@ -18,7 +18,7 @@ SoundEffect
     min-height: 40px;
   }
 
-SoundEffect:pressed
+QPushButton:pressed
   {
     background-color: rgb(30, 66, 39);
   }

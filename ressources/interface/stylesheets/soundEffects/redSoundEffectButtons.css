@@ -1,15 +1,15 @@
-SoundEffect
+QPushButton
   {
     border: 5px solid;
     border-radius: 5px;
     /*Foncé*/
-    border-bottom-color: rgb(43, 61, 91);
-    border-right-color: rgb(43, 61, 91);
+    border-bottom-color: rgb(125, 50, 50);
+    border-right-color: rgb(125, 50, 50);
     /*Clair*/
-    border-left-color: rgb(70, 100, 150);
-    border-top-color: rgb(70, 100, 150);
+    border-left-color: rgb(200, 50, 50);
+    border-top-color: rgb(200, 50, 50);
 
-    background-color: rgb(200, 50, 50);
+    background-color: rgb(175, 50, 50);
     color: white;
 
     padding: 5%;
@@ -18,13 +18,13 @@ SoundEffect
     min-height: 40px;
   }
 
-SoundEffect:pressed
+QPushButton:pressed
   {
-    background-color: rgb(55, 78, 117);
+    background-color: rgb(150, 50, 50);
     /*Foncé*/
-    border-top-color: rgb(43, 61, 91);
-    border-left-color: rgb(43, 61, 91);
+    border-top-color: rgb(125, 50, 50);
+    border-left-color: rgb(125, 50, 50);
     /*Clair*/
-    border-right-color: rgb(70, 100, 150);
-    border-bottom-color: rgb(70, 100, 150);
+    border-right-color: rgb(200, 50, 50);
+    border-bottom-color: rgb(200, 50, 50);
   }

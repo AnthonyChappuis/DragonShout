@@ -5,7 +5,7 @@
 # a sample button
 #
 #Application: DragonShout music sampler
-#Last Edited: Jula 26th 2018
+#Last Edited: August 16th 2018
 #---------------------------------
 
 import os
@@ -13,7 +13,7 @@ import os
 from classes.interface import MainWindow
 from classes.ressourcesFilepath import Stylesheets, Images
 
-from PyQt5.QtWidgets import QDialog, QPushButton, QGridLayout, QLineEdit, QLabel, QFileDialog
+from PyQt5.QtWidgets import QDialog, QPushButton, QGridLayout, QLineEdit, QLabel, QFileDialog, QWidget
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize, QFileInfo, QStandardPaths
 from PyQt5.Qt import Qt
@@ -55,6 +55,30 @@ class SampleButtonDialogBox(QDialog):
         self.sampleIconButton.setFlat(True)
         self.sampleIconButton.clicked.connect(lambda *args: self.getNewIcon())
 
+        #Color scheme
+        self.colorSchemeLabel = QLabel("Color Scheme :")
+        gridlayout = QGridLayout()
+        self.colorSchemeWidget = QWidget()
+        self.colorSchemeWidget.setLayout(gridlayout)
+        self.colorSchemes = []
+        colorNumber = 0
+
+        for vert in range(1):
+            for hor in range(3):
+                if colorNumber == 1 :
+                    styleSheetPath = Stylesheets.redEffectButtons
+                elif colorNumber == 2 :
+                    styleSheetPath = Stylesheets.yellowEffectButtons
+                else :
+                    styleSheetPath = Stylesheets.effectButtons
+
+                exampleButton = QPushButton()
+                exampleButton.setStyleSheet(open(styleSheetPath,'r', encoding='utf-8').read())
+                exampleButton.clicked.connect(lambda *args: self.toggleColorScheme(self.sender()))
+                gridlayout.addWidget(exampleButton,vert,hor)
+                self.colorSchemes.append(exampleButton)
+                colorNumber += 1
+
         #control buttons
         self.OkButton = QPushButton(self.mainWindow.text.localisation('buttons','ok','caption'))
         self.OkButton.clicked.connect(lambda *args: self.closeDialog(True))
@@ -68,8 +92,10 @@ class SampleButtonDialogBox(QDialog):
         self.layout.addWidget(self.sampleFileSelectButton,0,1)
         self.layout.addWidget(self.sampleIconButtonLabel,1,0)
         self.layout.addWidget(self.sampleIconButton,1,1)
-        self.layout.addWidget(self.OkButton,2,0)
-        self.layout.addWidget(self.CancelButton,2,1)
+        self.layout.addWidget(self.colorSchemeLabel,2,0)
+        self.layout.addWidget(self.colorSchemeWidget,2,1)
+        self.layout.addWidget(self.OkButton,3,0)
+        self.layout.addWidget(self.CancelButton,3,1)
         self.setLayout(self.layout)
 
     def getItems(self):
@@ -120,3 +146,14 @@ class SampleButtonDialogBox(QDialog):
         """
         self.okOrNot = okOrNot
         self.close()
+
+    def toggleColorScheme(self, senderButton:QPushButton):
+        """Used to select the color scheme when user is clicking on one of the color scheme buttonsself.
+            - Takes one parameter:
+                - senderButton as QPushButton.
+            - Returns nothing.
+        """
+        filepath = Images.colorSchemeSelectorIcon
+        for exampleButton in self.colorSchemes :
+            exampleButton.setIcon(QIcon())
+        senderButton.setIcon(QIcon(filepath))

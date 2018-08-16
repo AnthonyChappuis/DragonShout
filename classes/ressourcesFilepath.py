@@ -14,6 +14,7 @@ class Stylesheets():
 
     effectButtons = "ressources/interface/stylesheets/soundEffects/soundEffectButtons.css"
     redEffectButtons = "ressources/interface/styleSheets/soundEffects/redSoundEffectButtons.css"
+    yellowEffectButtons = "ressources/interface/stylesheets/soundEffects/yellowSoundEffectButtons.css"
     activeEffectButtons = "ressources/interface/stylesheets/soundEffects/activeSoundEffectButtons.css"
 
     defaultButtons = "ressources/interface/stylesheets/defaultButtons.css"
@@ -26,3 +27,4 @@ class Images():
     defaultButtonIcon = "ressources/interface/defaultButtonIcon.png"
     addSampleButtonIcon = "ressources/interface/addSampleButton.png"
     deleteButtonIcon = "ressources/interface/delete.png"
+    colorSchemeSelectorIcon = "ressources/interface/colorSchemeSelector.png"
