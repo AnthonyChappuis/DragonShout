@@ -60,7 +60,7 @@ class SampleButtonDialogBox(QDialog):
         self.sampleIconButton.clicked.connect(lambda *args: self.getNewIcon())
 
         #Color scheme
-        self.colorSchemeLabel = QLabel("Color Scheme :")
+        self.colorSchemeLabel = QLabel(self.mainWindow.text.localisation('labels','colorScheme','caption'))
         gridlayout = QGridLayout()
         self.colorSchemeWidget = QWidget()
         self.colorSchemeWidget.setLayout(gridlayout)
