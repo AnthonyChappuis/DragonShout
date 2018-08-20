@@ -227,7 +227,7 @@ class Sampler(QWidget):
                 - sampleButton as SoundEffect object.
             - Returns nothing.
         """
-        filepath,iconPath, styleSheetPath,ok = SampleButtonDialogBox(self.mainWindow,soundEffect.filepath,soundEffect.iconPath).getItems()
+        filepath,iconPath, styleSheetPath,ok = SampleButtonDialogBox(self.mainWindow,soundEffect.filepath,soundEffect.iconPath,soundEffect.styleSheetPath).getItems()
         if ok :
             soundEffect.changeFile(filepath)
             soundEffect.changeIcon(iconPath)

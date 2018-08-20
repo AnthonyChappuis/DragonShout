@@ -21,12 +21,15 @@ from PyQt5.Qt import Qt
 class SampleButtonDialogBox(QDialog):
 
 
-    def __init__(self, mainWindow:MainWindow, samplePath:str='...', sampleIconPath:str='notset'):
+    def __init__(self, mainWindow:MainWindow, samplePath:str='...', sampleIconPath:str='notset', colorSchemeStyleSheetPath:str='Default'):
         super().__init__()
 
         self.mainWindow = mainWindow
         self.okOrNot = False
         self.styleSheetPath = Stylesheets.effectButtons
+
+        if colorSchemeStyleSheetPath == 'Default' :
+            colorSchemeStyleSheetPath == Stylesheets.effectButtons
 
         styleSheet = open(Stylesheets.globalStyle,'r', encoding='utf-8').read()
         self.setStyleSheet(styleSheet)
@@ -82,9 +85,13 @@ class SampleButtonDialogBox(QDialog):
                 exampleButton = QPushButton()
                 exampleButton.setStyleSheet(open(styleSheetPath,'r', encoding='utf-8').read())
                 exampleButton.clicked.connect(lambda *args: self.toggleColorScheme(self.sender()))
+
                 gridlayout.addWidget(exampleButton,vert,hor)
                 self.colorSchemes.append((exampleButton,styleSheetPath))
                 colorNumber += 1
+
+                if styleSheetPath == colorSchemeStyleSheetPath :
+                    exampleButton.click()
 
         #control buttons
         self.OkButton = QPushButton(self.mainWindow.text.localisation('buttons','ok','caption'))
