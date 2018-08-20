@@ -26,6 +26,7 @@ class SampleButtonDialogBox(QDialog):
 
         self.mainWindow = mainWindow
         self.okOrNot = False
+        self.styleSheetPath = Stylesheets.effectButtons
 
         styleSheet = open(Stylesheets.globalStyle,'r', encoding='utf-8').read()
         self.setStyleSheet(styleSheet)
@@ -82,7 +83,7 @@ class SampleButtonDialogBox(QDialog):
                 exampleButton.setStyleSheet(open(styleSheetPath,'r', encoding='utf-8').read())
                 exampleButton.clicked.connect(lambda *args: self.toggleColorScheme(self.sender()))
                 gridlayout.addWidget(exampleButton,vert,hor)
-                self.colorSchemes.append(exampleButton)
+                self.colorSchemes.append((exampleButton,styleSheetPath))
                 colorNumber += 1
 
         #control buttons
@@ -113,7 +114,7 @@ class SampleButtonDialogBox(QDialog):
             - okOrNot as boolean.
         """
         self.exec()
-        return self.samplePath, self.iconPath, self.okOrNot
+        return self.samplePath, self.iconPath, self.styleSheetPath, self.okOrNot
 
     def getNewIcon(self):
         """Opens a filesystem dialog to choose a new icon file for the sample.
@@ -138,7 +139,7 @@ class SampleButtonDialogBox(QDialog):
         else:
             filepath = QStandardPaths.locate(QStandardPaths.MusicLocation, '', QStandardPaths.LocateDirectory)
 
-        filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newSample','question'),os.path.expanduser(filepath),"*.mp3 *.wav *.flac *.aac")
+        filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newSample','question'),os.path.expanduser(filepath),"*.mp3 *.wav *.aac")
 
         if ok :
             self.samplePath = filepath
@@ -161,5 +162,9 @@ class SampleButtonDialogBox(QDialog):
         """
         filepath = Images.colorSchemeSelectorIcon
         for exampleButton in self.colorSchemes :
-            exampleButton.setIcon(QIcon())
+            exampleButton[0].setIcon(QIcon())
+            #Store the styleSheetPath of the chosen button
+            if exampleButton[0] == senderButton :
+                self.styleSheetPath = exampleButton[1]
+
         senderButton.setIcon(QIcon(filepath))

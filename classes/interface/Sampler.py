@@ -194,13 +194,13 @@ class Sampler(QWidget):
         """
         #Check if the last row is full according to self.MAXBUTTONPERROW.
         #It begins a new row if necessary
-        path,icon, ok = SampleButtonDialogBox(self.mainWindow).getItems()
+        path,icon, styleSheetPath, ok = SampleButtonDialogBox(self.mainWindow).getItems()
 
         if ok :
             row = coordinates[0]
             column = coordinates[1]
 
-            sampleButton = SoundEffect(self.mainWindow,SoundEffect.SOUNDEFFECTBUTTON,(row,column),path,icon)
+            sampleButton = SoundEffect(self.mainWindow,SoundEffect.SOUNDEFFECTBUTTON,(row,column),path,icon,styleSheetPath)
             sampleButton.clicked.connect(lambda *args: self.clickOnSoundEffect(self.sender()))
             self.sampleButtonsGridLayout.itemAtPosition(row,column).widget().setParent(None)
             self.sampleButtonsGridLayout.addWidget(sampleButton,row,column)
@@ -227,11 +227,11 @@ class Sampler(QWidget):
                 - sampleButton as SoundEffect object.
             - Returns nothing.
         """
-        filepath,iconPath,ok = SampleButtonDialogBox(self.mainWindow,soundEffect.filepath,soundEffect.iconPath).getItems()
-
+        filepath,iconPath, styleSheetPath,ok = SampleButtonDialogBox(self.mainWindow,soundEffect.filepath,soundEffect.iconPath).getItems()
         if ok :
             soundEffect.changeFile(filepath)
             soundEffect.changeIcon(iconPath)
+            soundEffect.changeStyleSheet(styleSheetPath)
 
     def clickOnSoundEffect(self, soundEffect:SoundEffect):
         """Called when a soundEffect button is clicked.

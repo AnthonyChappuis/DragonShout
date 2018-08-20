@@ -40,13 +40,14 @@ class SoundEffect(QPushButton):
     unserialize = classmethod(unserialize)
 
     #constructor
-    def __init__(self, mainWindow:MainWindow, buttonType:int, coordinates:tuple, soundEffectFilePath:str='', iconPath:str=''):
+    def __init__(self, mainWindow:MainWindow, buttonType:int, coordinates:tuple, soundEffectFilePath:str='', iconPath:str='',styleSheetPath:str='Default'):
         super().__init__()
 
         self.mainWindow = mainWindow
         self.coordinates = coordinates
         self.buttonType = buttonType
         self.filepath = ''
+        self.styleSheetPath = Stylesheets.effectButtons
 
         if buttonType == SoundEffect.SOUNDEFFECTBUTTON: #Creates a full sound effect Button
 
@@ -54,10 +55,7 @@ class SoundEffect(QPushButton):
             self.mediaPlayer.stateChanged.connect(lambda *args: self.playerStatusChanged())
 
             self.changeFile(soundEffectFilePath)
-            self.styleSheet = Stylesheets.effectButtons
-            self.changeStyleSheet()
-
-            #self.changeColor()
+            self.changeStyleSheet(styleSheetPath)
 
             #Verify if iconPath is an str item and defaults it if not.
             if iconPath != '' and isinstance(iconPath, str) :
@@ -65,7 +63,7 @@ class SoundEffect(QPushButton):
 
         else: #Creates a default button to show effects availability on the interface
             self.changeIcon(Images.addSampleButtonIcon)
-            self.styleSheet = Stylesheets.defaultButtons
+            self.styleSheetPath = Stylesheets.defaultButtons
             self.changeStyleSheet()
 
     def changeIcon(self, iconPath:str):
@@ -83,11 +81,16 @@ class SoundEffect(QPushButton):
         self.mediaPlayer.setMedia(media)
 
     def changeStyleSheet(self, styleSheetPath:str='Default'):
+        """Test and change the styleSheet acording to self.styleSheetPathself.
+            - Take no parameter.
+            - Returns nothing.
+        """
         if styleSheetPath == 'Default':
-            styleSheet = open(self.styleSheet,'r',encoding='utf-8').read()
-        else:
-            styleSheet = open(styleSheetPath,'r',encoding='utf-8').read()
+            styleSheetPath = self.styleSheetPath
+        elif styleSheetPath != Stylesheets.activeEffectButtons:
+            self.styleSheetPath = styleSheetPath
 
+        styleSheet = open(styleSheetPath,'r',encoding='utf-8').read()
         self.setStyleSheet(styleSheet)
 
     def playOrStop(self):
@@ -118,7 +121,7 @@ class SoundEffect(QPushButton):
             self.changeStyleSheet(Stylesheets.activeEffectButtons)
 
         elif self.mediaPlayer.state() == QMediaPlayer.StoppedState:
-            self.changeStyleSheet()
+            self.changeStyleSheet(self.styleSheetPath)
 
     def serialize(self):
         """Used to serialize instance data to JSON format.
@@ -130,11 +133,3 @@ class SoundEffect(QPushButton):
                 "buttonType":   self.buttonType,
                 "filepath":     self.filepath,
                 "iconPath":     self.iconPath}
-
-    def changeColor(self):
-        """Used to specify the color of the button.
-            - Takes no parameter.
-            - Returns nothing.
-        """
-        self.styleSheet = Stylesheets.redEffectButtons
-        self.changeStyleSheet()
