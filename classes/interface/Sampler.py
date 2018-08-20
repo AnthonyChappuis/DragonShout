@@ -4,7 +4,7 @@
 #This class manage the buttons of the sampler function.
 #
 #Application: DragonShout music sampler
-#Last Edited: February 03rd 2018
+#Last Edited: August 20th 2018
 #---------------------------------
 
 import json

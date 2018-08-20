@@ -5,7 +5,7 @@
 # a sample button
 #
 #Application: DragonShout music sampler
-#Last Edited: August 16th 2018
+#Last Edited: August 20th 2018
 #---------------------------------
 
 import os
