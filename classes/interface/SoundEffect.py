@@ -34,7 +34,7 @@ class SoundEffect(QPushButton):
         if "__class__" in data :
             if data["__class__"] == "SoundEffect":
                 #creating SoundEffect instance
-                soundEffect_object = SoundEffect(mainWindow,data["buttonType"],data["coordinates"],data["filepath"],data["iconPath"])
+                soundEffect_object = SoundEffect(mainWindow,data["buttonType"],data["coordinates"],data["filepath"],data["iconPath"],data['styleSheetPath'])
                 return soundEffect_object
             return data
     unserialize = classmethod(unserialize)
@@ -128,8 +128,9 @@ class SoundEffect(QPushButton):
             - Takes no parameter.
             - Returns instance data as dictionnary.
         """
-        return {"__class__":    "SoundEffect",
-                "coordinates":  self.coordinates,
-                "buttonType":   self.buttonType,
-                "filepath":     self.filepath,
-                "iconPath":     self.iconPath}
+        return {"__class__":        "SoundEffect",
+                "coordinates":      self.coordinates,
+                "buttonType":       self.buttonType,
+                "filepath":         self.filepath,
+                "iconPath":         self.iconPath,
+                "styleSheetPath":   self.styleSheetPath}
