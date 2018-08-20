@@ -14,8 +14,8 @@ from classes.interface import MainWindow
 from classes.library.Library import Library
 from classes.library.Track import Track
 from classes.multimedia.MusicPlayer import MusicPlayer
-from classes.ressourcesFilepath import Stylesheets
-from classes.ressourcesFilepath import Images
+from classes.ressourcesFilepath import Stylesheets, Images
+from classes.fileSupport import FileSupport
 
 from PyQt5 import Qt
 from PyQt5.QtCore import QFileInfo, QUrl, QTimer, QStandardPaths
@@ -173,7 +173,7 @@ class Playlist(QWidget):
             Takes no parameter.
         """
         musicFolderPath = QStandardPaths.locate(QStandardPaths.MusicLocation, '', QStandardPaths.LocateDirectory)
-        filesList, ok = QFileDialog().getOpenFileNames(self,self.mainWindow.text.localisation('dialogBoxes','addMusic','caption'),os.path.expanduser(musicFolderPath),"*.mp3 *.wav *.ogg *.flac *.wma *.aiff *.m4a")
+        filesList, ok = QFileDialog().getOpenFileNames(self,self.mainWindow.text.localisation('dialogBoxes','addMusic','caption'),os.path.expanduser(musicFolderPath),FileSupport.audio)
         if ok :
             for filePath in filesList :
                 name = QFileInfo(filePath).fileName()

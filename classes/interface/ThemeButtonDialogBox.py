@@ -11,6 +11,7 @@ import os
 
 from classes.interface import MainWindow
 from classes.ressourcesFilepath import Stylesheets, Images
+from classes.fileSupport import FileSupport
 
 from PyQt5.QtWidgets import QDialog, QPushButton, QGridLayout, QLineEdit, QLabel, QFileDialog
 from PyQt5.QtGui import QIcon
@@ -89,7 +90,7 @@ class ThemeButtonDialogBox(QDialog):
 
         picturesFolderPath = QStandardPaths.locate(QStandardPaths.PicturesLocation, '', QStandardPaths.LocateDirectory)
 
-        filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newIcon','question'),os.path.expanduser(picturesFolderPath),"*.jpg *.jpeg *.ico *.png")
+        filepath, ok = QFileDialog.getOpenFileName(self,self.mainWindow.text.localisation('dialogBoxes','newIcon','question'),os.path.expanduser(picturesFolderPath),FileSupport.pictures)
 
         if ok :
             self.themeIconButton.setIcon(QIcon(filepath))
