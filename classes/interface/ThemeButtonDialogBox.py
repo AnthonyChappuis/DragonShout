@@ -4,12 +4,13 @@
 #Handle the dialogbox used when adding a new theme button to the application
 #
 #Application: DragonShout music sampler
-#Last Edited: July 26th 2018b
+#Last Edited: August 22th 2018
 #---------------------------------
 
 import os
 
 from classes.interface import MainWindow
+from classes.library.Category import Category
 from classes.ressourcesFilepath import Stylesheets, Images
 from classes.fileSupport import FileSupport
 
@@ -29,9 +30,11 @@ class ThemeButtonDialogBox(QDialog):
         styleSheet = open(Stylesheets.globalStyle,'r', encoding='utf-8').read()
         self.setStyleSheet(styleSheet)
 
+        themesNumber = Category.get_category_number() + 1
+
         #parameters defaulting
         if themeName == 'notset' or not isinstance(themeName, str):
-            themeName = self.mainWindow.text.localisation('dialogBoxes','newTheme','caption')
+            themeName = self.mainWindow.text.localisation('dialogBoxes','newTheme','caption') + ' ' + str(themesNumber)
 
         if themeIconPath == 'notset' or not isinstance(themeIconPath, str):
             themeIconPath = Images.defaultButtonIcon
