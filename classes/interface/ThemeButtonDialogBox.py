@@ -4,7 +4,7 @@
 #Handle the dialogbox used when adding a new theme button to the application
 #
 #Application: DragonShout music sampler
-#Last Edited: August 22th 2018
+#Last Edited: August 24th 2018
 #---------------------------------
 
 import os
@@ -14,7 +14,7 @@ from classes.library.Category import Category
 from classes.ressourcesFilepath import Stylesheets, Images
 from classes.fileSupport import FileSupport
 
-from PyQt5.QtWidgets import QDialog, QPushButton, QGridLayout, QLineEdit, QLabel, QFileDialog
+from PyQt5.QtWidgets import QDialog, QPushButton, QGridLayout, QLineEdit, QLabel, QFileDialog, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize, QStandardPaths
 from PyQt5.Qt import Qt
@@ -106,4 +106,11 @@ class ThemeButtonDialogBox(QDialog):
             Returns nothing.
         """
         self.okOrNot = okOrNot
-        self.close()
+
+        if okOrNot:
+            if self.mainWindow.library.get_category(self.themeName.text()) :
+                QMessageBox(QMessageBox.Warning,self.mainWindow.text.localisation('messageBoxes','existingTheme','title'),self.mainWindow.text.localisation('messageBoxes','existingTheme','caption')).exec()
+            else:
+                self.close()
+        else:
+            self.close()
