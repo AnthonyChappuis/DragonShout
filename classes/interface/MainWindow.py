@@ -100,14 +100,14 @@ class MainWindow(QMainWindow):
 
         #Creating Options menu and entries
 
-        # optionsMenu = menuBar.addMenu(self.text.localisation('menus','options','caption'))
-        # languageMenu = optionsMenu.addMenu(self.text.localisation('menuEntries','language','caption'))
-        #
-        # #Creating language actions
-        # for languageKey, languageValues in self.text.SupportedLanguages.items():
-        #     action = QAction(QIcon(languageValues['icon']), languageValues['caption'],self)
-        #     action.triggered.connect(lambda *args: self.changeLanguage(self.sender().text()))
-        #     languageMenu.addAction(action)
+        optionsMenu = menuBar.addMenu(self.text.localisation('menus','options','caption'))
+        languageMenu = optionsMenu.addMenu(self.text.localisation('menuEntries','language','caption'))
+
+        #Creating language actions
+        for languageKey, languageValues in self.text.SupportedLanguages.items():
+            action = QAction(QIcon(languageValues['icon']), languageValues['caption'],self)
+            action.triggered.connect(lambda *args: self.changeLanguage(self.sender().text()))
+            languageMenu.addAction(action)
 
         #Splitter containing all other elements of MainWindow
         #----------------------------------------------------
