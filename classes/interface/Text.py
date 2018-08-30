@@ -5,13 +5,13 @@
 #It also manage which language is used when showing textes.
 #
 #Application: DragonShout music sampler
-#Last Edited: August 24th 2018
+#Last Edited: August 30th 2018
 #---------------------------------
 
 import os
 
 class Text():
-    LanguageFilePath = 'lang.txt'
+    LanguageFileName = 'lang.txt'
     SupportedLanguages = {  'French' : {'caption':'Français','icon':'ressources/interface/France.png'},
                             'English' : {'caption': 'English','icon':'ressources/interface/england.png'}
                         }
@@ -38,8 +38,8 @@ class Text():
             Returns nothing.
         """
         #Check if the language file exist and create it if necessary
-        if os.path.isfile(Text.LanguageFilePath) :
-            languageFile = open(Text.LanguageFilePath,'r', encoding='utf-8')
+        if os.path.isfile(self.languageFilePath) :
+            languageFile = open(self.languageFilePath,'r', encoding='utf-8')
             language = str.rstrip(languageFile.read())
         else:
             language = Text.SupportedLanguages['English']['caption']
@@ -53,14 +53,14 @@ class Text():
             self.language = Text.SupportedLanguages['English']['caption']
 
     def saveLanguage(self, language:str):
-        """Save the chosen language in lang.txt at the Text.LanguageFilePath location.
+        """Save the chosen language in lang.txt at the self.languageFilePath location.
             Takes one parameter:
             - language as str (Use Text.SupportedLanguages['...'] to ensure compatibility).
         """
-        if not(os.path.isfile(Text.LanguageFilePath)) :
-            open(Text.LanguageFilePath,'x', encoding='utf-8')
+        if not(os.path.isfile(self.languageFilePath)) :
+            open(self.languageFilePath,'x', encoding='utf-8')
 
-        languageFile = open(Text.LanguageFilePath, 'w', encoding='utf-8')
+        languageFile = open(self.languageFilePath, 'w', encoding='utf-8')
         languageFile.write(language)
         languageFile.close()
 
@@ -68,8 +68,9 @@ class Text():
     def localisation(self,elementType:str,elementName:str,textType:str = 'caption'):
         return self._localisation[elementType][elementName][textType]
 
-    def __init__(self):
+    def __init__(self,appDataFolderPath:str):
 
+        self.languageFilePath = appDataFolderPath+Text.LanguageFileName
         self.loadLanguage()
 
         #English

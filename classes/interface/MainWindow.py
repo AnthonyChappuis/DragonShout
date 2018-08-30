@@ -4,7 +4,7 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: Joly 26th 2018
+#Last Edited: August 30th 2018
 #---------------------------------
 
 import os
@@ -18,7 +18,7 @@ from classes.ressourcesFilepath import Stylesheets
 from classes.library.Library import Library
 
 from PyQt5 import Qt, QtGui
-from PyQt5.QtCore import QFileInfo, QStandardPaths
+from PyQt5.QtCore import QFileInfo, QStandardPaths, QDir
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
     QHBoxLayout, QSplitter, QWidget, QListWidget, QLabel,
@@ -30,8 +30,15 @@ class MainWindow(QMainWindow):
     APPLICATIONICONPATH = 'dragonShout.png'
     APPLICATIONNAME = 'Dragon Shout'
 
+    AppDataFolder = QStandardPaths.locate(QStandardPaths.AppDataLocation, '', QStandardPaths.LocateDirectory)+'DragonShout/'
+
+
     def __init__(self,application:QApplication):
         super().__init__()
+
+        #App data directory
+        if not QDir(MainWindow.AppDataFolder).exists():
+            QDir().mkdir(MainWindow.AppDataFolder)
 
         #Global style sheet
         styleSheet = open(Stylesheets.globalStyle,'r', encoding='utf-8').read()
@@ -42,7 +49,7 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon(MainWindow.APPLICATIONICONPATH))
 
         #Variable and CONSTANTS
-        self.text = Text()
+        self.text = Text(MainWindow.AppDataFolder)
 
         self.loadLibrary()
 
