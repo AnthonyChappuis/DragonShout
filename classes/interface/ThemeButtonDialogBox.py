@@ -4,7 +4,7 @@
 #Handle the dialogbox used when adding a new theme button to the application
 #
 #Application: DragonShout music sampler
-#Last Edited: August 24th 2018
+#Last Edited: August 31th 2018
 #---------------------------------
 
 import os
@@ -40,7 +40,7 @@ class ThemeButtonDialogBox(QDialog):
             themeIconPath = Images.defaultButtonIcon
 
         #window title and icon
-        self.setWindowIcon(QIcon(MainWindow.MainWindow.APPLICATIONICONPATH))
+        self.setWindowIcon(QIcon(Images.applicationIcon))
         self.setWindowTitle(self.mainWindow.text.localisation('dialogBoxes','newTheme','caption'))
 
         #Theme name

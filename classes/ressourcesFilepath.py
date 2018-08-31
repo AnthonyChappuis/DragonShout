@@ -4,8 +4,10 @@
 #Contain the filepath to every ressources of the application.
 #
 #Application: DragonShout music sampler
-#Last Edited: August 16th 2018
+#Last Edited: August 31th 2018
 #---------------------------------
+
+from pathlib import Path
 
 class Stylesheets():
     #Diverse
@@ -25,7 +27,10 @@ class Stylesheets():
 
 
 class Images():
+    #General
     applicationIcon = "dragonShout.png"
+
+    #Players
     repeatIcon = "ressources/interface/repeat.png"
     playIcon = "ressources/interface/play.png"
     stopIcon = "ressources/interface/stop.png"
@@ -33,3 +38,10 @@ class Images():
     addSampleButtonIcon = "ressources/interface/addSampleButton.png"
     deleteButtonIcon = "ressources/interface/delete.png"
     colorSchemeSelectorIcon = "ressources/interface/colorSchemeSelector.png"
+
+    #File menu
+    saveIcon =      str(Path('ressources/interface/saveIcon.png').resolve())
+    loadIcon =      str(Path('ressources/interface/loadIcon.png').resolve())
+    exportIcon =    str(Path('ressources/interface/exportIcon.png').resolve())
+    importIcon =    str(Path('ressources/interface/importIcon.png').resolve())
+    exitIcon =      str(Path('ressources/interface/exitIcon.png').resolve())

@@ -13,7 +13,7 @@ from classes.interface.Text import Text
 from classes.interface.Playlist import Playlist
 from classes.interface.Themes import Themes
 from classes.interface.Sampler import Sampler
-from classes.ressourcesFilepath import Stylesheets
+from classes.ressourcesFilepath import Stylesheets, Images
 
 from classes.library.Library import Library
 
@@ -27,7 +27,6 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QAction, qApp,
 class MainWindow(QMainWindow):
 
     SUPPORTEDLIBRARYFILES = '*.json'
-    APPLICATIONICONPATH = 'dragonShout.png'
     APPLICATIONNAME = 'Dragon Shout'
 
     AppDataFolder = QStandardPaths.locate(QStandardPaths.AppDataLocation, '', QStandardPaths.LocateDirectory)+'DragonShout/'
@@ -46,7 +45,7 @@ class MainWindow(QMainWindow):
 
         #Window decoration
         self.setWindowTitle(MainWindow.APPLICATIONNAME)
-        self.setWindowIcon(QIcon(MainWindow.APPLICATIONICONPATH))
+        self.setWindowIcon(QIcon(Images.applicationIcon))
 
         #Variable and CONSTANTS
         self.text = Text(MainWindow.AppDataFolder)
@@ -76,17 +75,24 @@ class MainWindow(QMainWindow):
         #Defining file menu actions
         fileMenu = menuBar.addMenu(self.text.localisation('menus','files','caption'))
 
-        action = QAction(QIcon('load.png'), self.text.localisation('menuEntries','load','caption'), self)
+        action = QAction(QIcon(Images.loadIcon), self.text.localisation('menuEntries','load','caption'), self)
         action.setShortcut('Ctrl+l')
         action.setStatusTip(self.text.localisation('menuEntries','load','toolTip'))
         action.triggered.connect(lambda *args: self.load())
 
         fileMenu.addAction(action)
 
-        action = QAction(QIcon('save.png'), self.text.localisation('menuEntries','save','caption'), self)
+        action = QAction(QIcon(Images.saveIcon), self.text.localisation('menuEntries','save','caption'), self)
         action.setShortcut('Ctrl+s')
         action.setStatusTip(self.text.localisation('menuEntries','save','toolTip'))
         action.triggered.connect(lambda *args: self.save())
+
+        fileMenu.addAction(action)
+
+        action = QAction(QIcon(Images.exportIcon), 'export', self)
+        action.setShortcut('Ctrl+Alt+e')
+        action.setStatusTip('Archive your library for easier transfert to another computer')
+        action.triggered.connect(lambda * args: self.export())
 
         fileMenu.addAction(action)
 
@@ -134,7 +140,7 @@ class MainWindow(QMainWindow):
     def changeLanguage(self,language:str=Text.SupportedLanguages['English']['caption']):
         """Change the language of the application. Called by a signal emited when clicking on another language"""
         messageBox = QMessageBox(QMessageBox.Information,self.text.localisation('messageBoxes','saveLanguage','title'),self.text.localisation('messageBoxes','saveLanguage','caption'))
-        messageBox.setWindowIcon(QIcon(MainWindow.APPLICATIONICONPATH))
+        messageBox.setWindowIcon(QIcon(Images.applicationIcon))
         messageBox.exec()
         self.text.saveLanguage(language)
 
@@ -164,8 +170,9 @@ class MainWindow(QMainWindow):
         theme = self.library.get_category(themeName)
 
     def save(self):
-        """Save the current library.
+        """Saves the current library.
             Takes no parameter.
+            Returns nothing.
         """
         saveDialog = QFileDialog()
         saveDialog.setAcceptMode(QFileDialog.AcceptSave)
@@ -182,6 +189,10 @@ class MainWindow(QMainWindow):
             self.library.save(filepath)
 
     def load(self):
+        """Loads a new library.
+            Takes no parameter.
+            Returns nothing.
+        """
         homeFolderPath = QStandardPaths.locate(QStandardPaths.HomeLocation, '', QStandardPaths.LocateDirectory)
         filepath, ok = QFileDialog().getOpenFileName(self,'test',os.path.expanduser(homeFolderPath),MainWindow.SUPPORTEDLIBRARYFILES)
         if ok :
@@ -189,3 +200,6 @@ class MainWindow(QMainWindow):
             self.loadSampler(filepath)
             self.themes.setThemes()
             self.playlist.reset()
+
+    def export(self):
+        self.library.export(QStandardPaths.locate(QStandardPaths.DocumentsLocation, '', QStandardPaths.LocateDirectory))
