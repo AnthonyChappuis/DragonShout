@@ -15,7 +15,7 @@
 #						Attribut containing the physical location of the track
 #						on the drive
 #
-#Modifications:
+#Modifications: August 31th 2018
 ###############################################################################
 
 class Track:
@@ -85,7 +85,7 @@ class Track:
 		return "Contains the track name for this program. Real filename from the operating system may be different"
 
 	def _help_location():
-		return "Contains the physical location of the track on the filesystem"
+		return "Contains the location of the track on the filesystem (fullpath)"
 
 	#properties
 	name 		= property(_get_name,		_set_name,		_del_name,		_help_name)

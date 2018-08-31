@@ -4,7 +4,7 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: August 30th 2018
+#Last Edited: August 31th 2018
 #---------------------------------
 
 import os

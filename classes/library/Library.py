@@ -222,11 +222,17 @@ class Library:
 			Returns nothing.
 		"""
 
-		# try:
-		# 	archive = tarfile.open(archiveFilePath+'.dsm','x:gz')
-		# 	for category in self.categories():
-		# 		for track in category.tracks():
-		# 			archive.add(track.location())
-		# 	archive.close()
-		# except FileExistsError:
-		# 	print('File exists!!')
+		try:
+			print('Export starts')
+			archive = tarfile.open(archiveFilePath+'archive.dsm','x:gz')
+			print('Archive created')
+
+			for category in self.categories:
+				print('In category: '+category.name)
+				for track in category.tracks:
+					archive.add(track.location)
+					print('File: '+track.location)
+			archive.close()
+			print('Export successful')
+		except FileExistsError:
+			print('File exists!!')
