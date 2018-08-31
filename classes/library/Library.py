@@ -15,10 +15,12 @@
 #				_filepath as string
 #					Contains the path to the library file on the drive
 #
-#Last edited: January 31th 2018
+#Last edited: August 31th 2018
 ###############################################################################
 import os
 import json
+import tarfile
+from pathlib import Path
 
 from classes.interface import MainWindow
 from classes.library.Category import Category
@@ -137,7 +139,7 @@ class Library:
 
 	def remove_category(self, name:str):
 		"""Used to remove a category from the library.
-		Takes one paramter:
+		Takes one parameter:
 		- name as string.
 		Returns nothing.
 		"""
@@ -200,7 +202,8 @@ class Library:
 
 	def serialize(self):
 		"""Used to serialize instance data to JSON format
-		toakes no parameter.
+			Takes no parameter.
+			Returns nothing
 		"""
 		category_list = []
 		for category in self.categories:
@@ -209,3 +212,21 @@ class Library:
 		return {"__class__": 	"Library",
 				"name":			self.name,
 				"categories":	category_list}
+
+	# import/export
+
+	def export(self,archiveFilePath:Path):
+		"""Used to export library and 'atttached' sound files as an archive that can be transfered to another
+		computer and/or operating system. Use gzip compression module.
+			Takes no parameter.
+			Returns nothing.
+		"""
+
+		try:
+			archive = tarfile.open(archiveFilePath+'.dsm','x:gz')
+			for category in self.categories():
+				for track in category.tracks():
+					archive.add(track.location())
+			archive.close()
+		except FileExistsError:
+			print('File exists!!')
