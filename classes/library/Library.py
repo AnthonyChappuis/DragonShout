@@ -36,6 +36,7 @@ class Library:
 		_filepath as string
 			Contains the path to the library file on the drive
 	"""
+	ArchiveThemesFolderName = 'themes'
 
 	def load(cls, mainWindow:MainWindow, filepath: str):
 		"""Used to load the library from the hard drive (JSON).
@@ -223,15 +224,21 @@ class Library:
 		"""
 
 		try:
+			#Create archive
 			print('Export starts')
 			archive = tarfile.open(archiveFilePath+'archive.dsm','x:gz')
 			print('Archive created')
 
+			#themes folder from category name
 			for category in self.categories:
 				print('In category: '+category.name)
+				subFolderName = category.name
+
+				#filling theme folder with given tracks
 				for track in category.tracks:
-					archive.add(track.location)
+					archive.add(track.location,Library.ArchiveThemesFolderName+'/'+subFolderName+'/'+track.name)
 					print('File: '+track.location)
+
 			archive.close()
 			print('Export successful')
 		except FileExistsError:
