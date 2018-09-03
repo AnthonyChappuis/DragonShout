@@ -8,6 +8,8 @@
 #---------------------------------
 
 import os
+import tarfile
+from pathlib import Path
 
 from classes.interface.Text import Text
 from classes.interface.Playlist import Playlist
@@ -202,4 +204,33 @@ class MainWindow(QMainWindow):
             self.playlist.reset()
 
     def export(self):
-        self.library.export(QStandardPaths.locate(QStandardPaths.DocumentsLocation, '', QStandardPaths.LocateDirectory))
+        """Used to export library and 'atttached' sound files as an archive that can be transfered to another computer and/or operating system. Use gzip compression module.
+            Takes no parameter.
+            Returns nothing.
+        """
+
+        try:
+            archiveFilePath = QStandardPaths .locate(QStandardPaths.DocumentsLocation, '', QStandardPaths.LocateDirectory)
+            #Create archive
+            print('Export starts')
+            archive = tarfile.open(archiveFilePath+'archive.dsm','x:gz')
+            print('Archive created')
+
+            #Archive the themes and their playlists
+            #themes folder from category name
+            for category in self.library.categories:
+                print('In category: '+category.name)
+                subFolderName = category.name
+
+                #filling theme folder with given tracks
+                for track in category.tracks:
+                    archive.add(track.location,Library.ArchiveThemesFolderName+'/'+subFolderName+'/'+track.name)
+                    print('File: '+track.location)
+
+            #Archive the sound effects from the sampler
+
+
+            archive.close()
+            print('Export successful')
+        except FileExistsError:
+            print('File exists!!')

@@ -15,12 +15,10 @@
 #				_filepath as string
 #					Contains the path to the library file on the drive
 #
-#Last edited: August 31th 2018
+#Last edited: September 03rd 2018
 ###############################################################################
 import os
 import json
-import tarfile
-from pathlib import Path
 
 from classes.interface import MainWindow
 from classes.library.Category import Category
@@ -213,33 +211,3 @@ class Library:
 		return {"__class__": 	"Library",
 				"name":			self.name,
 				"categories":	category_list}
-
-	# import/export
-
-	def export(self,archiveFilePath:Path):
-		"""Used to export library and 'atttached' sound files as an archive that can be transfered to another
-		computer and/or operating system. Use gzip compression module.
-			Takes no parameter.
-			Returns nothing.
-		"""
-
-		try:
-			#Create archive
-			print('Export starts')
-			archive = tarfile.open(archiveFilePath+'archive.dsm','x:gz')
-			print('Archive created')
-
-			#themes folder from category name
-			for category in self.categories:
-				print('In category: '+category.name)
-				subFolderName = category.name
-
-				#filling theme folder with given tracks
-				for track in category.tracks:
-					archive.add(track.location,Library.ArchiveThemesFolderName+'/'+subFolderName+'/'+track.name)
-					print('File: '+track.location)
-
-			archive.close()
-			print('Export successful')
-		except FileExistsError:
-			print('File exists!!')
