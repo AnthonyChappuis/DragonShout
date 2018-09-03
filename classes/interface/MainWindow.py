@@ -4,10 +4,11 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: August 31th 2018
+#Last Edited: September 03 2018
 #---------------------------------
 
 import os
+import traceback
 import tarfile
 from pathlib import Path
 
@@ -15,6 +16,7 @@ from classes.interface.Text import Text
 from classes.interface.Playlist import Playlist
 from classes.interface.Themes import Themes
 from classes.interface.Sampler import Sampler
+from classes.interface.SoundEffect import SoundEffect
 from classes.ressourcesFilepath import Stylesheets, Images
 
 from classes.library.Library import Library
@@ -32,6 +34,8 @@ class MainWindow(QMainWindow):
     APPLICATIONNAME = 'Dragon Shout'
 
     AppDataFolder = QStandardPaths.locate(QStandardPaths.AppDataLocation, '', QStandardPaths.LocateDirectory)+'DragonShout/'
+    ArchiveThemesFolderName = 'themes'
+    ArchiveSamplesFolderName = 'soundEffects'
 
 
     def __init__(self,application:QApplication):
@@ -210,27 +214,47 @@ class MainWindow(QMainWindow):
         """
 
         try:
-            archiveFilePath = QStandardPaths .locate(QStandardPaths.DocumentsLocation, '', QStandardPaths.LocateDirectory)
+            archiveFilePath = Path(QStandardPaths.locate(QStandardPaths.DocumentsLocation, '', QStandardPaths.LocateDirectory)+'archive.dsm')
             #Create archive
             print('Export starts')
-            archive = tarfile.open(archiveFilePath+'archive.dsm','x:gz')
+            archive = tarfile.open(archiveFilePath.resolve(),'x:gz')
             print('Archive created')
 
             #Archive the themes and their playlists
             #themes folder from category name
-            for category in self.library.categories:
-                print('In category: '+category.name)
-                subFolderName = category.name
+            for theme in self.library.categories:
+                print('In theme: '+theme.name)
+                subFolderName = theme.name
 
                 #filling theme folder with given tracks
-                for track in category.tracks:
-                    archive.add(track.location,Library.ArchiveThemesFolderName+'/'+subFolderName+'/'+track.name)
+                for track in theme.tracks:
+                    archive.add(track.location,MainWindow.ArchiveThemesFolderName+'/'+subFolderName+'/'+track.name)
                     print('File: '+track.location)
 
             #Archive the sound effects from the sampler
-
+            for row in self.sampler.sampleButtons:
+                for sampleButton in row :
+                    buttonCoordinatesName = str(sampleButton.coordinates[0])+str(sampleButton.coordinates[1])
+                    typeFolder = str(sampleButton.buttonType)
+                    if sampleButton.buttonType == SoundEffect.SOUNDEFFECTBUTTON :
+                        sampleFilepath = Path(sampleButton.filepath)
+                        endName = buttonCoordinatesName+sampleFilepath.name
+                        archive.add(sampleFilepath.resolve(),MainWindow.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
+                    elif sampleButton.buttonType == SoundEffect.NEWEFFECTBUTTON :
+                        endName = buttonCoordinatesName+'.default'
+                        defaultButtonTempPath = Path(MainWindow.AppDataFolder+endName)
+                        defaultButtonTempPath.touch()
+                        archive.add(defaultButtonTempPath.resolve(),MainWindow.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
+                        defaultButtonTempPath.unlink()
+                    else:
+                        raise Exception
 
             archive.close()
             print('Export successful')
         except FileExistsError:
             print('File exists!!')
+        except Exception as e:
+            print('An error occured, cleaning')
+            archive.close()
+            Path.unlink(archiveFilePath)
+            print(traceback.format_exc())

@@ -34,7 +34,6 @@ class Library:
 		_filepath as string
 			Contains the path to the library file on the drive
 	"""
-	ArchiveThemesFolderName = 'themes'
 
 	def load(cls, mainWindow:MainWindow, filepath: str):
 		"""Used to load the library from the hard drive (JSON).
