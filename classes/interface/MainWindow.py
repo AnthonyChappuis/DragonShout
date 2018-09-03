@@ -36,6 +36,7 @@ class MainWindow(QMainWindow):
     AppDataFolder = QStandardPaths.locate(QStandardPaths.AppDataLocation, '', QStandardPaths.LocateDirectory)+'DragonShout/'
     ArchiveThemesFolderName = 'themes'
     ArchiveSamplesFolderName = 'soundEffects'
+    TempExtension = '.default'
 
 
     def __init__(self,application:QApplication):
@@ -236,18 +237,23 @@ class MainWindow(QMainWindow):
                 for sampleButton in row :
                     buttonCoordinatesName = str(sampleButton.coordinates[0])+str(sampleButton.coordinates[1])
                     typeFolder = str(sampleButton.buttonType)
+
+                    #user defined sound effects
                     if sampleButton.buttonType == SoundEffect.SOUNDEFFECTBUTTON :
                         sampleFilepath = Path(sampleButton.filepath)
                         endName = buttonCoordinatesName+sampleFilepath.name
                         archive.add(sampleFilepath.resolve(),MainWindow.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
+                    #default buttons without effects
                     elif sampleButton.buttonType == SoundEffect.NEWEFFECTBUTTON :
-                        endName = buttonCoordinatesName+'.default'
+                        endName = buttonCoordinatesName+MainWindow.TempExtension
                         defaultButtonTempPath = Path(MainWindow.AppDataFolder+endName)
-                        defaultButtonTempPath.touch()
+                        defaultButtonTempPath.touch() #temp file to add to the archive
                         archive.add(defaultButtonTempPath.resolve(),MainWindow.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
-                        defaultButtonTempPath.unlink()
+                        defaultButtonTempPath.unlink() #remove the temp file
+                    #Any other cases stops the export and triggers clean-up actions
                     else:
                         raise Exception
+            aaaa.test()
 
             archive.close()
             print('Export successful')
@@ -255,6 +261,15 @@ class MainWindow(QMainWindow):
             print('File exists!!')
         except Exception as e:
             print('An error occured, cleaning')
+            #Clean archive
             archive.close()
             Path.unlink(archiveFilePath)
+
+            #Clean temp files
+            workFolder = Path(MainWindow.AppDataFolder)
+            for child in workFolder.iterdir():
+                print(child.name)
+                if child.name.endswith(MainWindow.TempExtension):
+                    child.unlink()
+
             print(traceback.format_exc())
