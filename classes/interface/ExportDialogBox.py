@@ -140,7 +140,6 @@ class ExportDialogBox(QDialog):
             Returns nothing.
         """
         self.progressBar.setValue(self.progressBar.value()+1)
-        QCoreApplication.processEvents()
 
     def toggleControls(self):
         """Enable or disable UI buttons during export.
@@ -169,8 +168,10 @@ class ExportDialogBox(QDialog):
         """
         border1 = '****************************'
         border2 = '----------------------------'
+        warningBorder = '!!!!!!!!!!!!!!!!!!!!!!'
         blankLine = ''
 
+        self.textEdit.clear()
         self.resetProgressBar()
         self.toggleControls()
 
@@ -252,15 +253,15 @@ class ExportDialogBox(QDialog):
             QCoreApplication.processEvents()
 
         except FileExistsError:
-            self.addLogEntry(border2)
+            self.addLogEntry(warningBorder)
             self.addLogEntry(self.mainWindow.text.localisation('logs','fileExists','caption'))
-            self.addLogEntry(border2)
+            self.addLogEntry(warningBorder)
             QCoreApplication.processEvents()
 
         except Exception as e:
-            self.addLogEntry(border2)
+            self.addLogEntry(warningBorder)
             self.addLogEntry(self.mainWindow.text.localisation('logs','error','caption'))
-            self.addLogEntry(border2)
+            self.addLogEntry(warningBorder)
             self.addLogEntry(blankLine)
             QCoreApplication.processEvents()
 
