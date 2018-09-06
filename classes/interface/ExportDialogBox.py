@@ -13,7 +13,7 @@ from pathlib import Path
 
 from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QWidget, QLabel, QPushButton, QTextEdit,
                             QProgressBar, QFileDialog)
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QGuiApplication
 from PyQt5.QtCore import QStandardPaths, QCoreApplication
 
 from classes.interface import MainWindow
@@ -34,10 +34,17 @@ class ExportDialogBox(QDialog):
         self.mainWindow = mainWindow
         self.archiveFilePath = Path(QStandardPaths.locate(QStandardPaths.HomeLocation, '', QStandardPaths.LocateDirectory))
 
+        #Window dimensions
+        vRatio = 1/2
+        hRatio = 1/3
+        screen = QGuiApplication.primaryScreen()
+        screenGeometry = screen.geometry()
+        self.setMinimumWidth(screenGeometry.width()*hRatio)
+        self.setMinimumHeight(screenGeometry.height()*vRatio)
+
         #window title and icon
         self.setWindowIcon(QIcon(Images.applicationIcon))
         self.setWindowTitle(self.mainWindow.text.localisation('dialogBoxes','export','title'))
-
 
         styleSheet = open(Stylesheets.globalStyle,'r', encoding='utf-8').read()
         self.setStyleSheet(styleSheet)
@@ -50,7 +57,7 @@ class ExportDialogBox(QDialog):
         fileDialogWidget = QWidget()
         fileDialogWidget.setLayout(layout)
 
-        fileLabel = QLabel('File select: ')
+        fileLabel = QLabel(self.mainWindow.text.localisation('labels','archiveFilePathLabel','caption'))
         layout.addWidget(fileLabel)
 
         self.archiveFileSelectButton = QPushButton('...')
@@ -185,6 +192,7 @@ class ExportDialogBox(QDialog):
             self.addLogEntry(blankLine)
 
             archive.close()
+
             self.addLogEntry(border1)
             self.addLogEntry(self.mainWindow.text.localisation('logs','exportSuccess','caption'))
             self.addLogEntry(border1)

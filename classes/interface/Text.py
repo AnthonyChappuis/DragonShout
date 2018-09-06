@@ -121,7 +121,8 @@ class Text():
                 'scenes' : { 'caption': 'Scenes','toolTip':'List of musical scenes'},
                 'playlistLabel' : {'caption': 'Select a theme to play','toolTip':'Shows the playlist of the selected theme'},
                 'chooseThemeFirst': {'caption': 'Choose or create a theme first'},
-                'colorScheme' : {'caption': 'Color :'}
+                'colorScheme' : {'caption': 'Color :'},
+                'archiveFilePathLabel' : {'caption': 'Destination and name of the archive:'}
             }
 
             logs = {
@@ -183,7 +184,8 @@ class Text():
                 'scenes' : { 'caption': 'Scènes','toolTip':'Liste des scènes musicales'},
                 'playlistLabel' : {'caption': 'Sélectionne un thème à jouer ','toolTip':'Montre la liste de lecture du thème sélectionné'},
                 'chooseThemeFirst': {'caption': "Il faut d'abord choisir ou créer un thème"},
-                'colorScheme' : {'caption': 'Couleur :'}
+                'colorScheme' : {'caption': 'Couleur :'},
+                'archiveFilePathLabel' : {'caption': "Emplacement et nom de l'archive:"}
             }
 
             logs = {
