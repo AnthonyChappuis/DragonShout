@@ -124,6 +124,18 @@ class Text():
                 'colorScheme' : {'caption': 'Color :'}
             }
 
+            logs = {
+                'exportStart' : { 'caption': "Export begins."},
+                'archiveCreation': {'caption': 'Creating archive file: '},
+                'playlist': {'caption': 'Exporting themes and their playlists.'},
+                'inTheme': {'caption': "Theme: "},
+                'sampler': {'caption': 'Exporting sound effects'},
+                'file': {'caption':'File: '},
+                'exportSuccess': {'caption': 'Export successful.'},
+                'fileExists': {'caption': 'The file already exists, choose a different file name.'},
+                'error': {'caption': 'An error occured, cleaning temporary files.'}
+            }
+
         #French
         if self.language == Text.SupportedLanguages['French']['caption']:
             buttons = {
@@ -174,6 +186,18 @@ class Text():
                 'colorScheme' : {'caption': 'Couleur :'}
             }
 
+            logs = {
+                'exportStart' : { 'caption': "Début de l'exportation."},
+                'archiveCreation': {'caption': "Création du fichier d'archive: "},
+                'playlist': {'caption': 'Export des thèmes et de leurs listes de lecture.'},
+                'inTheme': {'caption': "Thème: "},
+                'sampler': {'caption': 'Export des effets sonores.'},
+                'file': {'caption':'Fichier: '},
+                'exportSuccess': {'caption': 'Exportation réussie.'},
+                'fileExists': {'caption': 'Le fichier existe déjà, choisissez un autre nom de fichier.'},
+                'error': {'caption': 'Une erreure est survenue, nettoyage des fichiers temporaires.'}
+            }
+
 
         self._localisation = {'buttons': buttons, 'menus': menus, 'menuEntries': menuEntries, 'messageBoxes': messageBoxes,
-                                'labels': labels,'dialogBoxes': dialogBoxes}
+                                'labels': labels,'dialogBoxes': dialogBoxes, 'logs': logs}

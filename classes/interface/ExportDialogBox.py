@@ -88,28 +88,49 @@ class ExportDialogBox(QDialog):
             Takes no parameter.
             Returns nothing.
         """
+        border1 = '****************************'
+        border2 = '----------------------------'
+        blankLine = ''
 
         try:
             archiveFilePath = Path(QStandardPaths.locate(QStandardPaths.DocumentsLocation, '', QStandardPaths.LocateDirectory)+'archive.dsm')
             #Create archive
-            self.addLogEntry('Export starts')
-            QCoreApplication.processEvents()
+            self.addLogEntry(border1)
+            self.addLogEntry(self.mainWindow.text.localisation('logs','exportStart','caption'))
+            self.addLogEntry(border1)
+            self.addLogEntry(blankLine)
+
             archive = tarfile.open(archiveFilePath.resolve(),'x:gz')
-            self.addLogEntry('Archive created')
+            self.addLogEntry(self.mainWindow.text.localisation('logs','archiveCreation','caption')+archiveFilePath.name)
+            self.addLogEntry(blankLine)
             QCoreApplication.processEvents()
 
             #Archive the themes and their playlists
             #themes folder from category name
+
+            self.addLogEntry(border2)
+            self.addLogEntry(self.mainWindow.text.localisation('logs','playlist','caption'))
+            self.addLogEntry(border2)
+            self.addLogEntry(blankLine)
+
             for theme in self.mainWindow.library.categories:
-                self.addLogEntry('In theme: '+theme.name)
-                QCoreApplication.processEvents()
+                self.addLogEntry(self.mainWindow.text.localisation('logs','inTheme','caption')+theme.name)
+                self.addLogEntry(border2)
+                self.addLogEntry(blankLine)
                 subFolderName = theme.name
 
                 #filling theme folder with given tracks
                 for track in theme.tracks:
                     archive.add(track.location,ExportDialogBox.ArchiveThemesFolderName+'/'+subFolderName+'/'+track.name)
-                    self.addLogEntry('File: '+track.location)
+                    self.addLogEntry(self.mainWindow.text.localisation('logs','file','caption')+track.location)
                     QCoreApplication.processEvents()
+
+                self.addLogEntry(blankLine)
+
+            self.addLogEntry(border2)
+            self.addLogEntry(self.mainWindow.text.localisation('logs','sampler','caption'))
+            self.addLogEntry(border2)
+            self.addLogEntry(blankLine)
 
             #Archive the sound effects from the sampler
             for row in self.mainWindow.sampler.sampleButtons:
@@ -121,6 +142,7 @@ class ExportDialogBox(QDialog):
                     if sampleButton.buttonType == SoundEffect.SOUNDEFFECTBUTTON :
                         sampleFilepath = Path(sampleButton.filepath)
                         endName = buttonCoordinatesName+sampleFilepath.name
+                        self.addLogEntry(self.mainWindow.text.localisation('logs','file','caption')+str(sampleFilepath.resolve()))
                         archive.add(sampleFilepath.resolve(),ExportDialogBox.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
                     #default buttons without effects
                     elif sampleButton.buttonType == SoundEffect.NEWEFFECTBUTTON :
@@ -133,16 +155,25 @@ class ExportDialogBox(QDialog):
                     else:
                         raise Exception
 
+            self.addLogEntry(blankLine)
+
             archive.close()
-            self.addLogEntry('Export successful')
+            self.addLogEntry(border1)
+            self.addLogEntry(self.mainWindow.text.localisation('logs','exportSuccess','caption'))
+            self.addLogEntry(border1)
             QCoreApplication.processEvents()
 
         except FileExistsError:
-            self.addLogEntry('File exists!!')
+            self.addLogEntry(border2)
+            self.addLogEntry(self.mainWindow.text.localisation('logs','fileExists','caption'))
+            self.addLogEntry(border2)
             QCoreApplication.processEvents()
 
         except Exception as e:
-            self.addLogEntry('An error occured, cleaning')
+            self.addLogEntry(border2)
+            self.addLogEntry(self.mainWindow.text.localisation('logs','error','caption'))
+            self.addLogEntry(border2)
+            self.addLogEntry(blankLine)
             QCoreApplication.processEvents()
 
             #Clean archive
@@ -156,4 +187,4 @@ class ExportDialogBox(QDialog):
                 if child.name.endswith(ExportDialogBox.TempExtension):
                     child.unlink()
 
-            print(traceback.format_exc())
+            self.addLogEntry(traceback.format_exc())
