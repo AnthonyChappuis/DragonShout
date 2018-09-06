@@ -253,7 +253,6 @@ class MainWindow(QMainWindow):
                     #Any other cases stops the export and triggers clean-up actions
                     else:
                         raise Exception
-            aaaa.test()
 
             archive.close()
             print('Export successful')
