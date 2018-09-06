@@ -6,22 +6,30 @@
 #Application: DragonShout music sampler
 #Last Edited: September 06th 2018
 #---------------------------------
+import tarfile
+import traceback
+from pathlib import Path
 
 from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QWidget, QLabel, QPushButton, QTextEdit,
                             QProgressBar)
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QStandardPaths, QCoreApplication
 
 from classes.interface import MainWindow
+from classes.interface.SoundEffect import SoundEffect
 
 from classes.ressourcesFilepath import Stylesheets, Images
 
 class ExportDialogBox(QDialog):
+
+    ArchiveThemesFolderName = 'themes'
+    ArchiveSamplesFolderName = 'soundEffects'
+    TempExtension = '.default'
+
     def __init__(self, mainWindow:MainWindow):
         super().__init__()
 
         self.mainWindow = mainWindow
-        self.okOrNot = False
-        self.number = 0
 
         #window title and icon
         self.setWindowIcon(QIcon(Images.applicationIcon))
@@ -52,19 +60,20 @@ class ExportDialogBox(QDialog):
         self.textEdit = QTextEdit()
         self.textEdit.setReadOnly(True)
 
+        #export button
+        exportButton = QPushButton('Export')
+        exportButton.clicked.connect(lambda *args: self.export())
+
+        #close button
+        closeButton = QPushButton('Close')
+        closeButton.clicked.connect(lambda *args: self.close())
+
         #Main layout widgets
         self.mainLayout.addWidget(fileDialogWidget)
         self.mainLayout.addWidget(self.progressBar)
         self.mainLayout.addWidget(self.textEdit)
-
-    def getItems(self):
-        """Opens the Export dialog box locking the window and await for user inputs.
-            Takes no parameter.
-            Returns:
-            - okOrNot as boolean.
-        """
-        self.exec()
-        return self.okOrNot
+        self.mainLayout.addWidget(exportButton)
+        self.mainLayout.addWidget(closeButton)
 
     def addLogEntry(self, entry:str):
         """Adds a line to the text edit with given text.
@@ -73,3 +82,78 @@ class ExportDialogBox(QDialog):
             Returns nothing.
         """
         self.textEdit.append(entry)
+
+    def export(self):
+        """Used to export library and 'atttached' sound files as an archive that can be transfered to another computer and/or operating system. Use gzip compression module.
+            Takes no parameter.
+            Returns nothing.
+        """
+
+        try:
+            archiveFilePath = Path(QStandardPaths.locate(QStandardPaths.DocumentsLocation, '', QStandardPaths.LocateDirectory)+'archive.dsm')
+            #Create archive
+            self.addLogEntry('Export starts')
+            QCoreApplication.processEvents()
+            archive = tarfile.open(archiveFilePath.resolve(),'x:gz')
+            self.addLogEntry('Archive created')
+            QCoreApplication.processEvents()
+
+            #Archive the themes and their playlists
+            #themes folder from category name
+            for theme in self.mainWindow.library.categories:
+                self.addLogEntry('In theme: '+theme.name)
+                QCoreApplication.processEvents()
+                subFolderName = theme.name
+
+                #filling theme folder with given tracks
+                for track in theme.tracks:
+                    archive.add(track.location,ExportDialogBox.ArchiveThemesFolderName+'/'+subFolderName+'/'+track.name)
+                    self.addLogEntry('File: '+track.location)
+                    QCoreApplication.processEvents()
+
+            #Archive the sound effects from the sampler
+            for row in self.mainWindow.sampler.sampleButtons:
+                for sampleButton in row :
+                    buttonCoordinatesName = str(sampleButton.coordinates[0])+str(sampleButton.coordinates[1])
+                    typeFolder = str(sampleButton.buttonType)
+
+                    #user defined sound effects
+                    if sampleButton.buttonType == SoundEffect.SOUNDEFFECTBUTTON :
+                        sampleFilepath = Path(sampleButton.filepath)
+                        endName = buttonCoordinatesName+sampleFilepath.name
+                        archive.add(sampleFilepath.resolve(),ExportDialogBox.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
+                    #default buttons without effects
+                    elif sampleButton.buttonType == SoundEffect.NEWEFFECTBUTTON :
+                        endName = buttonCoordinatesName+ExportDialogBox.TempExtension
+                        defaultButtonTempPath = Path(MainWindow.MainWindow.AppDataFolder+endName)
+                        defaultButtonTempPath.touch() #temp file to add to the archive
+                        archive.add(defaultButtonTempPath.resolve(),ExportDialogBox.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
+                        defaultButtonTempPath.unlink() #remove the temp file
+                    #Any other cases stops the export and triggers clean-up actions
+                    else:
+                        raise Exception
+
+            archive.close()
+            self.addLogEntry('Export successful')
+            QCoreApplication.processEvents()
+
+        except FileExistsError:
+            self.addLogEntry('File exists!!')
+            QCoreApplication.processEvents()
+
+        except Exception as e:
+            self.addLogEntry('An error occured, cleaning')
+            QCoreApplication.processEvents()
+
+            #Clean archive
+            archive.close()
+            Path.unlink(archiveFilePath)
+
+            #Clean temp files
+            workFolder = Path(MainWindow.MainWindow.AppDataFolder)
+            for child in workFolder.iterdir():
+                print(child.name)
+                if child.name.endswith(ExportDialogBox.TempExtension):
+                    child.unlink()
+
+            print(traceback.format_exc())
