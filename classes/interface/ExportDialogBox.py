@@ -6,12 +6,13 @@
 #Application: DragonShout music sampler
 #Last Edited: September 06th 2018
 #---------------------------------
+import os
 import tarfile
 import traceback
 from pathlib import Path
 
 from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QWidget, QLabel, QPushButton, QTextEdit,
-                            QProgressBar)
+                            QProgressBar, QFileDialog)
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QStandardPaths, QCoreApplication
 
@@ -25,11 +26,13 @@ class ExportDialogBox(QDialog):
     ArchiveThemesFolderName = 'themes'
     ArchiveSamplesFolderName = 'soundEffects'
     TempExtension = '.default'
+    ArchiveFileExtension = '.dsa'
 
     def __init__(self, mainWindow:MainWindow):
         super().__init__()
 
         self.mainWindow = mainWindow
+        self.archiveFilePath = Path(QStandardPaths.locate(QStandardPaths.HomeLocation, '', QStandardPaths.LocateDirectory))
 
         #window title and icon
         self.setWindowIcon(QIcon(Images.applicationIcon))
@@ -50,8 +53,9 @@ class ExportDialogBox(QDialog):
         fileLabel = QLabel('File select: ')
         layout.addWidget(fileLabel)
 
-        fileButton = QPushButton('...')
-        layout.addWidget(fileButton)
+        self.archiveFileSelectButton = QPushButton('...')
+        self.archiveFileSelectButton.clicked.connect(lambda *args: self.getNewFilePath())
+        layout.addWidget(self.archiveFileSelectButton)
 
         #Progress Bar
         self.progressBar = QProgressBar()
@@ -83,6 +87,25 @@ class ExportDialogBox(QDialog):
         """
         self.textEdit.append(entry)
 
+    def getNewFilePath(self):
+        """Opens a filesystem dialog to choose a folder and filename for the archive.
+            Takes no parameter.
+            Returns nothing.
+        """
+        archiveFileDialog = QFileDialog()
+        archiveFileDialog.setAcceptMode(QFileDialog.AcceptSave)
+
+        rawFilepath, ok = archiveFileDialog.getSaveFileName(self,self.mainWindow.text.localisation('dialogBoxes','export','question'),os.path.expanduser(self.archiveFilePath),ExportDialogBox.ArchiveFileExtension)
+
+        if ok :
+            filepath = Path(rawFilepath)
+
+            if filepath.suffix != ExportDialogBox.ArchiveFileExtension :
+                filepath = filepath.with_suffix(ExportDialogBox.ArchiveFileExtension)
+
+            self.archiveFilePath = filepath
+            self.archiveFileSelectButton.setText(filepath.name)
+
     def export(self):
         """Used to export library and 'atttached' sound files as an archive that can be transfered to another computer and/or operating system. Use gzip compression module.
             Takes no parameter.
@@ -93,16 +116,18 @@ class ExportDialogBox(QDialog):
         blankLine = ''
 
         try:
-            archiveFilePath = Path(QStandardPaths.locate(QStandardPaths.DocumentsLocation, '', QStandardPaths.LocateDirectory)+'archive.dsm')
+            archiveFilePath = self.archiveFilePath
+
             #Create archive
+            archive = tarfile.open(archiveFilePath.resolve(),'x:gz')
+            self.addLogEntry(self.mainWindow.text.localisation('logs','archiveCreation','caption')+archiveFilePath.name)
+            self.addLogEntry(blankLine)
+
             self.addLogEntry(border1)
             self.addLogEntry(self.mainWindow.text.localisation('logs','exportStart','caption'))
             self.addLogEntry(border1)
             self.addLogEntry(blankLine)
 
-            archive = tarfile.open(archiveFilePath.resolve(),'x:gz')
-            self.addLogEntry(self.mainWindow.text.localisation('logs','archiveCreation','caption')+archiveFilePath.name)
-            self.addLogEntry(blankLine)
             QCoreApplication.processEvents()
 
             #Archive the themes and their playlists

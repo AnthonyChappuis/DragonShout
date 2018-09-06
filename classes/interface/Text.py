@@ -114,7 +114,7 @@ class Text():
                 'addMusic': {'caption':'Choose a track to add to this theme','toolTip':'Navigate the drive for a track to add to the theme'},
                 'saveLibrary': {'title':'Save your work'},
                 'newIcon': {'question':'Change the icon :'},
-                'export': {'title':'Export your work'}
+                'export': {'title':'Export your work', 'question': 'Choose a destination directory and name for the archive:'}
             }
 
             labels = {
@@ -176,7 +176,7 @@ class Text():
                 'addMusic': {'caption':'Choisir un morceau à ajouter au thème','toolTip':"Parcours le disque à la recherche d'un morceau à ajouter au thème"},
                 'saveLibrary': {'title':'Sauver votre travail'},
                 'newIcon': {'question':"Changer l'icone :"},
-                'export': {'title':'Exporter votre travail'}
+                'export': {'title':'Exporter votre travail', 'question': "Choisir un dossier de destination pour l'archive:"}
             }
 
             labels = {
