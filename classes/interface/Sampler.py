@@ -264,6 +264,18 @@ class Sampler(QWidget):
                 if soundEffect.buttonType == SoundEffect.SOUNDEFFECTBUTTON:
                     soundEffect.mediaPlayer.setVolume(newVolume)
 
+    def countEffects(self):
+        """Count number of effects.
+            Takes no parameter.
+            Returns:
+            - effectNumber as integer.
+        """
+        effectNumber = 0
+        for row in self.sampleButtons :
+            for button in row :
+                effectNumber += 1
+        return effectNumber
+
     def load(self, filepath: str='',loadType:str="run"):
         """Used to load a sample set from the hard drive (JSON).
             - Takes one parameter:

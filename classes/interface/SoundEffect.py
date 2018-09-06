@@ -23,7 +23,15 @@ class SoundEffect(QPushButton):
     NEWEFFECTBUTTON = 0
     SOUNDEFFECTBUTTON = 1
 
+    #class attribut
+    _effect_number = 0
+
     #Class method
+    def get_effect_number(cls):
+        """This method gets the number of effect available"""
+        return cls._effect_number
+    get_effect_number = classmethod(get_effect_number)
+
     def unserialize(cls,mainWindow:MainWindow,data: dict):
         """Used to unsrialize JSON data for SoundEffect instances
             - Takes one parameter:
@@ -48,6 +56,7 @@ class SoundEffect(QPushButton):
         self.buttonType = buttonType
         self.filepath = ''
         self.styleSheetPath = Stylesheets.effectButtons
+        SoundEffect._effect_number += 1
 
         if buttonType == SoundEffect.SOUNDEFFECTBUTTON: #Creates a full sound effect Button
 

@@ -18,6 +18,7 @@ from PyQt5.QtCore import QStandardPaths, QCoreApplication
 
 from classes.interface import MainWindow
 from classes.interface.SoundEffect import SoundEffect
+from classes.library.Track import Track
 
 from classes.ressourcesFilepath import Stylesheets, Images
 
@@ -66,6 +67,7 @@ class ExportDialogBox(QDialog):
 
         #Progress Bar
         self.progressBar = QProgressBar()
+        self.progressBar.setTextVisible(False)
 
         #text edit
         self.textEdit = QTextEdit()
@@ -77,15 +79,15 @@ class ExportDialogBox(QDialog):
         self.exportButton.clicked.connect(lambda *args: self.export())
 
         #close button
-        closeButton = QPushButton('Close')
-        closeButton.clicked.connect(lambda *args: self.close())
+        self.closeButton = QPushButton('Close')
+        self.closeButton.clicked.connect(lambda *args: self.close())
 
         #Main layout widgets
         self.mainLayout.addWidget(fileDialogWidget)
         self.mainLayout.addWidget(self.progressBar)
         self.mainLayout.addWidget(self.textEdit)
         self.mainLayout.addWidget(self.exportButton)
-        self.mainLayout.addWidget(closeButton)
+        self.mainLayout.addWidget(self.closeButton)
 
     def addLogEntry(self, entry:str):
         """Adds a line to the text edit with given text.
@@ -115,6 +117,51 @@ class ExportDialogBox(QDialog):
             self.archiveFileSelectButton.setText(filepath.name)
             self.exportButton.setEnabled(True)
 
+    def resetProgressBar(self):
+        """Reset progress bar by gathering file number and setting it's min/max values and progress steps.
+            Takes no parameter.
+            Returns nothing.
+        """
+        trackNumber = 0
+        effectNumber = 0
+
+        for category in self.mainWindow.library.categories :
+            trackNumber += len(category.tracks)
+
+        effectNumber = self.mainWindow.sampler.countEffects()
+
+        self.progressBar.reset()
+        self.progressBar.setRange(0,trackNumber+effectNumber)
+        self.progressBar.setValue(0)
+
+    def bumpProgressBar(self):
+        """Bump the value of the progress bar.
+            Takes no parameter.
+            Returns nothing.
+        """
+        self.progressBar.setValue(self.progressBar.value()+1)
+        QCoreApplication.processEvents()
+
+    def toggleControls(self):
+        """Enable or disable UI buttons during export.
+            Takes no parameter.
+            Returns nothing.
+        """
+        if self.closeButton.isEnabled() :
+            self.closeButton.setEnabled(False)
+        else:
+            self.closeButton.setEnabled(True)
+
+        if self.exportButton.isEnabled() :
+            self.exportButton.setEnabled(False)
+        else:
+            self.exportButton.setEnabled(True)
+
+        if self.archiveFileSelectButton.isEnabled() :
+            self.archiveFileSelectButton.setEnabled(False)
+        else:
+            self.archiveFileSelectButton.setEnabled(True)
+
     def export(self):
         """Used to export library and 'atttached' sound files as an archive that can be transfered to another computer and/or operating system. Use gzip compression module.
             Takes no parameter.
@@ -123,6 +170,9 @@ class ExportDialogBox(QDialog):
         border1 = '****************************'
         border2 = '----------------------------'
         blankLine = ''
+
+        self.resetProgressBar()
+        self.toggleControls()
 
         try:
             archiveFilePath = self.archiveFilePath
@@ -157,6 +207,7 @@ class ExportDialogBox(QDialog):
                 for track in theme.tracks:
                     archive.add(track.location,ExportDialogBox.ArchiveThemesFolderName+'/'+subFolderName+'/'+track.name)
                     self.addLogEntry(self.mainWindow.text.localisation('logs','file','caption')+track.location)
+                    self.bumpProgressBar()
                     QCoreApplication.processEvents()
 
                 self.addLogEntry(blankLine)
@@ -189,6 +240,8 @@ class ExportDialogBox(QDialog):
                     else:
                         raise Exception
 
+                    self.bumpProgressBar()
+
             self.addLogEntry(blankLine)
 
             archive.close()
@@ -212,8 +265,9 @@ class ExportDialogBox(QDialog):
             QCoreApplication.processEvents()
 
             #Clean archive
-            archive.close()
-            Path.unlink(archiveFilePath)
+            if 'archive' in locals():
+                archive.close()
+                Path.unlink(archiveFilePath)
 
             #Clean temp files
             workFolder = Path(MainWindow.MainWindow.AppDataFolder)
@@ -223,3 +277,5 @@ class ExportDialogBox(QDialog):
                     child.unlink()
 
             self.addLogEntry(traceback.format_exc())
+
+        self.toggleControls()
