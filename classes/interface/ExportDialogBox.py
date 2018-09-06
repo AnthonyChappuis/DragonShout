@@ -65,8 +65,9 @@ class ExportDialogBox(QDialog):
         self.textEdit.setReadOnly(True)
 
         #export button
-        exportButton = QPushButton('Export')
-        exportButton.clicked.connect(lambda *args: self.export())
+        self.exportButton = QPushButton('Export')
+        self.exportButton.setEnabled(False)
+        self.exportButton.clicked.connect(lambda *args: self.export())
 
         #close button
         closeButton = QPushButton('Close')
@@ -76,7 +77,7 @@ class ExportDialogBox(QDialog):
         self.mainLayout.addWidget(fileDialogWidget)
         self.mainLayout.addWidget(self.progressBar)
         self.mainLayout.addWidget(self.textEdit)
-        self.mainLayout.addWidget(exportButton)
+        self.mainLayout.addWidget(self.exportButton)
         self.mainLayout.addWidget(closeButton)
 
     def addLogEntry(self, entry:str):
@@ -105,6 +106,7 @@ class ExportDialogBox(QDialog):
 
             self.archiveFilePath = filepath
             self.archiveFileSelectButton.setText(filepath.name)
+            self.exportButton.setEnabled(True)
 
     def export(self):
         """Used to export library and 'atttached' sound files as an archive that can be transfered to another computer and/or operating system. Use gzip compression module.
