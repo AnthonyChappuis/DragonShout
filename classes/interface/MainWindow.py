@@ -17,6 +17,8 @@ from classes.interface.Playlist import Playlist
 from classes.interface.Themes import Themes
 from classes.interface.Sampler import Sampler
 from classes.interface.SoundEffect import SoundEffect
+from classes.interface.ExportDialogBox import ExportDialogBox
+
 from classes.ressourcesFilepath import Stylesheets, Images
 
 from classes.library.Library import Library
@@ -214,61 +216,63 @@ class MainWindow(QMainWindow):
             Returns nothing.
         """
 
-        try:
-            archiveFilePath = Path(QStandardPaths.locate(QStandardPaths.DocumentsLocation, '', QStandardPaths.LocateDirectory)+'archive.dsm')
-            #Create archive
-            print('Export starts')
-            archive = tarfile.open(archiveFilePath.resolve(),'x:gz')
-            print('Archive created')
+        test = ExportDialogBox(self).getItems()
 
-            #Archive the themes and their playlists
-            #themes folder from category name
-            for theme in self.library.categories:
-                print('In theme: '+theme.name)
-                subFolderName = theme.name
-
-                #filling theme folder with given tracks
-                for track in theme.tracks:
-                    archive.add(track.location,MainWindow.ArchiveThemesFolderName+'/'+subFolderName+'/'+track.name)
-                    print('File: '+track.location)
-
-            #Archive the sound effects from the sampler
-            for row in self.sampler.sampleButtons:
-                for sampleButton in row :
-                    buttonCoordinatesName = str(sampleButton.coordinates[0])+str(sampleButton.coordinates[1])
-                    typeFolder = str(sampleButton.buttonType)
-
-                    #user defined sound effects
-                    if sampleButton.buttonType == SoundEffect.SOUNDEFFECTBUTTON :
-                        sampleFilepath = Path(sampleButton.filepath)
-                        endName = buttonCoordinatesName+sampleFilepath.name
-                        archive.add(sampleFilepath.resolve(),MainWindow.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
-                    #default buttons without effects
-                    elif sampleButton.buttonType == SoundEffect.NEWEFFECTBUTTON :
-                        endName = buttonCoordinatesName+MainWindow.TempExtension
-                        defaultButtonTempPath = Path(MainWindow.AppDataFolder+endName)
-                        defaultButtonTempPath.touch() #temp file to add to the archive
-                        archive.add(defaultButtonTempPath.resolve(),MainWindow.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
-                        defaultButtonTempPath.unlink() #remove the temp file
-                    #Any other cases stops the export and triggers clean-up actions
-                    else:
-                        raise Exception
-
-            archive.close()
-            print('Export successful')
-        except FileExistsError:
-            print('File exists!!')
-        except Exception as e:
-            print('An error occured, cleaning')
-            #Clean archive
-            archive.close()
-            Path.unlink(archiveFilePath)
-
-            #Clean temp files
-            workFolder = Path(MainWindow.AppDataFolder)
-            for child in workFolder.iterdir():
-                print(child.name)
-                if child.name.endswith(MainWindow.TempExtension):
-                    child.unlink()
-
-            print(traceback.format_exc())
+        # try:
+        #     archiveFilePath = Path(QStandardPaths.locate(QStandardPaths.DocumentsLocation, '', QStandardPaths.LocateDirectory)+'archive.dsm')
+        #     #Create archive
+        #     print('Export starts')
+        #     archive = tarfile.open(archiveFilePath.resolve(),'x:gz')
+        #     print('Archive created')
+        #
+        #     #Archive the themes and their playlists
+        #     #themes folder from category name
+        #     for theme in self.library.categories:
+        #         print('In theme: '+theme.name)
+        #         subFolderName = theme.name
+        #
+        #         #filling theme folder with given tracks
+        #         for track in theme.tracks:
+        #             archive.add(track.location,MainWindow.ArchiveThemesFolderName+'/'+subFolderName+'/'+track.name)
+        #             print('File: '+track.location)
+        #
+        #     #Archive the sound effects from the sampler
+        #     for row in self.sampler.sampleButtons:
+        #         for sampleButton in row :
+        #             buttonCoordinatesName = str(sampleButton.coordinates[0])+str(sampleButton.coordinates[1])
+        #             typeFolder = str(sampleButton.buttonType)
+        #
+        #             #user defined sound effects
+        #             if sampleButton.buttonType == SoundEffect.SOUNDEFFECTBUTTON :
+        #                 sampleFilepath = Path(sampleButton.filepath)
+        #                 endName = buttonCoordinatesName+sampleFilepath.name
+        #                 archive.add(sampleFilepath.resolve(),MainWindow.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
+        #             #default buttons without effects
+        #             elif sampleButton.buttonType == SoundEffect.NEWEFFECTBUTTON :
+        #                 endName = buttonCoordinatesName+MainWindow.TempExtension
+        #                 defaultButtonTempPath = Path(MainWindow.AppDataFolder+endName)
+        #                 defaultButtonTempPath.touch() #temp file to add to the archive
+        #                 archive.add(defaultButtonTempPath.resolve(),MainWindow.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
+        #                 defaultButtonTempPath.unlink() #remove the temp file
+        #             #Any other cases stops the export and triggers clean-up actions
+        #             else:
+        #                 raise Exception
+        #
+        #     archive.close()
+        #     print('Export successful')
+        # except FileExistsError:
+        #     print('File exists!!')
+        # except Exception as e:
+        #     print('An error occured, cleaning')
+        #     #Clean archive
+        #     archive.close()
+        #     Path.unlink(archiveFilePath)
+        #
+        #     #Clean temp files
+        #     workFolder = Path(MainWindow.AppDataFolder)
+        #     for child in workFolder.iterdir():
+        #         print(child.name)
+        #         if child.name.endswith(MainWindow.TempExtension):
+        #             child.unlink()
+        #
+        #     print(traceback.format_exc())

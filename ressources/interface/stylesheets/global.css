@@ -10,17 +10,7 @@ QSplitter::handle
     border-top-color: rgb(70, 100, 150);
   }
 
-MainWindow
-{
-  background: rgb(25, 44, 76);
-}
-
-SampleButtonDialogBox
-{
-  background: rgb(25, 44, 76);
-}
-
-ThemeButtonDialogBox
+QMainWindow, QDialog
 {
   background: rgb(25, 44, 76);
 }

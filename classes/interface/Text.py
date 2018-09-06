@@ -5,7 +5,7 @@
 #It also manage which language is used when showing textes.
 #
 #Application: DragonShout music sampler
-#Last Edited: August 30th 2018
+#Last Edited: September 06th 2018
 #---------------------------------
 
 import os
@@ -113,7 +113,8 @@ class Text():
                 'newSample': {'caption':'New sound effect','toolTip':'Choose a new sound effect','question':'Choose a new sound effect :'},
                 'addMusic': {'caption':'Choose a track to add to this theme','toolTip':'Navigate the drive for a track to add to the theme'},
                 'saveLibrary': {'title':'Save your work'},
-                'newIcon': {'question':'Change the icon :'}
+                'newIcon': {'question':'Change the icon :'},
+                'export': {'title':'Export your work'}
             }
 
             labels = {
@@ -162,7 +163,8 @@ class Text():
                 'newSample': {'caption':'Nouvel effet sonore','toolTip':'Choisir un nouvel effet sonore','question':'Sélectionner un nouvel effet sonore :'},
                 'addMusic': {'caption':'Choisir un morceau à ajouter au thème','toolTip':"Parcours le disque à la recherche d'un morceau à ajouter au thème"},
                 'saveLibrary': {'title':'Sauver votre travail'},
-                'newIcon': {'question':"Changer l'icone :"}
+                'newIcon': {'question':"Changer l'icone :"},
+                'export': {'title':'Exporter votre travail'}
             }
 
             labels = {
