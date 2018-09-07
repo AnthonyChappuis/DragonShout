@@ -54,7 +54,6 @@ class ThemeButtonDialogBox(QDialog):
         self.themeIconButton = QPushButton()
         self.themeIconButton.setIcon(QIcon(self.iconPath))
         self.themeIconButton.setIconSize(QSize(100,100))
-        self.themeIconButton.setFlat(True)
         self.themeIconButton.clicked.connect(lambda *args: self.getNewIcon())
 
         #control buttons

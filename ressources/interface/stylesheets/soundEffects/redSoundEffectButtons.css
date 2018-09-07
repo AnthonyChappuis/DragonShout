@@ -1,14 +1,5 @@
 QPushButton
   {
-    border: 5px solid;
-    border-radius: 5px;
-    /*Foncé*/
-    border-bottom-color: rgb(125, 50, 50);
-    border-right-color: rgb(125, 50, 50);
-    /*Clair*/
-    border-left-color: rgb(200, 50, 50);
-    border-top-color: rgb(200, 50, 50);
-
     background-color: rgb(175, 50, 50);
     color: white;
 
@@ -21,10 +12,4 @@ QPushButton
 QPushButton:pressed
   {
     background-color: rgb(150, 50, 50);
-    /*Foncé*/
-    border-top-color: rgb(125, 50, 50);
-    border-left-color: rgb(125, 50, 50);
-    /*Clair*/
-    border-right-color: rgb(200, 50, 50);
-    border-bottom-color: rgb(200, 50, 50);
   }

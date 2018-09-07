@@ -1,13 +1,7 @@
 SoundEffect
   {
-    /*Foncé*/
-    border-bottom-color: rgb(43, 61, 91);
-    border-right-color: rgb(43, 61, 91);
-    /*Clair*/
-    border-left-color: rgb(70, 100, 150);
-    border-top-color: rgb(70, 100, 150);
-
-    background-color: rgb(58, 83, 124);
+    border: none;
+    background-color: none;
     color: white;
 
     padding: 5%;
@@ -18,11 +12,6 @@ SoundEffect
 
 SoundEffect:pressed
   {
-    background-color: rgb(55, 78, 117);
-    /*Foncé*/
-    border-top-color: rgb(43, 61, 91);
-    border-left-color: rgb(43, 61, 91);
-    /*Clair*/
-    border-right-color: rgb(70, 100, 150);
-    border-bottom-color: rgb(70, 100, 150);
+    background: rgb(10, 22, 35);
+    border-radius: 20px;
   }

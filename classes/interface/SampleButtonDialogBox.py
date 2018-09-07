@@ -57,7 +57,6 @@ class SampleButtonDialogBox(QDialog):
         self.sampleIconButton = QPushButton()
         self.sampleIconButton.setIcon(QIcon(self.iconPath))
         self.sampleIconButton.setIconSize(QSize(100,100))
-        self.sampleIconButton.setFlat(True)
         self.sampleIconButton.clicked.connect(lambda *args: self.getNewIcon())
 
         #Color scheme
