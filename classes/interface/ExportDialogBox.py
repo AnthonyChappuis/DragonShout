@@ -221,18 +221,34 @@ class ExportDialogBox(QDialog):
             #Archive the sound effects from the sampler
             for row in self.mainWindow.sampler.sampleButtons:
                 for sampleButton in row :
-                    buttonCoordinatesName = str(sampleButton.coordinates[0])+str(sampleButton.coordinates[1])
+                    buttonCoordinatesID = str(sampleButton.coordinates[0])+str(sampleButton.coordinates[1])
                     typeFolder = str(sampleButton.buttonType)
 
                     #user defined sound effects
                     if sampleButton.buttonType == SoundEffect.SOUNDEFFECTBUTTON :
+
+                        if sampleButton.styleSheetPath == Stylesheets.effectButtons:
+                            colorID = 'U'
+                        elif sampleButton.styleSheetPath == Stylesheets.redEffectButtons:
+                            colorID = 'R'
+                        elif sampleButton.styleSheetPath == Stylesheets.yellowEffectButtons:
+                            colorID = 'Y'
+                        elif sampleButton.styleSheetPath == Stylesheets.greyEffectButtons:
+                            colorID = 'G'
+                        elif sampleButton.styleSheetPath == Stylesheets.purpleEffectButtons:
+                            colorID = 'P'
+                        elif sampleButton.styleSheetPath == Stylesheets.blueEffectButtons:
+                            colorID = 'B'
+                        else:
+                            colorID = 'U'
+
                         sampleFilepath = Path(sampleButton.filepath)
-                        endName = buttonCoordinatesName+sampleFilepath.name
+                        endName = buttonCoordinatesID+colorID+sampleFilepath.name
                         self.addLogEntry(self.mainWindow.text.localisation('logs','file','caption')+str(sampleFilepath.resolve()))
                         archive.add(sampleFilepath.resolve(),ExportDialogBox.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
                     #default buttons without effects
                     elif sampleButton.buttonType == SoundEffect.NEWEFFECTBUTTON :
-                        endName = buttonCoordinatesName+ExportDialogBox.TempExtension
+                        endName = buttonCoordinatesID+ExportDialogBox.TempExtension
                         defaultButtonTempPath = Path(MainWindow.MainWindow.AppDataFolder+endName)
                         defaultButtonTempPath.touch() #temp file to add to the archive
                         archive.add(defaultButtonTempPath.resolve(),ExportDialogBox.ArchiveSamplesFolderName+'/'+typeFolder+'/'+endName)
