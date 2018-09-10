@@ -69,6 +69,8 @@ class SampleButtonDialogBox(QDialog):
 
         for vert in range(2):
             for hor in range(3):
+                exampleButton = QPushButton()
+
                 if colorNumber == 1 :
                     styleSheetPath = Stylesheets.redEffectButtons
                 elif colorNumber == 2 :
@@ -81,8 +83,8 @@ class SampleButtonDialogBox(QDialog):
                     styleSheetPath = Stylesheets.blueEffectButtons
                 else :
                     styleSheetPath = Stylesheets.effectButtons
+                    self.toggleColorScheme(exampleButton)
 
-                exampleButton = QPushButton()
                 exampleButton.setStyleSheet(open(styleSheetPath,'r', encoding='utf-8').read())
                 exampleButton.clicked.connect(lambda *args: self.toggleColorScheme(self.sender()))
 
