@@ -5,7 +5,7 @@
 #It also manage which language is used when showing textes.
 #
 #Application: DragonShout music sampler
-#Last Edited: September 06th 2018
+#Last Edited: September 13th 2018
 #---------------------------------
 
 import os
@@ -85,7 +85,8 @@ class Text():
                 'cancel' : {'caption':'Cancel'},
                 'addSample': {'caption':'Add an effect','toolTip':"Add a new effect button to the sampler"},
                 'samplerEditButton': {'caption':'Edit','toolTip':'Activate edit mode to change a sound effect. Click againg to deactivate.'},
-                'samplerDeleteButton': {'caption':'Delete','toolTip':'Activate delete mode to suppress sound effects. Click again to deactivate.'}
+                'samplerDeleteButton': {'caption':'Delete','toolTip':'Activate delete mode to suppress sound effects. Click again to deactivate.'},
+                'edit': {'caption':'Edit'}
             }
 
             menus = {
@@ -148,7 +149,8 @@ class Text():
                 'cancel' : {'caption':'Annuler'},
                 'addSample': {'caption':'Ajouter un effet','toolTip':"Ajouter un nouveau bouton d'effet au sampler"},
                 'samplerEditButton': {'caption':'Modifier','toolTip':'Active le mode édition pour modifier les effets sonores. Cliquer à nouveau pour désactiver'},
-                'samplerDeleteButton': {'caption':'Supprimer','toolTip':'Active le mode suppression pour retirer les effets sonores. Cliquer à nouveau pour désactiver'}
+                'samplerDeleteButton': {'caption':'Supprimer','toolTip':'Active le mode suppression pour retirer les effets sonores. Cliquer à nouveau pour désactiver'},
+                'edit': {'caption':'Modifier'}
             }
 
             menus =  {

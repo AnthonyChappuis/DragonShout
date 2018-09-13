@@ -4,7 +4,7 @@
 #Class responsible for the theme and its collection of buttons used in the themes widget
 #
 #Application: DragonShout music sampler
-#Last Edited: May 19th 2017
+#Last Edited: September 13th 2018
 #---------------------------------
 
 from classes.interface import MainWindow
@@ -41,7 +41,7 @@ class ThemeButtons(QWidget):
         layout.addWidget(self.themeButton)
 
         #Edit button
-        self.editButton = QPushButton('Edit')
+        self.editButton = QPushButton(self.mainWindow.text.localisation('buttons','edit','caption'))
         self.editButton.setStyleSheet(stylesheet)
         self.editButton.clicked.connect(lambda *args: self.editTheme(self.themeButton.text()))
         layout.addWidget(self.editButton)
