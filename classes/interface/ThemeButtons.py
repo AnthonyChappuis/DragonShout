@@ -12,7 +12,7 @@ from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
 
 from classes. ressourcesFilepath import Stylesheets, Images
 
-from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget, QInputDialog
+from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget, QInputDialog, QSizePolicy
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize
 from PyQt5.Qt import Qt
@@ -37,12 +37,14 @@ class ThemeButtons(QWidget):
         self.themeButton.setIcon(QIcon(self.themeIconPath))
         self.themeButton.setIconSize(QSize(100,100))
         self.themeButton.setStyleSheet(stylesheet)
+        self.themeButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.themeButton.clicked.connect(lambda *args: self.selectTheme(self.sender().text()))
         layout.addWidget(self.themeButton)
 
         #Edit button
         self.editButton = QPushButton(self.mainWindow.text.localisation('buttons','edit','caption'))
         self.editButton.setStyleSheet(stylesheet)
+        self.editButton.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Expanding)
         self.editButton.clicked.connect(lambda *args: self.editTheme(self.themeButton.text()))
         layout.addWidget(self.editButton)
 
@@ -50,7 +52,7 @@ class ThemeButtons(QWidget):
         self.removeButton = QPushButton()
         self.removeButton.setIcon(QIcon(Images.deleteButtonIcon))
         self.removeButton.setStyleSheet(stylesheet)
-        self.removeButton.setMinimumWidth(50)
+        self.removeButton.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Expanding)
         self.removeButton.clicked.connect(lambda *args: self.mainWindow.themes.deleteTheme(self.themeButton.text(),self))
         layout.addWidget(self.removeButton)
 
