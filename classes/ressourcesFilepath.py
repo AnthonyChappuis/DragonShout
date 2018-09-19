@@ -17,7 +17,7 @@ class Stylesheets():
 
     #Effect buttons
     effectButtons = "ressources/interface/stylesheets/soundEffects/soundEffectButtons.css"
-    redEffectButtons = "ressources/interface/styleSheets/soundEffects/redSoundEffectButtons.css"
+    redEffectButtons = "ressources/interface/stylesheets/soundEffects/redSoundEffectButtons.css"
     yellowEffectButtons = "ressources/interface/stylesheets/soundEffects/yellowSoundEffectButtons.css"
     greyEffectButtons = "ressources/interface/stylesheets/soundEffects/greySoundEffectButtons.css"
     purpleEffectButtons = "ressources/interface/stylesheets/soundEffects/purpleSoundEffectButtons.css"
