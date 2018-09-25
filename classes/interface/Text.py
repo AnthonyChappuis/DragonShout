@@ -86,7 +86,10 @@ class Text():
                 'addSample': {'caption':'Add an effect','toolTip':"Add a new effect button to the sampler"},
                 'samplerEditButton': {'caption':'Edit','toolTip':'Activate edit mode to change a sound effect. Click againg to deactivate.'},
                 'samplerDeleteButton': {'caption':'Delete','toolTip':'Activate delete mode to suppress sound effects. Click again to deactivate.'},
-                'edit': {'caption':'Edit'}
+                'edit': {'caption':'Edit'},
+                'close': {'caption':'Close'},
+                'export': {'caption':'Export'},
+                'import': {'caption':'Import'}
             }
 
             menus = {
@@ -98,7 +101,9 @@ class Text():
                 'exit': { 'caption':'Exit', 'toolTip': "Exit the application"},
                 'language': { 'caption':'Language', 'toolTip': "Select the language of the application"},
                 'save' : { 'caption':'Save', 'toolTip': "Save your work"},
-                'load' : {'caption':'Load', 'toolTip': "Load an existing library"}
+                'load' : {'caption':'Load', 'toolTip': "Load an existing library"},
+                'export' : {'caption':'Export','toolTip': "Stock your work inside an archive in order to export it to another computer."},
+                'import' : {'caption':'Import','toolTip': "Import an archive which contains the work files coming from another computer."}
             }
 
             messageBoxes = {
@@ -115,7 +120,8 @@ class Text():
                 'addMusic': {'caption':'Choose a track to add to this theme','toolTip':'Navigate the drive for a track to add to the theme'},
                 'saveLibrary': {'title':'Save your work'},
                 'newIcon': {'question':'Change the icon :'},
-                'export': {'title':'Export your work', 'question': 'Choose a destination directory and name for the archive:'}
+                'export': {'title':'Export your work', 'question': 'Choose a destination directory and name for the archive:'},
+                'import': {'title':'Import a work environement'}
             }
 
             labels = {
@@ -150,7 +156,10 @@ class Text():
                 'addSample': {'caption':'Ajouter un effet','toolTip':"Ajouter un nouveau bouton d'effet au sampler"},
                 'samplerEditButton': {'caption':'Modifier','toolTip':'Active le mode édition pour modifier les effets sonores. Cliquer à nouveau pour désactiver'},
                 'samplerDeleteButton': {'caption':'Supprimer','toolTip':'Active le mode suppression pour retirer les effets sonores. Cliquer à nouveau pour désactiver'},
-                'edit': {'caption':'Modifier'}
+                'edit': {'caption':'Modifier'},
+                'close': {'caption':'Fermer'},
+                'export': {'caption':'Exporter'},
+                'import': {'caption':'Importer'}
             }
 
             menus =  {
@@ -162,7 +171,9 @@ class Text():
                 'exit': { 'caption':'Quitter', 'toolTip':"Quitter l'application."},
                 'language': { 'caption':'Langue', 'toolTip': "Sélectionner la langue de l'application"},
                 'save' : { 'caption':'Sauvegarder', 'toolTip': "Sauvegarder votre travail"},
-                'load' : {'caption':'Charger', 'toolTip': "Charger une librairie existante"}
+                'load' : {'caption':'Charger', 'toolTip': "Charger une librairie existante"},
+                'export' : {'caption':'Exporter','toolTip': "Stock votre travail dans une archive pour l'exporter vers un autre ordinateur."},
+                'import' : {'caption':'Importer','toolTip': "Importe une archive contenant les fichiers de travail en provenance d'un autre ordinateur."}
             }
 
             messageBoxes = {
@@ -179,7 +190,8 @@ class Text():
                 'addMusic': {'caption':'Choisir un morceau à ajouter au thème','toolTip':"Parcours le disque à la recherche d'un morceau à ajouter au thème"},
                 'saveLibrary': {'title':'Sauver votre travail'},
                 'newIcon': {'question':"Changer l'icone :"},
-                'export': {'title':'Exporter votre travail', 'question': "Choisir un dossier de destination pour l'archive:"}
+                'export': {'title':'Exporter votre travail', 'question': "Choisir un dossier de destination pour l'archive:"},
+                'import': {'title':'Importer un environement de travail'}
             }
 
             labels = {

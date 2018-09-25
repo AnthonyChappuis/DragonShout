@@ -74,12 +74,12 @@ class ExportDialogBox(QDialog):
         self.textEdit.setReadOnly(True)
 
         #export button
-        self.exportButton = QPushButton('Export')
+        self.exportButton = QPushButton(self.mainWindow.text.localisation('buttons','export','caption'))
         self.exportButton.setEnabled(False)
         self.exportButton.clicked.connect(lambda *args: self.export())
 
         #close button
-        self.closeButton = QPushButton('Close')
+        self.closeButton = QPushButton(self.mainWindow.text.localisation('buttons','close','caption'))
         self.closeButton.clicked.connect(lambda *args: self.close())
 
         #Main layout widgets

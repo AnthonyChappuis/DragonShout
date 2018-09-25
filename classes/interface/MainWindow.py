@@ -16,6 +16,7 @@ from classes.interface.Themes import Themes
 from classes.interface.Sampler import Sampler
 from classes.interface.SoundEffect import SoundEffect
 from classes.interface.ExportDialogBox import ExportDialogBox
+from classes.interface.ImportDialogBox import ImportDialogBox
 
 from classes.ressourcesFilepath import Stylesheets, Images
 
@@ -92,10 +93,17 @@ class MainWindow(QMainWindow):
 
         fileMenu.addAction(action)
 
-        action = QAction(QIcon(Images.exportIcon), 'export', self)
+        action = QAction(QIcon(Images.exportIcon), self.text.localisation('menuEntries','export','caption'), self)
         action.setShortcut('Ctrl+Alt+e')
-        action.setStatusTip('Archive your library for easier transfert to another computer')
-        action.triggered.connect(lambda * args: ExportDialogBox(self).exec())
+        action.setStatusTip(self.text.localisation('menuEntries','export','toolTip'))
+        action.triggered.connect(lambda *args: ExportDialogBox(self).exec())
+
+        fileMenu.addAction(action)
+
+        action = QAction(QIcon(),self.text.localisation('menuEntries','import','caption'), self)
+        action.setShortcut('Ctrl+Alt+i')
+        action.setStatusTip(self.text.localisation('menuEntries','import','toolTip'))
+        action.triggered.connect(lambda *args: ImportDialogBox(self).exec())
 
         fileMenu.addAction(action)
 
