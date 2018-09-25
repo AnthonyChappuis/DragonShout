@@ -121,7 +121,7 @@ class Text():
                 'saveLibrary': {'title':'Save your work'},
                 'newIcon': {'question':'Change the icon :'},
                 'export': {'title':'Export your work', 'question': 'Choose a destination directory and name for the archive:'},
-                'import': {'title':'Import a work environement'}
+                'import': {'title':'Import a work environement','question':'Choose the file or destination:'}
             }
 
             labels = {
@@ -129,7 +129,7 @@ class Text():
                 'playlistLabel' : {'caption': 'Select a theme to play','toolTip':'Shows the playlist of the selected theme'},
                 'chooseThemeFirst': {'caption': 'Choose or create a theme first'},
                 'colorScheme' : {'caption': 'Color :'},
-                'archiveFilePathLabel' : {'caption': 'Destination and name of the archive:'}
+                'archiveFilePathLabel' : {'caption': 'Archive file:'}
             }
 
             logs = {
@@ -191,7 +191,7 @@ class Text():
                 'saveLibrary': {'title':'Sauver votre travail'},
                 'newIcon': {'question':"Changer l'icone :"},
                 'export': {'title':'Exporter votre travail', 'question': "Choisir un dossier de destination pour l'archive:"},
-                'import': {'title':'Importer un environement de travail'}
+                'import': {'title':'Importer un environement de travail','question':'Choisir le fichier ou la destination:'}
             }
 
             labels = {
@@ -199,7 +199,7 @@ class Text():
                 'playlistLabel' : {'caption': 'Sélectionne un thème à jouer ','toolTip':'Montre la liste de lecture du thème sélectionné'},
                 'chooseThemeFirst': {'caption': "Il faut d'abord choisir ou créer un thème"},
                 'colorScheme' : {'caption': 'Couleur :'},
-                'archiveFilePathLabel' : {'caption': "Emplacement et nom de l'archive:"}
+                'archiveFilePathLabel' : {'caption': "Fichier archive:"}
             }
 
             logs = {
