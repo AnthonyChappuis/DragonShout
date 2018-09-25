@@ -24,4 +24,4 @@ The last used technologies are:
 Note:
 - Installing libqt5multimedia5-plugins might be necessary to use sources with your system if you obtain :
  "defaultServiceProvider::requestService(): no service found for - "org.qt-project.qt.mediaplayer"" error.
-- Qt Media Player used in this software is not compatible with FLAC music format at the moment.
+- Then you need to copy the plugins to your PyQt5 installation folders with  cp -a /usr/lib/x86_64-linux-gnu/qt5/plugins/mediaservice/ /your/path/to/PyQt5/Qt/plugins/
