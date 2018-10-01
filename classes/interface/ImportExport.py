@@ -291,7 +291,6 @@ class ExportDialogBox(QDialog):
             #Clean temp files
             workFolder = Path(MainWindow.MainWindow.AppDataFolder)
             for child in workFolder.iterdir():
-                print(child.name)
                 if child.name.endswith(ImportExport.TempExtension):
                     child.unlink()
 
@@ -447,8 +446,9 @@ class ImportDialogBox(QDialog):
         try:
             #Open archive
             archive = tarfile.open(self.archiveFilePath.resolve(),'r:gz')
-            print('Import')
-
+            for element in archive.getmembers():
+                self.addLogEntry(element.name)
+                QCoreApplication.processEvents()
             archive.close()
 
         except Exception as e:
