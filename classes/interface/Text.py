@@ -5,7 +5,7 @@
 #It also manage which language is used when showing textes.
 #
 #Application: DragonShout music sampler
-#Last Edited: September 13th 2018
+#Last Edited: October 01st 2018
 #---------------------------------
 
 import os
@@ -141,7 +141,8 @@ class Text():
                 'file': {'caption':'File: '},
                 'exportSuccess': {'caption': 'Export successful.'},
                 'fileExists': {'caption': 'The file already exists, choose a different file name.'},
-                'error': {'caption': 'An error occured, cleaning temporary files.'}
+                'error': {'caption': 'An error occured, cleaning temporary files.'},
+                'wrongFile': {'caption': 'Selected file is not compatible.'}
             }
 
         #French
@@ -211,7 +212,8 @@ class Text():
                 'file': {'caption':'Fichier: '},
                 'exportSuccess': {'caption': 'Exportation réussie.'},
                 'fileExists': {'caption': 'Le fichier existe déjà, choisissez un autre nom de fichier.'},
-                'error': {'caption': 'Une erreure est survenue, nettoyage des fichiers temporaires.'}
+                'error': {'caption': 'Une erreure est survenue, nettoyage des fichiers temporaires.'},
+                'wrongFile': {'caption': "le fichier sélectionné n'est pas compatible."}
             }
 
 

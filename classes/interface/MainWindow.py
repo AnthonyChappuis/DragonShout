@@ -4,7 +4,7 @@
 #Class responsible for main window of the application
 #
 #Application: DragonShout music sampler
-#Last Edited: September 03 2018
+#Last Edited: October 01st 2018
 #---------------------------------
 
 import os
@@ -15,8 +15,7 @@ from classes.interface.Playlist import Playlist
 from classes.interface.Themes import Themes
 from classes.interface.Sampler import Sampler
 from classes.interface.SoundEffect import SoundEffect
-from classes.interface.ExportDialogBox import ExportDialogBox
-from classes.interface.ImportDialogBox import ImportDialogBox
+from classes.interface.ImportExport import ExportDialogBox, ImportDialogBox
 
 from classes.ressourcesFilepath import Stylesheets, Images
 
