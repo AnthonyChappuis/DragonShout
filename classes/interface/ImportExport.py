@@ -33,6 +33,56 @@ class ImportExport():
     WarningBorder = '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
     BlankLine = ''
 
+    def __init__(self):
+        #Windows dimensions
+        screen = QGuiApplication.primaryScreen()
+        screenGeometry = screen.geometry()
+
+        self.width = screenGeometry.width()*1/3
+        self.height = screenGeometry.height()*1/2
+
+        #ColorIDs and relative stylesheets
+        self.stylesheetsVsIDs = []
+
+        self.stylesheetsVsIDs.append([Stylesheets.effectButtons,'U'])
+        self.stylesheetsVsIDs.append([Stylesheets.redEffectButtons,'R'])
+        self.stylesheetsVsIDs.append([Stylesheets.yellowEffectButtons,'Y'])
+        self.stylesheetsVsIDs.append([Stylesheets.greyEffectButtons,'G'])
+        self.stylesheetsVsIDs.append([Stylesheets.purpleEffectButtons,'P'])
+        self.stylesheetsVsIDs.append([Stylesheets.blueEffectButtons,'B'])
+
+    def getStylesheet(self, colorID:str):
+        """Search the stylesheetsVsIDs table for the styleSheet relative to the given colorID.
+            Defaults to the first colorID in case of no match.
+            Takes one parameter:
+            - colorID as str.
+            Returns:
+            - styleSheet as str.
+        """
+        stylesheet = self.stylesheetsVsIDs[0][0]
+
+        for matchTableRow in self.stylesheetsVsIDs:
+            if matchTableRow[1] == colorID :
+                stylesheet = matchTableRow[0]
+
+        return stylesheet
+
+    def getColorID(self, styleSheet:str):
+        """Searche the stylesheetsVsIDs table for the colorID relative to the given styleSheet.
+            Defaults to the first styleSheet in case of no match.
+            Takes one parameter:
+            - styleSheet as str.
+            Returns:
+            - colorID as str.
+        """
+        colorID = self.stylesheetsVsIDs[0][1]
+
+        for matchTableRow in self.stylesheetsVsIDs:
+            if matchTableRow[0] == styleSheet:
+                colorID = matchTableRow[1]
+
+        return colorID
+
 class ExportDialogBox(QDialog):
 
     def __init__(self, mainWindow:MainWindow):
@@ -42,12 +92,8 @@ class ExportDialogBox(QDialog):
         self.archiveFilePath = Path(QStandardPaths.locate(QStandardPaths.HomeLocation, '', QStandardPaths.LocateDirectory))
 
         #Window dimensions
-        vRatio = 1/2
-        hRatio = 1/3
-        screen = QGuiApplication.primaryScreen()
-        screenGeometry = screen.geometry()
-        self.setMinimumWidth(screenGeometry.width()*hRatio)
-        self.setMinimumHeight(screenGeometry.height()*vRatio)
+        self.setMinimumWidth(ImportExport().width)
+        self.setMinimumHeight(ImportExport().height)
 
         #window title and icon
         self.setWindowIcon(QIcon(Images.applicationIcon))
@@ -229,20 +275,7 @@ class ExportDialogBox(QDialog):
                     #user defined sound effects
                     if sampleButton.buttonType == SoundEffect.SOUNDEFFECTBUTTON :
 
-                        if sampleButton.styleSheetPath == Stylesheets.effectButtons:
-                            colorID = 'U'
-                        elif sampleButton.styleSheetPath == Stylesheets.redEffectButtons:
-                            colorID = 'R'
-                        elif sampleButton.styleSheetPath == Stylesheets.yellowEffectButtons:
-                            colorID = 'Y'
-                        elif sampleButton.styleSheetPath == Stylesheets.greyEffectButtons:
-                            colorID = 'G'
-                        elif sampleButton.styleSheetPath == Stylesheets.purpleEffectButtons:
-                            colorID = 'P'
-                        elif sampleButton.styleSheetPath == Stylesheets.blueEffectButtons:
-                            colorID = 'B'
-                        else:
-                            colorID = 'U'
+                        colorID = ImportExport().getColorID(sampleButton.styleSheetPath)
 
                         sampleFilepath = Path(sampleButton.filepath)
                         endName = buttonCoordinatesID+colorID+sampleFilepath.name
@@ -311,12 +344,8 @@ class ImportDialogBox(QDialog):
         self.destinationPath = self.archiveFilePath
 
         #Window dimensions
-        vRatio = 1/2
-        hRatio = 1/3
-        screen = QGuiApplication.primaryScreen()
-        screenGeometry = screen.geometry()
-        self.setMinimumWidth(screenGeometry.width()*hRatio)
-        self.setMinimumHeight(screenGeometry.height()*vRatio)
+        self.setMinimumWidth(ImportExport().width)
+        self.setMinimumHeight(ImportExport().height)
 
         #window title and icon
         self.setWindowIcon(QIcon(Images.applicationIcon))
@@ -443,12 +472,26 @@ class ImportDialogBox(QDialog):
         """
         self.textEdit.clear()
 
+
+
         try:
+            #Ouverture de l'archive
+            self.addLogEntry(self.mainWindow.text.localisation('logs','archiveExtraction','caption')+self.archiveFilePath.name)
+            self.addLogEntry(ImportExport.BlankLine)
+
+            QCoreApplication.processEvents()
             #Open archive
             archive = tarfile.open(self.archiveFilePath.resolve(),'r:gz')
+
+            self.addLogEntry(ImportExport.Border1)
+            self.addLogEntry(self.mainWindow.text.localisation('logs','importStart','caption'))
+            self.addLogEntry(ImportExport.Border1)
+            self.addLogEntry(ImportExport.BlankLine)
+
             for element in archive.getmembers():
-                self.addLogEntry(element.name)
-                QCoreApplication.processEvents()
+                if ImportExport.TempExtension not in element.name:
+                    self.addLogEntry(element.name)
+                    QCoreApplication.processEvents()
             archive.close()
 
         except Exception as e:

@@ -134,6 +134,7 @@ class Text():
 
             logs = {
                 'exportStart' : { 'caption': "Export begins."},
+                'importStart' : {'caption': "Import begins."},
                 'archiveCreation': {'caption': 'Creating archive file: '},
                 'playlist': {'caption': 'Exporting themes and their playlists.'},
                 'inTheme': {'caption': "Theme: "},
@@ -142,7 +143,8 @@ class Text():
                 'exportSuccess': {'caption': 'Export successful.'},
                 'fileExists': {'caption': 'The file already exists, choose a different file name.'},
                 'error': {'caption': 'An error occured, cleaning temporary files.'},
-                'wrongFile': {'caption': 'Selected file is not compatible.'}
+                'wrongFile': {'caption': 'Selected file is not compatible.'},
+                'archiveExtraction': {'caption': "Archive opening: "}
             }
 
         #French
@@ -205,6 +207,7 @@ class Text():
 
             logs = {
                 'exportStart' : { 'caption': "Début de l'exportation."},
+                'importStart' : {'caption': "Début de l'importation."},
                 'archiveCreation': {'caption': "Création du fichier d'archive: "},
                 'playlist': {'caption': 'Export des thèmes et de leurs listes de lecture.'},
                 'inTheme': {'caption': "Thème: "},
@@ -213,7 +216,8 @@ class Text():
                 'exportSuccess': {'caption': 'Exportation réussie.'},
                 'fileExists': {'caption': 'Le fichier existe déjà, choisissez un autre nom de fichier.'},
                 'error': {'caption': 'Une erreure est survenue, nettoyage des fichiers temporaires.'},
-                'wrongFile': {'caption': "le fichier sélectionné n'est pas compatible."}
+                'wrongFile': {'caption': "le fichier sélectionné n'est pas compatible."},
+                'archiveExtraction': {'caption': "Ouverture de l'archive: "}
             }
 
 
