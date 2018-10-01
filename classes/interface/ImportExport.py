@@ -9,6 +9,7 @@
 import os
 import tarfile
 import traceback
+import shutil
 from pathlib import Path
 
 from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QWidget, QLabel, QPushButton, QTextEdit,
@@ -25,6 +26,7 @@ from classes.ressourcesFilepath import Stylesheets, Images
 class ImportExport():
     ArchiveThemesFolderName = 'themes'
     ArchiveSamplesFolderName = 'soundEffects'
+    ExtractionDirectoryName = 'extraction'
     TempExtension = '.default'
     ArchiveFileExtension = '.dsa'
 
@@ -34,6 +36,9 @@ class ImportExport():
     BlankLine = ''
 
     def __init__(self):
+        #Directory paths
+        self.tempDirectoryPath = Path(MainWindow.MainWindow.AppDataFolder)/ImportExport.ExtractionDirectoryName
+
         #Windows dimensions
         screen = QGuiApplication.primaryScreen()
         screenGeometry = screen.geometry()
@@ -42,42 +47,42 @@ class ImportExport():
         self.height = screenGeometry.height()*1/2
 
         #ColorIDs and relative stylesheets
-        self.stylesheetsVsIDs = []
+        self.styleSheetsVsIDs = []
 
-        self.stylesheetsVsIDs.append([Stylesheets.effectButtons,'U'])
-        self.stylesheetsVsIDs.append([Stylesheets.redEffectButtons,'R'])
-        self.stylesheetsVsIDs.append([Stylesheets.yellowEffectButtons,'Y'])
-        self.stylesheetsVsIDs.append([Stylesheets.greyEffectButtons,'G'])
-        self.stylesheetsVsIDs.append([Stylesheets.purpleEffectButtons,'P'])
-        self.stylesheetsVsIDs.append([Stylesheets.blueEffectButtons,'B'])
+        self.styleSheetsVsIDs.append([Stylesheets.effectButtons,'U'])
+        self.styleSheetsVsIDs.append([Stylesheets.redEffectButtons,'R'])
+        self.styleSheetsVsIDs.append([Stylesheets.yellowEffectButtons,'Y'])
+        self.styleSheetsVsIDs.append([Stylesheets.greyEffectButtons,'G'])
+        self.styleSheetsVsIDs.append([Stylesheets.purpleEffectButtons,'P'])
+        self.styleSheetsVsIDs.append([Stylesheets.blueEffectButtons,'B'])
 
     def getStylesheet(self, colorID:str):
-        """Search the stylesheetsVsIDs table for the styleSheet relative to the given colorID.
+        """Search the styleSheetsVsIDs table for the styleSheet relative to the given colorID.
             Defaults to the first colorID in case of no match.
             Takes one parameter:
             - colorID as str.
             Returns:
             - styleSheet as str.
         """
-        stylesheet = self.stylesheetsVsIDs[0][0]
+        stylesheet = self.styleSheetsVsIDs[0][0]
 
-        for matchTableRow in self.stylesheetsVsIDs:
+        for matchTableRow in self.styleSheetsVsIDs:
             if matchTableRow[1] == colorID :
                 stylesheet = matchTableRow[0]
 
         return stylesheet
 
     def getColorID(self, styleSheet:str):
-        """Searche the stylesheetsVsIDs table for the colorID relative to the given styleSheet.
+        """Searche the styleSheetsVsIDs table for the colorID relative to the given styleSheet.
             Defaults to the first styleSheet in case of no match.
             Takes one parameter:
             - styleSheet as str.
             Returns:
             - colorID as str.
         """
-        colorID = self.stylesheetsVsIDs[0][1]
+        colorID = self.styleSheetsVsIDs[0][1]
 
-        for matchTableRow in self.stylesheetsVsIDs:
+        for matchTableRow in self.styleSheetsVsIDs:
             if matchTableRow[0] == styleSheet:
                 colorID = matchTableRow[1]
 
@@ -239,7 +244,7 @@ class ExportDialogBox(QDialog):
             QCoreApplication.processEvents()
 
             #Archive the themes and their playlists
-            #themes folder from category name
+            #themes folder defined by category name
 
             self.addLogEntry(ImportExport.Border2)
             self.addLogEntry(self.mainWindow.text.localisation('logs','playlist','caption'))
@@ -471,12 +476,11 @@ class ImportDialogBox(QDialog):
             Returns nothing.
         """
         self.textEdit.clear()
-
-
+        workDirectoryPath = ImportExport().tempDirectoryPath
 
         try:
             #Ouverture de l'archive
-            self.addLogEntry(self.mainWindow.text.localisation('logs','archiveExtraction','caption')+self.archiveFilePath.name)
+            self.addLogEntry(self.mainWindow.text.localisation('logs','archiveOpening','caption')+self.archiveFilePath.name)
             self.addLogEntry(ImportExport.BlankLine)
 
             QCoreApplication.processEvents()
@@ -488,11 +492,44 @@ class ImportDialogBox(QDialog):
             self.addLogEntry(ImportExport.Border1)
             self.addLogEntry(ImportExport.BlankLine)
 
-            for element in archive.getmembers():
-                if ImportExport.TempExtension not in element.name:
-                    self.addLogEntry(element.name)
-                    QCoreApplication.processEvents()
+            QCoreApplication.processEvents()
+
+            #Extraction
+            self.addLogEntry(self.mainWindow.text.localisation('logs','extraction','caption'))
+            self.addLogEntry(ImportExport.Border2)
+            self.addLogEntry(ImportExport.BlankLine)
+
+            archive.extractall(workDirectoryPath.resolve(), self.extractAndLog(archive.getmembers()) )
+
+
+
+            #Moving files to destination
+            self.addLogEntry(ImportExport.BlankLine)
+            self.addLogEntry(self.mainWindow.text.localisation('logs','movingFiles','caption'))
+            self.addLogEntry(ImportExport.Border2)
+            self.addLogEntry(ImportExport.BlankLine)
+
+            #Themes
+            themesTempDirectoryPath = workDirectoryPath/ImportExport.ArchiveThemesFolderName
+            themesDestinationFolderPath = self.destinationPath/ImportExport.ArchiveThemesFolderName
+            shutil.copytree(themesTempDirectoryPath, themesDestinationFolderPath.resolve())
+
+            self.addLogEntry(self.mainWindow.text.localisation('logs','themesMoved','caption')+str(themesDestinationFolderPath.resolve()))
+
+            #Effects
+            effectsTempDirectoryPath = workDirectoryPath/ImportExport.ArchiveThemesFolderName
+            effectsDestinationFolderPath = self.destinationPath/ImportExport.ArchiveSamplesFolderName
+            shutil.copytree(effectsTempDirectoryPath, effectsDestinationFolderPath.resolve())
+
+            self.addLogEntry(self.mainWindow.text.localisation('logs','effectsMoved','caption')+str(effectsDestinationFolderPath.resolve()))
+
+            #Loading files and themes
+
             archive.close()
+
+            #Cleaning temp files
+            if workDirectoryPath.exists():
+                shutil.rmtree(workDirectoryPath)
 
         except Exception as e:
             self.addLogEntry(ImportExport.WarningBorder)
@@ -501,8 +538,26 @@ class ImportDialogBox(QDialog):
             self.addLogEntry(ImportExport.BlankLine)
             QCoreApplication.processEvents()
 
-            #Clean archive
+            #Cleaning temp files
+            if workDirectoryPath.exists():
+                shutil.rmtree(workDirectoryPath)
+
+            #Closing archive
             if 'archive' in locals():
                 archive.close()
 
             self.addLogEntry(traceback.format_exc())
+
+    def extractAndLog(self, members:list):
+        """Generator used to log and update progressbar during files extraction.
+            Takes one parameter:
+            - members as list.
+            Returns:
+            - one member of parameter 'members' per iteration.
+        """
+        currentSection = None
+        for member in members:
+            yield member
+
+            self.addLogEntry(self.mainWindow.text.localisation('logs','file','caption')+member.name)
+            QCoreApplication.processEvents()

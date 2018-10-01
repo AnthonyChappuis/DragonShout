@@ -144,7 +144,13 @@ class Text():
                 'fileExists': {'caption': 'The file already exists, choose a different file name.'},
                 'error': {'caption': 'An error occured, cleaning temporary files.'},
                 'wrongFile': {'caption': 'Selected file is not compatible.'},
-                'archiveExtraction': {'caption': "Archive opening: "}
+                'archiveOpening': {'caption': "Archive opening."},
+                'extraction': {'caption': 'Extraction: '},
+                'themesImport': {'caption': "Importing themes and their playlists."},
+                'effectsImport': {'caption': "Importing effects."},
+                'movingFiles': {'caption': "Moving files to destination folder."},
+                'themesMoved': {'caption': "Themes moved to "},
+                'effectsMoved': {'caption': "Sound effects moved to "}
             }
 
         #French
@@ -217,7 +223,13 @@ class Text():
                 'fileExists': {'caption': 'Le fichier existe déjà, choisissez un autre nom de fichier.'},
                 'error': {'caption': 'Une erreure est survenue, nettoyage des fichiers temporaires.'},
                 'wrongFile': {'caption': "le fichier sélectionné n'est pas compatible."},
-                'archiveExtraction': {'caption': "Ouverture de l'archive: "}
+                'archiveOpening': {'caption': "Ouverture de l'archive."},
+                'extraction': {'caption': 'Extraction: '},
+                'themesImport': {'caption': "Import des thèmes et de leurs listes de lecture."},
+                'effectsImport': {'caption': "Import des effets sonores."},
+                'movingFiles': {'caption': "Place les fichiers dans le dossier de destination."},
+                'themesMoved': {'caption': "Thèmes placés dans "},
+                'effectsMoved': {'caption': "Effets sonores placés dans "}
             }
 
 
