@@ -15,7 +15,7 @@
 #				_filepath as string
 #					Contains the path to the library file on the drive
 #
-#Last edited: September 03rd 2018
+#Last edited: October 02nd 2018
 ###############################################################################
 import os
 import json

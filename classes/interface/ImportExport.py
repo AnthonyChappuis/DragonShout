@@ -515,15 +515,16 @@ class ImportDialogBox(QDialog):
             shutil.copytree(themesTempDirectoryPath, themesDestinationFolderPath.resolve())
 
             self.addLogEntry(self.mainWindow.text.localisation('logs','themesMoved','caption')+str(themesDestinationFolderPath.resolve()))
+            #Loading files
+            self.mainWindow.themes.add_themes_from_folder(themesDestinationFolderPath)
 
             #Effects
-            effectsTempDirectoryPath = workDirectoryPath/ImportExport.ArchiveThemesFolderName
+            effectsTempDirectoryPath = workDirectoryPath/ImportExport.ArchiveSamplesFolderName/str(1)
             effectsDestinationFolderPath = self.destinationPath/ImportExport.ArchiveSamplesFolderName
             shutil.copytree(effectsTempDirectoryPath, effectsDestinationFolderPath.resolve())
 
             self.addLogEntry(self.mainWindow.text.localisation('logs','effectsMoved','caption')+str(effectsDestinationFolderPath.resolve()))
 
-            #Loading files and themes
 
             archive.close()
 

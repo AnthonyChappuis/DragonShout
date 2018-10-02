@@ -4,7 +4,7 @@
 #Class responsible for the theme and its collection of buttons used in the themes widget
 #
 #Application: DragonShout music sampler
-#Last Edited: September 13th 2018
+#Last Edited: October 02nd 2018
 #---------------------------------
 
 from classes.interface import MainWindow
@@ -27,7 +27,7 @@ class ThemeButtons(QWidget):
 
         #Verify if themeIconPath is a str item and defaults it if not.
         if themeIconPath == '' or not isinstance(themeIconPath, str) :
-            themeIconPath = ThemeButtonDialogBox.DefaultThemeIconPath
+            themeIconPath = Images.DefaultThemeIconPath
 
         stylesheet = open(Stylesheets.themeButtons,'r',encoding='utf-8').read()
 

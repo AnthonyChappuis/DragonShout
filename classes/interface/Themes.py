@@ -7,6 +7,9 @@
 #Last Edited: August 07th 2018
 #---------------------------------
 
+import os
+from pathlib import Path
+
 from classes.interface import MainWindow
 from classes.interface.ThemeButtons import ThemeButtons
 from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
@@ -78,14 +81,19 @@ class Themes(QWidget):
             self.themeButtonsLayout.addWidget(themeButton)
             self.themeButtons.append(themeButton)
 
-    def addTheme(self):
+    def addTheme(self,themeName:str=None,themeIconPath:str=None):
         """Adds a new theme button to the theme main layout.
-            Takes no parameter.
+            Takes two parameters:
+            - themeName as str.
+            - themeIconPath as str.
             Returns nothing.
         """
         ok = False
 
-        themeName, themeIconPath, ok = ThemeButtonDialogBox(self.mainWindow).getItems()
+        if themeName == None and themeIconPath == None:
+            themeName, themeIconPath, ok = ThemeButtonDialogBox(self.mainWindow).getItems()
+        else:
+            ok = True
 
         if ok :
             if themeName == '' or not isinstance(themeName, str):
@@ -133,3 +141,21 @@ class Themes(QWidget):
                 themeButton.setEnabled(True)
             elif toggleType == False :
                 themeButton.setEnabled(False)
+
+    def add_multiple_themes(self,themes:list):
+    	"""Used to add multiple themes at once.
+    		Takes one parameter:
+    		- categories as a list of str.
+    		Returns nothing.
+    	"""
+    	for theme in themes:
+            self.addTheme(theme)
+
+    def add_themes_from_folder(self, folderPath:Path):
+    	"""Used to add all subfolders of folderpath as themes and audio files in those subfolders as tracks in each theme.
+    		Takes one parameter:
+    		- folderPath as Path object.
+    		Returns nothing.
+    	"""
+    	root,dirs,files = os.walk(folderPath.resolve())
+    	self.add_multiple_themes(root[1])

@@ -30,6 +30,9 @@ class Images():
     #General
     applicationIcon = "dragonShout.png"
 
+    #Themes
+    DefaultThemeIconPath = str(Path("ressources/interface/defaultButtonIcon.png").resolve())
+
     #Players
     repeatIcon = "ressources/interface/repeat.png"
     playIcon = "ressources/interface/play.png"
