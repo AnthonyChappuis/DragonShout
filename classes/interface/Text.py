@@ -150,7 +150,8 @@ class Text():
                 'effectsImport': {'caption': "Importing effects."},
                 'movingFiles': {'caption': "Moving files to destination folder."},
                 'themesMoved': {'caption': "Themes moved to "},
-                'effectsMoved': {'caption': "Sound effects moved to "}
+                'effectsMoved': {'caption': "Sound effects moved to "},
+                'addThemeIcon': {'caption': "Icon added: "}
             }
 
         #French
@@ -229,7 +230,8 @@ class Text():
                 'effectsImport': {'caption': "Import des effets sonores."},
                 'movingFiles': {'caption': "Place les fichiers dans le dossier de destination."},
                 'themesMoved': {'caption': "Thèmes placés dans "},
-                'effectsMoved': {'caption': "Effets sonores placés dans "}
+                'effectsMoved': {'caption': "Effets sonores placés dans "},
+                'addThemeIcon': {'caption': "Icon ajouté: "}
             }
 
 

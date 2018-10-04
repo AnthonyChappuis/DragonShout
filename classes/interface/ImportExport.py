@@ -266,6 +266,12 @@ class ExportDialogBox(QDialog):
 
                 self.addLogEntry(ImportExport.BlankLine)
 
+                #Adding theme icon
+                iconPath = Path(theme.iconPath)
+                archive.add(iconPath.resolve(),ImportExport.ArchiveThemesFolderName+'/'+subFolderName+'/'+iconPath.name)
+                self.addLogEntry(self.mainWindow.text.localisation('logs','addThemeIcon','caption')+iconPath.name)
+                self.addLogEntry(ImportExport.BlankLine)
+
             self.addLogEntry(ImportExport.Border2)
             self.addLogEntry(self.mainWindow.text.localisation('logs','sampler','caption'))
             self.addLogEntry(ImportExport.Border2)
