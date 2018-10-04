@@ -4,7 +4,7 @@
 #Handle the dialogbox used when adding a new theme button to the application
 #
 #Application: DragonShout music sampler
-#Last Edited: August 31th 2018
+#Last Edited: October 04th 2018
 #---------------------------------
 
 import os
@@ -21,10 +21,18 @@ from PyQt5.Qt import Qt
 
 class ThemeButtonDialogBox(QDialog):
 
-    def __init__(self, mainWindow:MainWindow, themeName:str='notset', themeIconPath:str='notset'):
+    CreateMode = 0
+    EditMode = 1
+
+    def __init__(self, mainWindow:MainWindow, themeName:str='notset', themeIconPath:str='notset', mode:int=0):
         super().__init__()
 
         self.mainWindow = mainWindow
+
+        if mode != (ThemeButtonDialogBox.CreateMode or ThemeButtonDialogBox.EditMode):
+            mode = ThemeButtonDialogBox.CreateMode
+        self.mode = mode
+
         self.okOrNot = False
 
         styleSheet = open(Stylesheets.globalStyle,'r', encoding='utf-8').read()
@@ -107,7 +115,7 @@ class ThemeButtonDialogBox(QDialog):
         self.okOrNot = okOrNot
 
         if okOrNot:
-            if self.mainWindow.library.get_category(self.themeName.text()) :
+            if self.mainWindow.library.get_category(self.themeName.text()) and self.mode == ThemeButtonDialogBox.CreateMode:
                 QMessageBox(QMessageBox.Warning,self.mainWindow.text.localisation('messageBoxes','existingTheme','title'),self.mainWindow.text.localisation('messageBoxes','existingTheme','caption')).exec()
             else:
                 self.close()

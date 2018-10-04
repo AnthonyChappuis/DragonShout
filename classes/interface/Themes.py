@@ -13,6 +13,7 @@ from pathlib import Path
 from classes.interface import MainWindow
 from classes.interface.ThemeButtons import ThemeButtons
 from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
+from classes.interface.ImportExport import ImportExport
 
 from PyQt5 import Qt
 from PyQt5.QtWidgets import (QWidget, QPushButton, QVBoxLayout, QInputDialog,
@@ -86,7 +87,8 @@ class Themes(QWidget):
             Takes two parameters:
             - themeName as str.
             - themeIconPath as str.
-            Returns nothing.
+            Returns:
+            -themeButtons as ThemeButtons object.
         """
         ok = False
 
@@ -104,6 +106,7 @@ class Themes(QWidget):
             themeButtons = ThemeButtons(themeName, themeIconPath, self.mainWindow)
             self.themeButtons.append(themeButtons)
             self.themeButtonsLayout.addWidget(themeButtons)
+            return themeButtons
 
     def deleteTheme(self, themeName:str, themeButtons:ThemeButtons):
         """Delete the theme both in the UI and in the library.
@@ -153,10 +156,16 @@ class Themes(QWidget):
             directoryPath = folderPath/dir
             #Add themes from directory type childrens
             if directoryPath.is_dir():
-                self.addTheme(dir)
+                theme = self.addTheme(dir)
+
                 #Add track files contained in each directory to corresponding category
                 for file in os.listdir(directoryPath.resolve()):
                     filePath = directoryPath/file
                     if filePath.is_file():
-                        category = self.mainWindow.library.get_category(dir)
-                        category.add_track(filePath.name,str(filePath.resolve()))
+                        if filePath.suffix == ImportExport.themeIconID:
+                            filePath.replace(filePath.with_suffix(''))
+                            filePath = filePath.with_suffix('')
+                            theme.changeIcon(filePath)
+                        else:
+                            category = self.mainWindow.library.get_category(dir)
+                            category.add_track(filePath.name,str(filePath.resolve()))

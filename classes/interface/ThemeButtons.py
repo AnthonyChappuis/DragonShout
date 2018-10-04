@@ -4,8 +4,10 @@
 #Class responsible for the theme and its collection of buttons used in the themes widget
 #
 #Application: DragonShout music sampler
-#Last Edited: October 02nd 2018
+#Last Edited: October 04th 2018
 #---------------------------------
+
+from pathlib import Path
 
 from classes.interface import MainWindow
 from classes.interface.ThemeButtonDialogBox import ThemeButtonDialogBox
@@ -73,14 +75,29 @@ class ThemeButtons(QWidget):
             Takes one parameter:
             - themeName as string
         """
-        newThemeName, newThemeIconPath, ok = ThemeButtonDialogBox(self.mainWindow, self.themeButton.text(), self.themeIconPath).getItems()
+        newThemeName, newThemeIconPath, ok = ThemeButtonDialogBox(self.mainWindow, self.themeButton.text(), self.themeIconPath,ThemeButtonDialogBox.EditMode).getItems()
         category = self.mainWindow.library.get_category(themeName)
 
         if ok and category:
             self.themeButton.setText(newThemeName)
             self.themeButton.setIcon(QIcon(newThemeIconPath))
+            self.themeIconPath = newThemeIconPath
             category.name = newThemeName
             category.iconPath = newThemeIconPath
 
             if self.mainWindow.playlist.label.text() == themeName:
                 self.mainWindow.playlist.label.setText(newThemeName)
+
+    def changeIcon(self, iconPath:Path):
+        """Change only the theme icon.
+
+            Takes one parameter:
+            - iconPath as Path object.
+            Returns nothing.
+        """
+        category = self.mainWindow.library.get_category(self.themeButton.text())
+
+        if category:
+            strIconPath = str(iconPath.resolve())
+            self.themeButton.setIcon(QIcon(strIconPath))
+            category.iconPath = strIconPath

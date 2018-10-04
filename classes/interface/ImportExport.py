@@ -29,6 +29,7 @@ class ImportExport():
     ExtractionDirectoryName = 'extraction'
     TempExtension = '.default'
     ArchiveFileExtension = '.dsa'
+    themeIconID = '.themeIcon'
 
     Border1 = '********************************************************'
     Border2 = '--------------------------------------------------------'
@@ -268,7 +269,7 @@ class ExportDialogBox(QDialog):
 
                 #Adding theme icon
                 iconPath = Path(theme.iconPath)
-                archive.add(iconPath.resolve(),ImportExport.ArchiveThemesFolderName+'/'+subFolderName+'/'+iconPath.name)
+                archive.add(iconPath.resolve(),ImportExport.ArchiveThemesFolderName+'/'+subFolderName+'/'+iconPath.name+ImportExport.themeIconID)
                 self.addLogEntry(self.mainWindow.text.localisation('logs','addThemeIcon','caption')+iconPath.name)
                 self.addLogEntry(ImportExport.BlankLine)
 
@@ -506,8 +507,7 @@ class ImportDialogBox(QDialog):
             self.addLogEntry(ImportExport.BlankLine)
 
             archive.extractall(workDirectoryPath.resolve(), self.extractAndLog(archive.getmembers()) )
-
-
+            archive.close()
 
             #Moving files to destination
             self.addLogEntry(ImportExport.BlankLine)
@@ -531,9 +531,6 @@ class ImportDialogBox(QDialog):
             shutil.copytree(effectsTempDirectoryPath, effectsDestinationFolderPath.resolve())
 
             self.addLogEntry(self.mainWindow.text.localisation('logs','effectsMoved','caption')+str(effectsDestinationFolderPath.resolve()))
-
-
-            archive.close()
 
             #Cleaning temp files
             if workDirectoryPath.exists():
