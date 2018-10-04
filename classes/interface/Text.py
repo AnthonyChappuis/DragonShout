@@ -141,6 +141,7 @@ class Text():
                 'sampler': {'caption': 'Exporting sound effects'},
                 'file': {'caption':'File: '},
                 'exportSuccess': {'caption': 'Export successful.'},
+                'importSuccess': {'caption': 'Import successful.'},
                 'fileExists': {'caption': 'The file already exists, choose a different file name.'},
                 'error': {'caption': 'An error occured, cleaning temporary files.'},
                 'wrongFile': {'caption': 'Selected file is not compatible.'},
@@ -149,8 +150,8 @@ class Text():
                 'themesImport': {'caption': "Importing themes and their playlists."},
                 'effectsImport': {'caption': "Importing effects."},
                 'movingFiles': {'caption': "Moving files to destination folder."},
-                'themesMoved': {'caption': "Themes moved to "},
-                'effectsMoved': {'caption': "Sound effects moved to "},
+                'themesMoved': {'caption': "Themes loaded and moved to "},
+                'effectsMoved': {'caption': "Sound effects loaded and moved to "},
                 'addThemeIcon': {'caption': "Icon added: "}
             }
 
@@ -221,6 +222,7 @@ class Text():
                 'sampler': {'caption': 'Export des effets sonores.'},
                 'file': {'caption':'Fichier: '},
                 'exportSuccess': {'caption': 'Exportation réussie.'},
+                'importSuccess': {'caption': 'Importation réussie.'},
                 'fileExists': {'caption': 'Le fichier existe déjà, choisissez un autre nom de fichier.'},
                 'error': {'caption': 'Une erreure est survenue, nettoyage des fichiers temporaires.'},
                 'wrongFile': {'caption': "le fichier sélectionné n'est pas compatible."},
@@ -229,8 +231,8 @@ class Text():
                 'themesImport': {'caption': "Import des thèmes et de leurs listes de lecture."},
                 'effectsImport': {'caption': "Import des effets sonores."},
                 'movingFiles': {'caption': "Place les fichiers dans le dossier de destination."},
-                'themesMoved': {'caption': "Thèmes placés dans "},
-                'effectsMoved': {'caption': "Effets sonores placés dans "},
+                'themesMoved': {'caption': "Thèmes chargés et placés dans "},
+                'effectsMoved': {'caption': "Effets sonores chargés et placés dans "},
                 'addThemeIcon': {'caption': "Icon ajouté: "}
             }
 

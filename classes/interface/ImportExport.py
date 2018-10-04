@@ -477,6 +477,48 @@ class ImportDialogBox(QDialog):
         else:
             self.importButton.setEnabled(False)
 
+    def resetProgressBar(self,maxValue:int):
+        """Reset progress bar by gathering file number and setting it's min/max values and progress steps.
+            Takes no parameter.
+            Returns nothing.
+        """
+        maxValue += 4
+        self.progressBar.reset()
+        self.progressBar.setRange(0,maxValue)
+        self.progressBar.setValue(0)
+
+    def bumpProgressBar(self):
+        """Bump the value of the progress bar.
+            Takes no parameter.
+            Returns nothing.
+        """
+        self.progressBar.setValue(self.progressBar.value()+1)
+
+    def toggleControls(self):
+        """Enable or disable UI buttons during export.
+            Takes no parameter.
+            Returns nothing.
+        """
+        if self.closeButton.isEnabled() :
+            self.closeButton.setEnabled(False)
+        else:
+            self.closeButton.setEnabled(True)
+
+        if self.importButton.isEnabled() :
+            self.importButton.setEnabled(False)
+        else:
+            self.importButton.setEnabled(True)
+
+        if self.archiveFileSelectButton.isEnabled() :
+            self.archiveFileSelectButton.setEnabled(False)
+        else:
+            self.archiveFileSelectButton.setEnabled(True)
+
+        if self.destinationSelectButton.isEnabled() :
+            self.destinationSelectButton.setEnabled(False)
+        else:
+            self.destinationSelectButton.setEnabled(True)
+
     def importArchive(self):
         """Import a new library and attached files from a .dsa archive (.tar.gz) and place the extracted files to given destination.
             Takes no parameterself.
@@ -484,6 +526,8 @@ class ImportDialogBox(QDialog):
         """
         self.textEdit.clear()
         workDirectoryPath = ImportExport().tempDirectoryPath
+        self.toggleControls()
+        self.resetProgressBar(0)
 
         try:
             #Ouverture de l'archive
@@ -493,6 +537,11 @@ class ImportDialogBox(QDialog):
             QCoreApplication.processEvents()
             #Open archive
             archive = tarfile.open(self.archiveFilePath.resolve(),'r:gz')
+
+            #Resetting progress bar
+            members = archive.getmembers()
+            maxValue = len(members)
+            self.resetProgressBar(maxValue)
 
             self.addLogEntry(ImportExport.Border1)
             self.addLogEntry(self.mainWindow.text.localisation('logs','importStart','caption'))
@@ -506,7 +555,7 @@ class ImportDialogBox(QDialog):
             self.addLogEntry(ImportExport.Border2)
             self.addLogEntry(ImportExport.BlankLine)
 
-            archive.extractall(workDirectoryPath.resolve(), self.extractAndLog(archive.getmembers()) )
+            archive.extractall(workDirectoryPath.resolve(), self.extractAndLog(members) )
             archive.close()
 
             #Moving files to destination
@@ -519,22 +568,34 @@ class ImportDialogBox(QDialog):
             themesTempDirectoryPath = workDirectoryPath/ImportExport.ArchiveThemesFolderName
             themesDestinationFolderPath = self.destinationPath/ImportExport.ArchiveThemesFolderName
             shutil.copytree(themesTempDirectoryPath, themesDestinationFolderPath.resolve())
+            self.bumpProgressBar()
 
-            self.addLogEntry(self.mainWindow.text.localisation('logs','themesMoved','caption')+str(themesDestinationFolderPath.resolve()))
             #Loading files
             self.mainWindow.themes.importThemes(themesDestinationFolderPath)
-
+            self.bumpProgressBar()
+            self.addLogEntry(self.mainWindow.text.localisation('logs','themesMoved','caption')+str(themesDestinationFolderPath.resolve()))
 
             #Effects
             effectsTempDirectoryPath = workDirectoryPath/ImportExport.ArchiveSamplesFolderName/str(1)
             effectsDestinationFolderPath = self.destinationPath/ImportExport.ArchiveSamplesFolderName
             shutil.copytree(effectsTempDirectoryPath, effectsDestinationFolderPath.resolve())
+            self.bumpProgressBar()
 
+            #Loading files
+            self.bumpProgressBar()
             self.addLogEntry(self.mainWindow.text.localisation('logs','effectsMoved','caption')+str(effectsDestinationFolderPath.resolve()))
+
+            self.addLogEntry(ImportExport.BlankLine)
 
             #Cleaning temp files
             if workDirectoryPath.exists():
                 shutil.rmtree(workDirectoryPath)
+
+            self.addLogEntry(ImportExport.Border1)
+            self.addLogEntry(self.mainWindow.text.localisation('logs','importSuccess','caption'))
+            self.addLogEntry(ImportExport.Border1)
+
+            self.toggleControls()
 
         except Exception as e:
             self.addLogEntry(ImportExport.WarningBorder)
@@ -553,6 +614,8 @@ class ImportDialogBox(QDialog):
 
             self.addLogEntry(traceback.format_exc())
 
+            self.toggleControls()
+
     def extractAndLog(self, members:list):
         """Generator used to log and update progressbar during files extraction.
             Takes one parameter:
@@ -563,6 +626,8 @@ class ImportDialogBox(QDialog):
         currentSection = None
         for member in members:
             yield member
+            self.bumpProgressBar()
 
+            # if member.suffix() != ImportExport.TempExtension :
             self.addLogEntry(self.mainWindow.text.localisation('logs','file','caption')+member.name)
             QCoreApplication.processEvents()
