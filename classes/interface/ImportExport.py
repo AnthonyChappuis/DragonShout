@@ -516,7 +516,8 @@ class ImportDialogBox(QDialog):
 
             self.addLogEntry(self.mainWindow.text.localisation('logs','themesMoved','caption')+str(themesDestinationFolderPath.resolve()))
             #Loading files
-            self.mainWindow.themes.add_themes_from_folder(themesDestinationFolderPath)
+            self.mainWindow.themes.importThemes(themesDestinationFolderPath)
+
 
             #Effects
             effectsTempDirectoryPath = workDirectoryPath/ImportExport.ArchiveSamplesFolderName/str(1)

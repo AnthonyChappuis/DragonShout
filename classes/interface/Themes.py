@@ -142,20 +142,18 @@ class Themes(QWidget):
             elif toggleType == False :
                 themeButton.setEnabled(False)
 
-    def add_multiple_themes(self,themes:list):
-    	"""Used to add multiple themes at once.
-    		Takes one parameter:
-    		- categories as a list of str.
-    		Returns nothing.
-    	"""
-    	for theme in themes:
-            self.addTheme(theme)
-
-    def add_themes_from_folder(self, folderPath:Path):
-    	"""Used to add all subfolders of folderpath as themes and audio files in those subfolders as tracks in each theme.
-    		Takes one parameter:
-    		- folderPath as Path object.
-    		Returns nothing.
-    	"""
-    	root,dirs,files = os.walk(folderPath.resolve())
-    	self.add_multiple_themes(root[1])
+    def importThemes(self, folderPath:Path):
+        """Used to add all subfolders of folderpath as themes and audio files in those subfolders as tracks in each theme.
+        	Takes one parameter:
+        	- folderPath as Path object.
+        	Returns nothing.
+        """
+        for dir in os.listdir(folderPath.resolve()):
+            directoryPath = folderPath/dir
+            if directoryPath.is_dir():
+                self.addTheme(dir)
+                for file in os.listdir(directoryPath.resolve()):
+                    filePath = directoryPath/file
+                    if filePath.is_file():
+                        category = self.mainWindow.library.get_category(dir)
+                        category.add_track(filePath.name,str(filePath.resolve()))
