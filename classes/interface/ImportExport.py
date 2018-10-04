@@ -620,14 +620,14 @@ class ImportDialogBox(QDialog):
         """Generator used to log and update progressbar during files extraction.
             Takes one parameter:
             - members as list.
-            Returns:
+            Yields:
             - one member of parameter 'members' per iteration.
         """
         currentSection = None
         for member in members:
             yield member
             self.bumpProgressBar()
-
-            # if member.suffix() != ImportExport.TempExtension :
-            self.addLogEntry(self.mainWindow.text.localisation('logs','file','caption')+member.name)
-            QCoreApplication.processEvents()
+            memberPath = Path(member.name)
+            if memberPath.suffix != ImportExport.TempExtension :
+                self.addLogEntry(self.mainWindow.text.localisation('logs','file','caption')+member.name)
+                QCoreApplication.processEvents()
