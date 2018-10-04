@@ -4,7 +4,7 @@
 #Class responsible for the themes' collection of widget used in the main window
 #
 #Application: DragonShout music sampler
-#Last Edited: August 07th 2018
+#Last Edited: October 04th 2018
 #---------------------------------
 
 import os
@@ -148,10 +148,13 @@ class Themes(QWidget):
         	- folderPath as Path object.
         	Returns nothing.
         """
+        #Walk root directory
         for dir in os.listdir(folderPath.resolve()):
             directoryPath = folderPath/dir
+            #Add themes from directory type childrens
             if directoryPath.is_dir():
                 self.addTheme(dir)
+                #Add track files contained in each directory to corresponding category
                 for file in os.listdir(directoryPath.resolve()):
                     filePath = directoryPath/file
                     if filePath.is_file():

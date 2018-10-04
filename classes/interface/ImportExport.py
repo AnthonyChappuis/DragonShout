@@ -4,7 +4,7 @@
 #Two Pop-up windows that manage import/export feature
 #
 #Application: DragonShout music sampler
-#Last Edited: October 01st 2018
+#Last Edited: October 04th 2018
 #---------------------------------
 import os
 import tarfile
