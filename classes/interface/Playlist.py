@@ -58,10 +58,9 @@ class Playlist(QWidget):
         self.durationTimer.timeout.connect(lambda *args: self.updateDurationBar())
 
         #Controls of the tracklist
-        controlsWidget = QWidget(self)
-        controlsWidget.setMaximumHeight(100)
+        playStopWidget = QWidget(self)
+        playStopWidget.setMaximumHeight(100)
         tracklistControlLayout = QHBoxLayout()
-        tracklistControlLayout.addStretch(1)
 
         #play button
         self.playButton = QPushButton()
@@ -72,17 +71,6 @@ class Playlist(QWidget):
         self.playButton.clicked.connect(lambda *args: self.playMusic())
         tracklistControlLayout.addWidget(self.playButton)
 
-        #add button
-        self.addMusicButton = QPushButton(self.mainWindow.text.localisation('buttons','addMusic','caption'))
-        self.addMusicButton.clicked.connect(lambda *args: self.addMusicToList())
-        self.addMusicButton.setEnabled(False)
-        tracklistControlLayout.addWidget(self.addMusicButton)
-
-        #remove button
-        self.removeMusicButton = QPushButton(self.mainWindow.text.localisation('buttons','removeMusic','caption'))
-        self.removeMusicButton.clicked.connect(lambda *args: self.removeMusicFromList())
-        self.removeMusicButton.setEnabled(False)
-        tracklistControlLayout.addWidget(self.removeMusicButton)
 
         #stop button
         self.stopButton = QPushButton()
@@ -94,13 +82,19 @@ class Playlist(QWidget):
         #Volume control
         volumeControlLayout = QHBoxLayout()
         volumeControlWidget = QWidget()
-        self.volumeSlider = QSlider(Qt.Qt.Vertical)
+        self.volumeSlider = QSlider(Qt.Qt.Horizontal)
         self.volumeSlider.setMinimum(MusicPlayer.MinVolume)
         self.volumeSlider.setMaximum(MusicPlayer.MaxVolume)
         self.volumeSlider.setTickPosition(QSlider.TicksBelow)
         self.volumeSlider.valueChanged.connect(lambda *args: self.musicPlayer.changeVolume(self.sender().value()))
         self.volumeSlider.setValue(int(MusicPlayer.MaxVolume/2))
+
+        zeroLabel = QLabel('0%')
+        hundredLabel = QLabel('100%')
+
+        volumeControlLayout.addWidget(zeroLabel)
         volumeControlLayout.addWidget(self.volumeSlider)
+        volumeControlLayout.addWidget(hundredLabel)
 
         volumeControlWidget.setLayout(volumeControlLayout)
         tracklistControlLayout.addStretch(1)
@@ -113,12 +107,54 @@ class Playlist(QWidget):
         tracklistControlLayout.addWidget(self.repeatToggleButton)
         tracklistControlLayout.addWidget(volumeControlWidget)
 
-        controlsWidget.setLayout(tracklistControlLayout)
-        playlistVerticalLayout.addWidget(controlsWidget)
+        playStopWidget.setLayout(tracklistControlLayout)
+        playlistVerticalLayout.addWidget(playStopWidget)
 
+        #Add and remove buttons
+        addRemoveWidget = QWidget(self)
+        addRemoveWidget.setMaximumHeight(100)
+        addRemoveLayout = QHBoxLayout()
+
+        #hide/show button
+        self.hideShowButton = QPushButton(self.mainWindow.text.localisation('buttons','showHide','caption'))
+        self.hideShowButton.clicked.connect(lambda *args: self.hideShowButtons())
+        addRemoveLayout.addWidget(self.hideShowButton)
+
+        #add buttonQSplitter
+        self.addMusicButton = QPushButton(self.mainWindow.text.localisation('buttons','addMusic','caption'))
+        self.addMusicButton.clicked.connect(lambda *args: self.addMusicToList())
+        self.addMusicButton.setEnabled(False)
+        addRemoveLayout.addWidget(self.addMusicButton)
+
+        #remove button
+        self.removeMusicButton = QPushButton(self.mainWindow.text.localisation('buttons','removeMusic','caption'))
+        self.removeMusicButton.clicked.connect(lambda *args: self.removeMusicFromList())
+        self.removeMusicButton.setEnabled(False)
+        addRemoveLayout.addWidget(self.removeMusicButton)
+
+        addRemoveWidget.setLayout(addRemoveLayout)
+        playlistVerticalLayout.addWidget(addRemoveWidget)
 
         #set playlist layout
         self.setLayout(playlistVerticalLayout)
+
+    def hideShowButtons(self):
+        """Show or hide add and remove music buttons in order to prevent misclicking on them by mistake.
+            Takes no parameter.
+            Returns nothing.
+        """
+        if self.addMusicButton.isVisible() :
+            self.addMusicButton.setVisible(False)
+        else:
+            self.addMusicButton.setVisible(True)
+
+        if self.removeMusicButton.isVisible() :
+            self.removeMusicButton.setVisible(False)
+        else:
+            self.removeMusicButton.setVisible(True)
+
+        #if self.removeMusicButton.isVisible() and self.addMusicButton.isVisible():
+        #else:
 
     def setList(self,text:str='', tracks:dict=None):
         """Update the tracklist with the provided list of tracks and
@@ -208,15 +244,15 @@ class Playlist(QWidget):
         category = self.label.text()
         library = self.mainWindow.library
 
-        #Parsing library to find current category
-        for libCategory in library.categories :
-            if libCategory.name == category :
-                #Parsing category to find the selected track
-                for libTrack in libCategory.tracks :
-                    if libTrack.name == track.text() :
-                        #Delete the track in the category
+        # Parsing library to find current category
+        for libCategory in library.categories:
+            if libCategory.name == category:
+                # Parsing category to find the selected track
+                for libTrack in libCategory.tracks:
+                    if libTrack.name == track.text():
+                        # Delete the track in the category
                         libCategory.remove_track(libTrack)
-                        #Delete the list entry
+                        # Delete the list entry
                         for item in self.trackList.selectedItems():
                             self.trackList.takeItem(self.trackList.row(item))
 
@@ -226,14 +262,14 @@ class Playlist(QWidget):
         """
         if self.trackList.currentItem():
             self.removeMusicButton.setEnabled(True)
-        else :
+        else:
             self.removeMusicButton.setEnabled(False)
 
     def reset(self):
         """Empty the playlist widget and reset the title label.
             Takes no parameter
         """
-        self.label.setText(self.mainWindow.text.localisation('labels','playlistLabel','caption'))
+        self.label.setText(self.mainWindow.text.localisation('labels', 'playlistLabel', 'caption'))
         self.trackList.clear()
         self.addMusicButton.setEnabled(False)
 
@@ -245,8 +281,8 @@ class Playlist(QWidget):
             found = False
             selectedItem = self.trackList.currentItem().text()
 
-            for track in self.tracks :
-                if track.name == selectedItem :
+            for track in self.tracks:
+                if track.name == selectedItem:
                     filepath = track.location
                     found = True
 
@@ -260,7 +296,7 @@ class Playlist(QWidget):
             Takes no parameter
         """
         numberOfTracks = len(self.tracks)
-        randomTrackNumber = random.randrange(0,numberOfTracks-1)
+        randomTrackNumber = random.randrange(0, numberOfTracks-1)
 
         self.trackList.setCurrentRow(randomTrackNumber)
         self.playMusic()
@@ -277,10 +313,10 @@ class Playlist(QWidget):
             Takes no parameter.
             Returns nothing.
         """
-        if self.repeat :
+        if self.repeat:
             self.repeat = False
             self.repeatToggleButton.setStyleSheet("")
         else:
             self.repeat = True
-            styleSheet = open(Stylesheets.activeToggleButtons,'r', encoding='utf-8').read()
+            styleSheet = open(Stylesheets.activeToggleButtons, 'r', encoding='utf-8').read()
             self.repeatToggleButton.setStyleSheet(styleSheet)

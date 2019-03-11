@@ -89,7 +89,8 @@ class Text():
                 'edit': {'caption':'Edit'},
                 'close': {'caption':'Close'},
                 'export': {'caption':'Export'},
-                'import': {'caption':'Import'}
+                'import': {'caption':'Import'},
+                'showHide': {'caption':'Show/Hide'}
             }
 
             menus = {
@@ -170,7 +171,8 @@ class Text():
                 'edit': {'caption':'Modifier'},
                 'close': {'caption':'Fermer'},
                 'export': {'caption':'Exporter'},
-                'import': {'caption':'Importer'}
+                'import': {'caption':'Importer'},
+                'showHide': {'caption':'Afficher/Masquer'}
             }
 
             menus =  {
